@@ -1,24 +1,53 @@
+/**
+ * Product catalogue. Types, count ranges and cotton types are exactly as
+ * published on tmills.com: Single NE 16s–80s, Double NE 2/20s–2/140s,
+ * Open End NE 6s–12s, Compact (ComforSpin K44, to 140s), Gassed specialty,
+ * plus greige fabric from the weaving unit (300 looms, ~60,000 m/day).
+ */
 import type { Product } from '@/types'
 
 export const products: Product[] = [
-  { id: 'p-01', code: 'RS-20', name: '20s Ring Spun Carded', category: 'Yarn', type: 'Ring Spun', count: '20s', unit: 'kg', description: 'Carded cotton yarn for knitting' },
-  { id: 'p-02', code: 'RS-30', name: '30s Ring Spun Combed', category: 'Yarn', type: 'Ring Spun', count: '30s', unit: 'kg', description: 'Combed cotton yarn, hosiery grade' },
-  { id: 'p-03', code: 'RS-40', name: '40s Ring Spun Combed', category: 'Yarn', type: 'Ring Spun', count: '40s', unit: 'kg', description: 'Combed cotton yarn, weaving grade' },
-  { id: 'p-04', code: 'RS-60', name: '60s Ring Spun Combed', category: 'Yarn', type: 'Ring Spun', count: '60s', unit: 'kg', description: 'Fine combed yarn for premium shirting' },
-  { id: 'p-05', code: 'RS-80', name: '80s Ring Spun Combed', category: 'Yarn', type: 'Ring Spun', count: '80s', unit: 'kg', description: 'Super-fine yarn, export shirting' },
-  { id: 'p-06', code: 'OE-10', name: '10s Open End', category: 'Yarn', type: 'Open End', count: '10s', unit: 'kg', description: 'Coarse open-end yarn for denim' },
-  { id: 'p-07', code: 'OE-16', name: '16s Open End', category: 'Yarn', type: 'Open End', count: '16s', unit: 'kg', description: 'Open-end yarn for towelling' },
-  { id: 'p-08', code: 'OE-20', name: '20s Open End', category: 'Yarn', type: 'Open End', count: '20s', unit: 'kg', description: 'Open-end yarn for home textiles' },
-  { id: 'p-09', code: 'DB-2/40', name: '2/40s Doubled', category: 'Yarn', type: 'Doubled', count: '2/40s', unit: 'kg', description: 'Two-ply doubled yarn for sewing thread' },
-  { id: 'p-10', code: 'DB-2/60', name: '2/60s Doubled', category: 'Yarn', type: 'Doubled', count: '2/60s', unit: 'kg', description: 'Two-ply doubled yarn, fine gauge' },
-  { id: 'p-11', code: 'SP-COMP40', name: '40s Compact Specialty', category: 'Yarn', type: 'Specialty', count: '40s', unit: 'kg', description: 'Compact-spun yarn, low-hairiness' },
-  { id: 'p-12', code: 'SP-SLUB', name: 'Slub Fancy Yarn', category: 'Yarn', type: 'Specialty', unit: 'kg', description: 'Slub effect fashion yarn' },
-  { id: 'p-13', code: 'SP-MEL', name: 'Melange Blend Yarn', category: 'Yarn', type: 'Specialty', unit: 'kg', description: 'Cotton-viscose melange blend' },
-  { id: 'p-14', code: 'FB-POP', name: 'Poplin Grey Fabric', category: 'Fabric', type: 'Fabric', unit: 'm', description: 'Plain weave poplin, greige' },
-  { id: 'p-15', code: 'FB-TWL', name: 'Twill Fabric', category: 'Fabric', type: 'Fabric', unit: 'm', description: '3/1 twill weave fabric' },
-  { id: 'p-16', code: 'FB-OXF', name: 'Oxford Shirting', category: 'Fabric', type: 'Fabric', unit: 'm', description: 'Basketweave oxford shirting fabric' },
-  { id: 'p-17', code: 'FB-DEN', name: 'Denim Fabric', category: 'Fabric', type: 'Fabric', unit: 'm', description: '11 oz indigo denim' },
+  // Single yarn — NE 16s to 80s combed, for knitting & weaving
+  { id: 'p-s16', code: 'S-16', name: '16s Single Combed', category: 'Yarn', type: 'Single', count: '16s', unit: 'kg', application: 'Weaving', description: 'Coarse combed single yarn, auto-coned & spliced' },
+  { id: 'p-s30', code: 'S-30', name: '30s Single Combed', category: 'Yarn', type: 'Single', count: '30s', unit: 'kg', application: 'Hosiery', description: 'Medium count combed single yarn for hosiery' },
+  { id: 'p-s40', code: 'S-40', name: '40s Single Combed', category: 'Yarn', type: 'Single', count: '40s', unit: 'kg', application: 'Weaving', description: 'Combed single weaving yarn, contamination cleared' },
+  { id: 'p-s60', code: 'S-60', name: '60s Single Combed', category: 'Yarn', type: 'Single', count: '60s', unit: 'kg', application: 'Knitting', description: 'Fine count combed single yarn' },
+  { id: 'p-s80', code: 'S-80', name: '80s Single Combed', category: 'Yarn', type: 'Single', count: '80s', unit: 'kg', application: 'Weaving', description: 'Fine count combed yarn for premium shirting' },
+
+  // Double yarn — NE 2/20s to 2/140s, twisted on TFO
+  { id: 'p-d2-20', code: 'D-2/20', name: '2/20s Double', category: 'Yarn', type: 'Double', count: '2/20s', unit: 'kg', application: 'Weaving', description: 'Two-fold yarn twisted on TFO' },
+  { id: 'p-d2-60', code: 'D-2/60', name: '2/60s Double', category: 'Yarn', type: 'Double', count: '2/60s', unit: 'kg', application: 'Weaving', description: 'Two-fold combed yarn, TFO/DD twist without knots' },
+  { id: 'p-d2-100', code: 'D-2/100', name: '2/100s Double', category: 'Yarn', type: 'Double', count: '2/100s', unit: 'kg', application: 'Weaving', description: 'Fine two-fold combed yarn' },
+  { id: 'p-d2-140', code: 'D-2/140', name: '2/140s Double', category: 'Yarn', type: 'Double', count: '2/140s', unit: 'kg', application: 'Weaving', description: 'Superfine multifold yarn, TFO twisted' },
+
+  // Open end — NE 6s to 12s on OE-Schlafhorst
+  { id: 'p-oe6', code: 'OE-6', name: '6s Open End', category: 'Yarn', type: 'Open End', count: '6s', unit: 'kg', application: 'Weaving', description: 'Coarse OE yarn on Schlafhorst Autocoro' },
+  { id: 'p-oe10', code: 'OE-10', name: '10s Open End', category: 'Yarn', type: 'Open End', count: '10s', unit: 'kg', application: 'Weaving', description: 'OE yarn, heavy doubling available' },
+  { id: 'p-oe12', code: 'OE-12', name: '12s Open End', category: 'Yarn', type: 'Open End', count: '12s', unit: 'kg', application: 'Weaving', description: 'OE yarn on Schlafhorst machines' },
+
+  // Compact — Rieter ComforSpin K44
+  { id: 'p-c40', code: 'C-40', name: '40s Compact', category: 'Yarn', type: 'Compact', count: '40s', unit: 'kg', application: 'Weaving', description: 'Compact spun on Rieter ComforSpin K44, low hairiness' },
+  { id: 'p-c80', code: 'C-80', name: '80s Compact', category: 'Yarn', type: 'Compact', count: '80s', unit: 'kg', application: 'Knitting', description: 'Fine compact yarn on ComforSpin K44' },
+  { id: 'p-c120', code: 'C-120', name: '120s Compact', category: 'Yarn', type: 'Compact', count: '120s', unit: 'kg', application: 'Weaving', description: 'Superfine compact yarn for premium shirting' },
+
+  // Gassed — house specialty
+  { id: 'p-g60', code: 'G-60', name: '60s Gassed', category: 'Yarn', type: 'Gassed', count: '60s', unit: 'kg', application: 'Weaving', description: 'Singed gassed yarn — house specialty' },
+  { id: 'p-g2-80', code: 'G-2/80', name: '2/80s Gassed', category: 'Yarn', type: 'Gassed', count: '2/80s', unit: 'kg', application: 'Weaving', description: 'Doubled and gassed specialty yarn' },
+
+  // Greige fabric from the weaving unit
+  { id: 'p-f-shirt', code: 'F-SHIRT', name: 'Greige Shirting Fabric', category: 'Fabric', type: 'Fabric', unit: 'm', application: 'Weaving', description: 'Greige shirting woven on air jet looms' },
+  { id: 'p-f-poplin', code: 'F-POPLIN', name: 'Greige Poplin', category: 'Fabric', type: 'Fabric', unit: 'm', application: 'Weaving', description: 'Plain weave greige poplin on Sulzer looms' },
 ]
 
 export const productById = new Map(products.map((p) => [p.id, p]))
-export const productTypes = ['Ring Spun', 'Open End', 'Doubled', 'Specialty', 'Fabric'] as const
+
+/** Product types actually made, per the published product range. */
+export const productTypes = ['Single', 'Double', 'Open End', 'Compact', 'Gassed', 'Fabric'] as const
+
+/** Marketing categories as listed on tmills.com. */
+export const productCategories = [
+  'Fine Count Combed Cotton Yarn',
+  'Hosiery Yarn',
+  'Coarse Count Combed Cotton Yarn',
+  'Compact Yarn',
+] as const

@@ -1,0 +1,83 @@
+- generic [ref=f21e3]:
+  - complementary [ref=f21e5]:
+    - generic [ref=f21e11]:
+      - generic [ref=f21e12]: THIAGARAJAR MILLS
+      - generic [ref=f21e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f21e17]:
+      - link "Dashboard" [ref=f21e18] [cursor=pointer]:
+        - /url: /
+      - button "Sales & Orders" [ref=f21e26]
+      - button "Planning" [ref=f21e36]
+      - button "Procurement" [ref=f21e44]
+      - button "Cotton & Raw Materials" [ref=f21e53]
+      - button "Inventory" [ref=f21e61]
+      - button "Production" [ref=f21e76]
+      - generic [ref=f21e82]:
+        - button "Quality Management" [expanded] [ref=f21e83]
+        - generic [ref=f21e90]:
+          - link "Dashboard" [ref=f21e91] [cursor=pointer]:
+            - /url: /quality/dashboard
+          - link "Lab Tests" [ref=f21e92] [cursor=pointer]:
+            - /url: /quality/lab-tests
+          - link "Cotton Quality" [ref=f21e93] [cursor=pointer]:
+            - /url: /quality/cotton-quality
+          - link "Yarn Quality" [ref=f21e94] [cursor=pointer]:
+            - /url: /quality/yarn-quality
+          - link "Fabric Quality" [ref=f21e95] [cursor=pointer]:
+            - /url: /quality/fabric-quality
+          - link "Rejections" [ref=f21e96] [cursor=pointer]:
+            - /url: /quality/rejections
+          - link "Complaints" [ref=f21e97] [cursor=pointer]:
+            - /url: /quality/complaints
+      - button "Maintenance" [ref=f21e99]
+      - button "Master Data" [ref=f21e106]
+      - link "Administration" [ref=f21e113] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f21e122]:
+      - generic [ref=f21e123]: Threading together
+      - generic [ref=f21e124]: Tradition & Technology
+    - generic [ref=f21e125]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f21e126]:
+    - banner [ref=f21e127]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f21e129]
+      - generic [ref=f21e130]:
+        - combobox [ref=f21e131]:
+          - generic: All Units
+        - combobox [ref=f21e134]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f21e137]
+        - button "BK Balaji Krishnan Managing Director" [ref=f21e138]:
+          - generic [ref=f21e139]: BK
+          - generic [ref=f21e141]:
+            - generic [ref=f21e142]: Balaji Krishnan
+            - generic [ref=f21e143]: Managing Director
+    - generic [ref=f21e144]:
+      - link "Dashboard" [ref=f21e145] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f21e151]: Quality Management
+      - generic [ref=f21e154]: Dashboard
+    - main [ref=f21e155]:
+      - generic [ref=f21e156]:
+        - generic [ref=f21e157]:
+          - generic [ref=f21e158]:
+            - heading "Central Testing Laboratory" [level=1] [ref=f21e159]
+            - paragraph [ref=f21e160]: Cotton, yarn and fabric testing across all five units — USTER HVI, AFIS PRO-2, UT5/UTR4/UTJ4, Tensojet, Zweigle, TPI and CSP testers.
+          - link "Open lab test register" [ref=f21e162] [cursor=pointer]:
+            - /url: /quality/lab-tests
+        - generic [ref=f21e170]:
+          - generic [ref=f21e172]:
+            - heading "Pass Rate by Stage" [level=3] [ref=f21e173]
+            - paragraph [ref=f21e174]: Cotton intake · yarn spinning · woven fabric
+          - generic [ref=f21e178]:
+            - heading "Test Results" [level=3] [ref=f21e179]
+            - paragraph [ref=f21e180]: Disposition of every laboratory test
+          - generic [ref=f21e184]:
+            - heading "Rejection Reasons" [level=3] [ref=f21e185]
+            - paragraph [ref=f21e186]: Quantity rejected by root cause
+        - generic [ref=f21e190]:
+          - generic [ref=f21e191]:
+            - heading "Failed & Rework Tests" [level=3] [ref=f21e192]
+            - paragraph [ref=f21e193]: Most recent lots held back by the Central Testing Laboratory
+          - link "View all" [ref=f21e194] [cursor=pointer]:
+            - /url: /quality/lab-tests?result=Fail
+  - button "Ask T-Mills" [ref=f21e202]

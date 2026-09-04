@@ -1,4 +1,4 @@
-import type { SeriesPoint, Trend } from './common'
+import type { Trend } from './common'
 
 export type KpiId =
   | 'yarnProduction'
@@ -6,7 +6,7 @@ export type KpiId =
   | 'oee'
   | 'qualityPassRate'
   | 'ordersOnTime'
-  | 'renewableEnergy'
+  | 'exportShare'
 
 export interface KpiCardData {
   id: KpiId
@@ -15,7 +15,6 @@ export interface KpiCardData {
   displayValue: string
   unit: string
   trend: Trend
-  sparkline: SeriesPoint[]
   linkTo: string
   /** Extra context shown under the value, e.g. "142 total" */
   footnote?: string

@@ -20,43 +20,49 @@ interface ChatMessage {
 const exampleQuestions = [
   'Why did production fall this week?',
   'Which machine has the highest downtime?',
-  'What is driving the quality deviations this month?',
+  'What is driving the quality deviations?',
   'Which sales orders are at risk of delay?',
-  'How is our renewable energy mix trending?',
+  'How is our export business performing?',
+  'Which cotton lots are pending testing?',
 ]
 
 const cannedResponses: Array<{ match: RegExp; response: string }> = [
   {
-    match: /production.*(fall|drop|down|decrease)/i,
+    match: /production.*(fall|drop|down|decrease|low)/i,
     response:
-      'Production dipped ~4% this week mainly due to the RF-021 breakdown in Spinning Unit 2 (≈9 hours lost) and a weekend dip in Spinning Unit 3. Ring Spinning output was most affected. Recommend expediting the RF-021 repair to recover Friday–Saturday throughput.',
+      'Output dipped against target mainly on the weekend shifts, plus lost hours from the ring frame currently in breakdown. Spinning Mill II carries the largest share of the shortfall. Open Production → Overview to see actual-vs-target by day and by unit.',
   },
   {
-    match: /downtime|breakdown/i,
+    match: /downtime|breakdown|machine/i,
     response:
-      'RF-021 (Ring Spinning, Spinning Unit 2) currently has the highest downtime this month at ~14 hours across 2 breakdown events, driven by spindle bearing failures. It is flagged as a critical machine — a spare bearing kit is on order.',
+      'Machines currently in breakdown are listed under Maintenance → Breakdowns, with the reported cause per machine (spindle bearing failures and drive trips are the most common). Machine Dashboard shows OEE and utilisation for the whole fleet across the five units.',
   },
   {
-    match: /quality|deviation/i,
+    match: /quality|deviation|test|uster/i,
     response:
-      'Quality deviations this month are concentrated in 60s Ring Spun Combed yarn, with CSP and Uster% occasionally drifting outside tolerance on Carding line 2. Overall pass rate remains healthy at 98.4%.',
+      'Deviations are flagged where a Central Testing Laboratory reading falls outside its tolerance band — most often CSP, U% evenness or hairiness on yarn tests run on the USTER UT5 and CSP testers. Quality → Lab Tests lets you filter to Fail and Rework results.',
   },
   {
-    match: /at risk|delay/i,
+    match: /at risk|delay|late/i,
     response:
-      '17 sales orders are currently flagged at risk, most commonly due to machine breakdowns and cotton lot delays. SO-291 (export order) is the most time-critical, due in 3 days. Open Sales Orders → filter "At Risk" for the full list.',
+      'At-risk and delayed orders are driven mostly by cotton lot delays, rework, and breakdowns on the assigned frame. SO-291 is the most time-critical. Open Sales Orders and filter "At Risk" for the full list with production, quality and dispatch progress.',
   },
   {
-    match: /renewable|energy/i,
+    match: /export|country|countries|overseas/i,
     response:
-      'Renewable energy currently covers 64% of total consumption (182,400 kWh today), slightly ahead of last week. Energy intensity is 7.62 kWh/kg, just above the 7.50 target — worth reviewing Spinning Unit 2 specific energy.',
+      'Around 90% of production is exported to roughly 23 countries across America, Australia, Europe and South Asia, with annual sales over US$45 million. Sales → Export Orders breaks the current order book down by region and country.',
+  },
+  {
+    match: /cotton|lot|pima|egyptian/i,
+    response:
+      'Cotton is sourced as Indian extra-long staple, Egyptian and US Pima. Lots awaiting clearance sit at status "In Testing" — Cotton & Raw Materials → Cotton Lots lists them with micronaire, staple, strength and trash readings from the USTER HVI and AFIS PRO-2.',
   },
 ]
 
 function getStubResponse(question: string): string {
   const hit = cannedResponses.find((c) => c.match.test(question))
   if (hit) return hit.response
-  return "This is a prototype assistant with canned responses for a demo dataset. Try one of the suggested questions, or ask about production, downtime, quality, at-risk orders, or energy — I'll connect to live T-Mills data in a future release."
+  return 'This assistant answers from the data already on screen — try asking about production output, machine downtime, quality tests, at-risk orders, export business, or cotton lots.'
 }
 
 export function AskTMillsPanel() {

@@ -1,12 +1,17 @@
+/**
+ * Production history and orders.
+ * Daily targets are calibrated to the output published on tmills.com:
+ * approximately 25,000 kg of yarn and 60,000 metres of fabric per day,
+ * split across the three spinning mills, the OE/post-spinning unit and weaving.
+ */
 import type { FactoryId, ProcessName, ProductionOrder, ProductionRecord, ProductType, Shift } from '@/types'
 import { makeRng } from '@/lib/random'
-import { factories, spinningProcesses } from './factories'
+import { factories, processesByFactory } from './factories'
 import { machines, machinesByFactory } from './machines'
 import { salesOrders } from './orders'
 
 const rng = makeRng(606)
 const HISTORY_DAYS = 30
-
 const shifts: Shift[] = ['A', 'B', 'C']
 
 function isoDaysAgo(days: number) {
@@ -16,21 +21,23 @@ function isoDaysAgo(days: number) {
   return d.toISOString()
 }
 
-// Baseline daily targets per factory (kg for spinning, m for weaving), tuned so that
-// the trailing-30-days total lands close to the headline dashboard KPIs.
-const dailyTargetKg: Record<Exclude<FactoryId, 'all'>, number> = {
-  'spinning-1': 9800,
-  'spinning-2': 10800,
-  'spinning-3': 8200,
-  'weaving-1': 0,
+/** Daily targets — spinning/OE in kg (25,000 kg total), weaving in metres (60,000 m). */
+const dailyTargetKg: Record<string, number> = {
+  'mill-1': 6200,
+  'mill-2': 7400,
+  'mill-3': 6900,
+  'oe-unit': 4500,
+  'weaving-unit': 0,
 }
-const dailyTargetM = 66800 // weaving-1 only — matches the headline Fabric Production KPI
+const dailyTargetMetres = 60000
 
-const productTypesByFactory: Record<Exclude<FactoryId, 'all'>, ProductType[]> = {
-  'spinning-1': ['Ring Spun', 'Specialty'],
-  'spinning-2': ['Ring Spun', 'Open End', 'Doubled'],
-  'spinning-3': ['Open End', 'Doubled'],
-  'weaving-1': ['Fabric'],
+/** Which product types each unit makes, per its published count group. */
+const productTypesByFactory: Record<string, ProductType[]> = {
+  'mill-1': ['Compact', 'Single'],
+  'mill-2': ['Single', 'Compact'],
+  'mill-3': ['Single', 'Double'],
+  'oe-unit': ['Open End', 'Double', 'Gassed'],
+  'weaving-unit': ['Fabric'],
 }
 
 export const productionRecords: ProductionRecord[] = []
@@ -38,22 +45,24 @@ export const productionRecords: ProductionRecord[] = []
 for (let dayOffset = HISTORY_DAYS - 1; dayOffset >= 0; dayOffset--) {
   const date = isoDaysAgo(dayOffset)
   const dow = new Date(date).getDay()
-  const weekendFactor = dow === 0 ? 0.55 : dow === 6 ? 0.82 : 1
-  ;(Object.keys(dailyTargetKg) as Exclude<FactoryId, 'all'>[]).forEach((factoryId) => {
-    const types = productTypesByFactory[factoryId]
-    const isWeaving = factoryId === 'weaving-1'
-    const target = isWeaving ? dailyTargetM : dailyTargetKg[factoryId]
+  const weekendFactor = dow === 0 ? 0.58 : dow === 6 ? 0.85 : 1
+
+  factories.forEach((factory) => {
+    const types = productTypesByFactory[factory.id]
+    const isWeaving = factory.type === 'Weaving'
+    const target = isWeaving ? dailyTargetMetres : dailyTargetKg[factory.id]
     const perTypeTarget = target / types.length
+    const factoryProcesses = processesByFactory[factory.id] as readonly ProcessName[]
+
     types.forEach((productType) => {
-      const noise = rng.float(0.88, 1.08, 3)
+      const noise = rng.float(0.9, 1.07, 3)
       const actual = Math.round(perTypeTarget * weekendFactor * noise)
-      const factoryMachines = machinesByFactory(factoryId)
+      const factoryMachines = machinesByFactory(factory.id)
       const machine = rng.pick(factoryMachines.length ? factoryMachines : machines)
-      const process: ProcessName = isWeaving ? 'Weaving' : rng.pick(spinningProcesses)
       productionRecords.push({
         date,
-        factoryId,
-        process,
+        factoryId: factory.id,
+        process: rng.pick(factoryProcesses),
         machineId: machine.id,
         shift: rng.pick(shifts),
         productType,
@@ -66,20 +75,7 @@ for (let dayOffset = HISTORY_DAYS - 1; dayOffset >= 0; dayOffset--) {
   })
 }
 
-export function totalsForRange(records: ProductionRecord[]) {
-  return records.reduce(
-    (acc, r) => {
-      acc.actualKg += r.actualKg
-      acc.targetKg += r.targetKg
-      acc.actualM += r.actualM ?? 0
-      acc.targetM += r.targetM ?? 0
-      return acc
-    },
-    { actualKg: 0, targetKg: 0, actualM: 0, targetM: 0 },
-  )
-}
-
-// ---- Production orders (~150) -----------------------------------------
+// ---- Production orders -------------------------------------------------
 
 const statuses: ProductionOrder['status'][] = [
   'Planned', 'In Progress', 'In Progress', 'Quality Check', 'Completed', 'Completed', 'Completed', 'On Hold', 'Rejected',
@@ -96,14 +92,20 @@ function isoDaysFromNow(days: number) {
   return d.toISOString()
 }
 
+/** Route each product type to the unit that actually makes it. */
+function factoryForProductType(productType: ProductType): FactoryId {
+  const candidates = factories.filter((f) => productTypesByFactory[f.id].includes(productType))
+  return (candidates.length ? rng.pick(candidates) : factories[0]).id
+}
+
 const linkedSalesOrders = rng.shuffle(salesOrders).slice(0, 150)
 
 export const productionOrders: ProductionOrder[] = linkedSalesOrders.map((so, i) => {
-  const factory = rng.pick(factories)
-  const isWeaving = factory.type === 'Weaving'
-  const process: ProcessName = isWeaving ? 'Weaving' : rng.pick(spinningProcesses)
-  const factoryMachines = machinesByFactory(factory.id)
-  const machine = rng.pick(factoryMachines.length ? factoryMachines : machines)
+  const factoryId = factoryForProductType(so.productType)
+  const factoryProcesses = processesByFactory[factoryId] as readonly ProcessName[]
+  const process = rng.pick(factoryProcesses)
+  const factoryMachines = machinesByFactory(factoryId).filter((m) => m.process === process)
+  const machine = rng.pick(factoryMachines.length ? factoryMachines : machinesByFactory(factoryId))
   const status = rng.pick(statuses)
   const plannedQty = so.qtyOrdered
   const producedQty =
@@ -111,10 +113,10 @@ export const productionOrders: ProductionOrder[] = linkedSalesOrders.map((so, i)
 
   return {
     id: `po-${String(i + 1).padStart(4, '0')}`,
-    orderNo: `PRD-${2026}-${String(i + 1).padStart(4, '0')}`,
+    orderNo: `PRD-${new Date().getFullYear()}-${String(i + 1).padStart(4, '0')}`,
     salesOrderId: so.id,
     salesOrderNo: so.orderNo,
-    factoryId: factory.id,
+    factoryId,
     process,
     productId: so.productId,
     productName: so.productName,
@@ -132,12 +134,3 @@ export const productionOrders: ProductionOrder[] = linkedSalesOrders.map((so, i)
 })
 
 export const productionOrderById = new Map(productionOrders.map((p) => [p.id, p]))
-
-export const productTypeTotals = (records: ProductionRecord[]) => {
-  const totals = new Map<ProductType, number>()
-  for (const r of records) {
-    const qty = r.actualKg || r.actualM || 0
-    totals.set(r.productType, (totals.get(r.productType) ?? 0) + qty)
-  }
-  return totals
-}

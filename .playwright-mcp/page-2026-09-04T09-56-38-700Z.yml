@@ -1,0 +1,58 @@
+- generic [ref=f17e3]:
+  - complementary [ref=f17e5]:
+    - generic [ref=f17e11]:
+      - generic [ref=f17e12]: THIAGARAJAR MILLS
+      - generic [ref=f17e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f17e17]:
+      - link "Dashboard" [ref=f17e18] [cursor=pointer]:
+        - /url: /
+      - button "Sales & Orders" [ref=f17e26]
+      - button "Planning" [ref=f17e36]
+      - button "Procurement" [ref=f17e44]
+      - button "Cotton & Raw Materials" [ref=f17e53]
+      - button "Inventory" [ref=f17e61]
+      - button "Production" [ref=f17e76]
+      - button "Quality Management" [ref=f17e83]
+      - button "Maintenance" [ref=f17e91]
+      - button "Master Data" [ref=f17e98]
+      - link "Administration" [ref=f17e105] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f17e114]:
+      - generic [ref=f17e115]: Threading together
+      - generic [ref=f17e116]: Tradition & Technology
+    - generic [ref=f17e117]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f17e118]:
+    - banner [ref=f17e119]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f17e121]
+      - generic [ref=f17e122]:
+        - combobox [ref=f17e123]:
+          - generic: All Units
+        - combobox [ref=f17e126]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f17e129]
+        - button "BK Balaji Krishnan Managing Director" [ref=f17e130]:
+          - generic [ref=f17e131]: BK
+          - generic [ref=f17e133]:
+            - generic [ref=f17e134]: Balaji Krishnan
+            - generic [ref=f17e135]: Managing Director
+    - main [ref=f17e136]:
+      - generic [ref=f17e137]:
+        - generic [ref=f17e138]:
+          - generic [ref=f17e139]:
+            - heading "Good Afternoon, Mr. Krishnan 👋" [level=1] [ref=f17e140]
+            - paragraph [ref=f17e141]: Here's what's happening at Thiagarajar Mills today.
+          - generic [ref=f17e149]:
+            - generic [ref=f17e150]: Fri, 4 Sep 2026
+            - generic [ref=f17e151]:
+              - generic [ref=f17e152]: Setting Standards. Exceeding Excellence
+              - generic [ref=f17e153]: 100% Indian cotton yarn since 1936 · Kappalur, Madurai
+        - generic [ref=f17e173]:
+          - generic [ref=f17e175]:
+            - heading "Recent Alerts" [level=3] [ref=f17e176]
+            - link "View All" [ref=f17e177] [cursor=pointer]:
+              - /url: /reports
+          - generic [ref=f17e185]:
+            - heading "Recent Activities" [level=3] [ref=f17e186]
+            - link "View All" [ref=f17e187] [cursor=pointer]:
+              - /url: /reports
+  - button "Ask T-Mills" [ref=f17e194]

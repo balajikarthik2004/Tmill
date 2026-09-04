@@ -1,3 +1,8 @@
+/**
+ * Sales order book. Weighted so roughly 90% of volume is export business across
+ * America, Australia, Europe and South Asia — the export profile published on
+ * tmills.com. Order numbers, quantities and dates are illustrative.
+ */
 import type { OrderStage, RiskLevel, SalesOrder } from '@/types'
 import { makeRng } from '@/lib/random'
 import { customers } from './customers'
@@ -16,7 +21,7 @@ function daysFromNowIso(days: number) {
   return d.toISOString()
 }
 
-const ORDER_COUNT = 238 // 118 onSchedule + 17 atRisk + 7 delayed + 96 completed (matches dashboard tiles)
+const ORDER_COUNT = 238
 
 const riskPlan: RiskLevel[] = [
   ...Array(118).fill('onSchedule'),
@@ -27,11 +32,11 @@ const riskPlan: RiskLevel[] = [
 
 const riskReasons = [
   'Cotton lot delayed by supplier',
-  'Machine breakdown on assigned line',
+  'Machine breakdown on assigned frame',
   'Quality rework in progress',
   'Awaiting customer approval sample',
-  'Dyeing/finishing backlog',
   'Container booking delayed',
+  'Doubling capacity constrained at TFO',
 ]
 
 const stagesByRisk: Record<RiskLevel, OrderStage[]> = {
@@ -41,14 +46,18 @@ const stagesByRisk: Record<RiskLevel, OrderStage[]> = {
   completed: ['Completed'],
 }
 
+const exportCustomers = customers.filter((c) => c.segment === 'Export')
+const domesticCustomers = customers.filter((c) => c.segment === 'Domestic')
+
 export const salesOrders: SalesOrder[] = Array.from({ length: ORDER_COUNT }, (_, i) => {
-  const customer = rng.pick(customers)
+  // ~90% export share, as published.
+  const customer = rng.bool(0.9) ? rng.pick(exportCustomers) : rng.pick(domesticCustomers)
   const product = rng.pick(products)
   const risk = riskPlan[i]
   const stage = rng.pick(stagesByRisk[risk])
   const orderDate = daysAgoIso(rng.int(5, 75))
   const dueOffset = risk === 'delayed' ? rng.int(-8, -1) : risk === 'atRisk' ? rng.int(1, 5) : rng.int(3, 30)
-  const qty = product.unit === 'kg' ? rng.int(500, 12000) : rng.int(5000, 120000)
+  const qty = product.unit === 'kg' ? rng.int(500, 12000) : rng.int(5000, 90000)
 
   let productionPct = 0
   let qualityPct = 0
@@ -75,6 +84,7 @@ export const salesOrders: SalesOrder[] = Array.from({ length: ORDER_COUNT }, (_,
     customerId: customer.id,
     customerName: customer.name,
     country: customer.country,
+    region: customer.region,
     isExport: customer.segment === 'Export',
     productId: product.id,
     productName: product.name,
@@ -93,8 +103,7 @@ export const salesOrders: SalesOrder[] = Array.from({ length: ORDER_COUNT }, (_,
   }
 })
 
-// The dashboard's example alert references SO-291 specifically — pin it to a
-// 3-day at-risk state so the alert's drilldown is consistent.
+// SO-291 is referenced by the dashboard alert — pin it to a 3-day at-risk state.
 const so291 = salesOrders.find((o) => o.orderNo === 'SO-291')
 if (so291) {
   so291.risk = 'atRisk'
@@ -103,14 +112,14 @@ if (so291) {
   so291.qualityPct = 0
   so291.dispatchPct = 0
   so291.dueDate = daysFromNowIso(3)
-  so291.riskReason = 'Machine breakdown on assigned line'
+  so291.riskReason = 'Machine breakdown on assigned frame'
 }
 
 export const salesOrderById = new Map(salesOrders.map((o) => [o.id, o]))
 
 export const orderStatusTiles = {
-  onSchedule: 118,
-  atRisk: 17,
-  delayed: 7,
-  completed: 96,
+  onSchedule: salesOrders.filter((o) => o.risk === 'onSchedule').length,
+  atRisk: salesOrders.filter((o) => o.risk === 'atRisk').length,
+  delayed: salesOrders.filter((o) => o.risk === 'delayed').length,
+  completed: salesOrders.filter((o) => o.risk === 'completed').length,
 }

@@ -1,6 +1,7 @@
 import type { ID } from './common'
 
-export type SupplierCategory = 'Cotton' | 'Spares' | 'Dyes & Chemicals' | 'Packing Material' | 'Services'
+/** Categories the mills actually buy — cotton, machinery spares, packing and consumables. */
+export type SupplierCategory = 'Cotton' | 'Spares' | 'Packing Material' | 'Consumables'
 
 export interface Supplier {
   id: ID
@@ -14,4 +15,6 @@ export interface Supplier {
   rating: 1 | 2 | 3 | 4 | 5
   activeSince: string
   totalPOs: number
+  /** For cotton suppliers — which of the published cotton types they supply. */
+  suppliesOrigins?: string[]
 }

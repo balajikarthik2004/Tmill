@@ -27,10 +27,11 @@ export function GreetingHero({ firstName }: { firstName: string }) {
         <Sprout className="absolute -bottom-5 left-4 h-28 w-28 text-white/10" />
         <div className="relative flex h-full min-h-28 flex-col justify-between gap-2 p-5 text-right">
           <div className="text-xs font-medium text-white/80">{format(now, 'EEE, d MMM yyyy')}</div>
-          <div className="text-sm font-semibold uppercase leading-relaxed tracking-wide text-white">
-            <div>Quality Yarns</div>
-            <div>Premium Fabrics</div>
-            <div>A Sustainable Tomorrow</div>
+          <div className="leading-relaxed text-white">
+            <div className="text-sm font-semibold uppercase tracking-wide">Setting Standards. Exceeding Excellence</div>
+            <div className="text-xs text-white/80">
+              100% Indian cotton yarn since 1936 · Kappalur, Madurai
+            </div>
           </div>
         </div>
       </div>

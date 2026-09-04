@@ -1,4 +1,4 @@
-import { Award, Gauge, Layers, Leaf, Package, Truck, type LucideIcon } from 'lucide-react'
+import { Award, Gauge, Globe2, Layers, Package, Truck, type LucideIcon } from 'lucide-react'
 import type { KpiId } from '@/types'
 
 export interface KpiVisual {
@@ -14,5 +14,5 @@ export const kpiVisuals: Record<KpiId, KpiVisual> = {
   oee: { icon: Gauge, iconBg: 'bg-amber-100', iconColor: 'text-amber-600', compareLabel: 'vs last week' },
   qualityPassRate: { icon: Award, iconBg: 'bg-teal-100', iconColor: 'text-teal-600', compareLabel: 'vs last week' },
   ordersOnTime: { icon: Truck, iconBg: 'bg-indigo-100', iconColor: 'text-indigo-600', compareLabel: '' },
-  renewableEnergy: { icon: Leaf, iconBg: 'bg-success-50', iconColor: 'text-success-600', compareLabel: 'of total consumption' },
+  exportShare: { icon: Globe2, iconBg: 'bg-success-50', iconColor: 'text-success-600', compareLabel: 'of production' },
 }

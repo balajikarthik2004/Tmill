@@ -1,0 +1,66 @@
+- generic [ref=f16e3]:
+  - complementary [ref=f16e5]:
+    - generic [ref=f16e11]:
+      - generic [ref=f16e12]: THIAGARAJAR MILLS
+      - generic [ref=f16e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f16e17]:
+      - link "Dashboard" [ref=f16e18] [cursor=pointer]:
+        - /url: /
+      - button "Sales & Orders" [ref=f16e26]
+      - button "Planning" [ref=f16e36]
+      - button "Procurement" [ref=f16e44]
+      - button "Cotton & Raw Materials" [ref=f16e53]
+      - generic [ref=f16e60]:
+        - button "Inventory" [expanded] [ref=f16e61]
+        - generic [ref=f16e75]:
+          - link "Raw Materials" [ref=f16e76] [cursor=pointer]:
+            - /url: /inventory/raw-materials
+          - link "WIP" [ref=f16e77] [cursor=pointer]:
+            - /url: /inventory/wip
+          - link "Finished Goods" [ref=f16e78] [cursor=pointer]:
+            - /url: /inventory/finished-goods
+          - link "Stock Movements" [ref=f16e79] [cursor=pointer]:
+            - /url: /inventory/stock-movements
+      - button "Production" [ref=f16e81]
+      - button "Quality Management" [ref=f16e88]
+      - button "Maintenance" [ref=f16e96]
+      - button "Master Data" [ref=f16e103]
+      - link "Administration" [ref=f16e110] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f16e119]:
+      - generic [ref=f16e120]: Threading together
+      - generic [ref=f16e121]: Tradition & Technology
+    - generic [ref=f16e122]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f16e123]:
+    - banner [ref=f16e124]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f16e126]
+      - generic [ref=f16e127]:
+        - combobox [ref=f16e128]:
+          - generic: All Units
+        - combobox [ref=f16e131]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f16e134]
+        - button "BK Balaji Krishnan Managing Director" [ref=f16e135]:
+          - generic [ref=f16e136]: BK
+          - generic [ref=f16e138]:
+            - generic [ref=f16e139]: Balaji Krishnan
+            - generic [ref=f16e140]: Managing Director
+    - generic [ref=f16e141]:
+      - link "Dashboard" [ref=f16e142] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f16e148]: Inventory
+      - generic [ref=f16e151]: Finished Goods
+    - main [ref=f16e152]:
+      - generic [ref=f16e153]:
+        - generic [ref=f16e155]:
+          - heading "Finished Goods" [level=1] [ref=f16e156]
+          - paragraph [ref=f16e157]: Finished yarn from the spinning and post-spinning units, and greige fabric from the weaving unit.
+        - generic [ref=f16e168]:
+          - generic [ref=f16e170]:
+            - heading "Finished Stock Breakdown" [level=3] [ref=f16e171]
+            - paragraph [ref=f16e172]: Quantity produced into and dispatched out of finished stores, by item.
+          - generic [ref=f16e181]:
+            - heading "Finished Yarn Mix" [level=3] [ref=f16e182]
+            - paragraph [ref=f16e183]: Share of yarn received into finished stores.
+        - heading "Finished Goods Movements" [level=3] [ref=f16e188]
+  - button "Ask T-Mills" [ref=f16e197]

@@ -95,7 +95,7 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Factories</SelectItem>
+            <SelectItem value="all">All Units</SelectItem>
             {factories.map((f) => (
               <SelectItem key={f.id} value={f.id}>
                 {f.name}

@@ -1,6 +1,7 @@
 import type { ID, ISODate } from './common'
 
-export type CottonOrigin = 'Indian ELS' | 'Suvin' | 'Egyptian Giza' | 'US Pima' | 'Australian'
+/** The three cotton types published on tmills.com. */
+export type CottonOrigin = 'Indian extra-long staple' | 'Egyptian Cotton' | 'US Pima'
 
 export interface CottonLot {
   id: ID
@@ -10,9 +11,10 @@ export interface CottonLot {
   supplierLotRef: string
   bales: number
   weightKg: number
+  /** USTER HVI / AFIS PRO-2 readings from the Central Testing Laboratory. */
   micronaire: number
-  staple: number // mm
-  strength: number // g/tex
+  staple: number
+  strength: number
   trashPct: number
   moisturePct: number
   receivedDate: ISODate

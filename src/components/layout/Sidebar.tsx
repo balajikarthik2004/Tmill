@@ -116,8 +116,8 @@ export function Sidebar() {
       <div className="flex items-center gap-2.5 border-t border-white/10 px-4 py-3.5">
         <Leaf className="h-6 w-6 shrink-0 text-success-500" />
         <div className="leading-tight">
-          <div className="text-[12px] font-semibold text-white">Sustainable Textiles</div>
-          <div className="text-[11px] text-navy-300">for a Brighter World</div>
+          <div className="text-[12px] font-semibold text-white">Threading together</div>
+          <div className="text-[11px] text-navy-300">Tradition &amp; Technology</div>
         </div>
       </div>
       <div className="border-t border-white/10 px-4 py-2 text-center text-[10.5px] text-navy-400">

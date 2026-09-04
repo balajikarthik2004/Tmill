@@ -1,50 +1,77 @@
 /**
- * Prototype — demo data only, not actual T-Mills operational figures.
- * Four factories at the Kappalur, Madurai campus.
+ * Five manufacturing facilities at Kappalur, Madurai — as published on tmills.com:
+ * three spinning mills (each specialising in a distinct yarn count group),
+ * post-spinning (TFO / gassing / winding) and weaving.
+ * Published totals: 86,112 spindles · 480 rotors · 300 looms · ~1,600 employees.
  */
 import type { Factory } from '@/types'
 
 export const factories: Factory[] = [
   {
-    id: 'spinning-1',
-    name: 'Spinning Unit 1',
-    shortName: 'SU-1',
+    id: 'mill-1',
+    name: 'Spinning Mill I',
+    shortName: 'SM-I',
     type: 'Spinning',
     location: 'Kappalur, Madurai',
-    installedCapacity: '38,400 spindles',
-    spindlesOrLooms: 38400,
+    countGroup: 'Fine counts — NE 60s–140s combed & compact',
+    installedCapacity: '30,240 spindles',
+    spindles: 30240,
+    rotors: 0,
+    looms: 0,
   },
   {
-    id: 'spinning-2',
-    name: 'Spinning Unit 2',
-    shortName: 'SU-2',
+    id: 'mill-2',
+    name: 'Spinning Mill II',
+    shortName: 'SM-II',
     type: 'Spinning',
     location: 'Kappalur, Madurai',
-    installedCapacity: '42,000 spindles',
-    spindlesOrLooms: 42000,
+    countGroup: 'Medium counts — NE 30s–60s combed',
+    installedCapacity: '31,872 spindles',
+    spindles: 31872,
+    rotors: 0,
+    looms: 0,
   },
   {
-    id: 'spinning-3',
-    name: 'Spinning Unit 3',
-    shortName: 'SU-3',
+    id: 'mill-3',
+    name: 'Spinning Mill III',
+    shortName: 'SM-III',
     type: 'Spinning',
     location: 'Kappalur, Madurai',
-    installedCapacity: '35,200 spindles',
-    spindlesOrLooms: 35200,
+    countGroup: 'Coarse counts — NE 16s–30s combed & carded',
+    installedCapacity: '24,000 spindles',
+    spindles: 24000,
+    rotors: 0,
+    looms: 0,
   },
   {
-    id: 'weaving-1',
+    id: 'oe-unit',
+    name: 'Open End & Post-Spinning Unit',
+    shortName: 'OE-PS',
+    type: 'Post-Spinning',
+    location: 'Kappalur, Madurai',
+    countGroup: 'OE NE 6s–12s · TFO doubling · gassing · winding',
+    installedCapacity: '480 rotors',
+    spindles: 0,
+    rotors: 480,
+    looms: 0,
+  },
+  {
+    id: 'weaving-unit',
     name: 'Weaving Unit',
-    shortName: 'WU-1',
+    shortName: 'WU',
     type: 'Weaving',
     location: 'Kappalur, Madurai',
-    installedCapacity: '312 looms',
-    spindlesOrLooms: 312,
+    countGroup: 'Greige fabric on air jet & Sulzer looms',
+    installedCapacity: '300 looms',
+    spindles: 0,
+    rotors: 0,
+    looms: 300,
   },
 ]
 
 export const factoryById = new Map(factories.map((f) => [f.id, f]))
 
+/** Processes actually referenced by the published machinery list. */
 export const spinningProcesses = [
   'Blow Room',
   'Carding',
@@ -52,10 +79,15 @@ export const spinningProcesses = [
   'Drawing',
   'Roving',
   'Ring Spinning',
-  'Open End',
-  'Winding',
-  'TFO',
-  'Gassing',
 ] as const
 
+export const postSpinningProcesses = ['Open End', 'Winding', 'TFO', 'Gassing'] as const
 export const weavingProcesses = ['Weaving'] as const
+
+export const processesByFactory: Record<string, readonly string[]> = {
+  'mill-1': spinningProcesses,
+  'mill-2': spinningProcesses,
+  'mill-3': spinningProcesses,
+  'oe-unit': postSpinningProcesses,
+  'weaving-unit': weavingProcesses,
+}

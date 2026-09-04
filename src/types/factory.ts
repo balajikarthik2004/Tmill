@@ -1,17 +1,24 @@
 import type { ID } from './common'
 
-export type FactoryId = 'all' | 'spinning-1' | 'spinning-2' | 'spinning-3' | 'weaving-1'
+export type FactoryId = 'all' | 'mill-1' | 'mill-2' | 'mill-3' | 'oe-unit' | 'weaving-unit'
+
+export type FactoryType = 'Spinning' | 'Post-Spinning' | 'Weaving'
 
 export interface Factory {
-  id: FactoryId
+  id: Exclude<FactoryId, 'all'>
   name: string
   shortName: string
-  type: 'Spinning' | 'Weaving'
+  type: FactoryType
   location: string
+  /** Which yarn count group this mill specialises in (tmills.com). */
+  countGroup: string
   installedCapacity: string
-  spindlesOrLooms: number
+  spindles: number
+  rotors: number
+  looms: number
 }
 
+/** Processes backed by machinery published on tmills.com. */
 export type ProcessName =
   | 'Blow Room'
   | 'Carding'

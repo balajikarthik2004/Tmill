@@ -1,43 +1,36 @@
-import type { KpiCardData, SeriesPoint } from '@/types'
-import { makeRng } from '@/lib/random'
-
-const rng = makeRng(1414)
-
-function sparkline(base: number, spread: number, points = 14): SeriesPoint[] {
-  const out: SeriesPoint[] = []
-  for (let i = points - 1; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(d.getDate() - i)
-    out.push({ date: d.toISOString(), value: Math.round((base + rng.float(-spread, spread, 2)) * 10) / 10 })
-  }
-  return out
-}
-
 /**
- * Headline KPI cards. Values are pinned to the figures called out in the product
- * spec so the executive dashboard always reads consistently; sparkline history
- * is generated for visual trend context only.
+ * Headline KPIs.
+ * Yarn and fabric output are the daily figures published on tmills.com
+ * (~25,000 kg yarn, ~60,000 m fabric). Export share (90%) and destination
+ * count (23 countries) are also published. OEE and quality pass rate are
+ * illustrative operational readings.
  */
+import type { KpiCardData } from '@/types'
+import { company } from './company'
+import { qualityPassRatePct } from './quality'
+
+const { infrastructure, exports } = company
+
 export const kpiCards: KpiCardData[] = [
   {
     id: 'yarnProduction',
     label: 'Yarn Production',
-    value: 28450,
-    displayValue: '28,450 kg',
+    value: infrastructure.dailyYarnKg,
+    displayValue: `${infrastructure.dailyYarnKg.toLocaleString('en-IN')} kg`,
     unit: 'kg',
     trend: { changePct: 4.2, direction: 'up' },
-    sparkline: sparkline(28000, 1400),
     linkTo: '/production/ring-spinning',
+    footnote: 'per day',
   },
   {
     id: 'fabricProduction',
     label: 'Fabric Production',
-    value: 66800,
-    displayValue: '66,800 m',
+    value: infrastructure.dailyFabricMetres,
+    displayValue: `${infrastructure.dailyFabricMetres.toLocaleString('en-IN')} m`,
     unit: 'm',
     trend: { changePct: 2.8, direction: 'up' },
-    sparkline: sparkline(66000, 3200),
     linkTo: '/production/weaving',
+    footnote: 'per day',
   },
   {
     id: 'oee',
@@ -46,17 +39,15 @@ export const kpiCards: KpiCardData[] = [
     displayValue: '84.2%',
     unit: '%',
     trend: { changePct: 1.8, direction: 'up' },
-    sparkline: sparkline(83.5, 2.5),
     linkTo: '/maintenance/machine-dashboard',
   },
   {
     id: 'qualityPassRate',
     label: 'Quality Pass Rate',
-    value: 98.4,
-    displayValue: '98.4%',
+    value: qualityPassRatePct,
+    displayValue: `${qualityPassRatePct}%`,
     unit: '%',
     trend: { changePct: 0.7, direction: 'up' },
-    sparkline: sparkline(98, 0.8),
     linkTo: '/quality/dashboard',
   },
   {
@@ -66,18 +57,16 @@ export const kpiCards: KpiCardData[] = [
     displayValue: '96%',
     unit: '%',
     trend: { changePct: 0.4, direction: 'up' },
-    sparkline: sparkline(95, 1.6),
     linkTo: '/sales/sales-orders',
-    footnote: '142 total',
   },
   {
-    id: 'renewableEnergy',
-    label: 'Renewable Energy',
-    value: 64,
-    displayValue: '64%',
+    id: 'exportShare',
+    label: 'Export Share',
+    value: exports.exportSharePct,
+    displayValue: `${exports.exportSharePct}%`,
     unit: '%',
-    trend: { changePct: 1.1, direction: 'up' },
-    sparkline: sparkline(63, 3),
-    linkTo: '/energy/renewable',
+    trend: { changePct: 0.6, direction: 'up' },
+    linkTo: '/sales/export-orders',
+    footnote: `${exports.countries} countries`,
   },
 ]

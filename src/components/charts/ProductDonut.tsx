@@ -8,10 +8,11 @@ import type { ProductType } from '@/types'
 import type { ProductTypeSlice } from '@/services/productionService'
 
 const colors: Record<ProductType, string> = {
-  'Ring Spun': '#2563eb',
-  'Open End': '#0d9488',
-  Doubled: '#d97706',
-  Specialty: '#7c3aed',
+  Single: '#2563eb',
+  Double: '#0d9488',
+  'Open End': '#d97706',
+  Compact: '#7c3aed',
+  Gassed: '#db2777',
   Fabric: '#16a34a',
 }
 
@@ -69,8 +70,8 @@ export function ProductDonut({ data, unit }: { data: ProductTypeSlice[]; unit: s
               </ResponsiveContainer>
               <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Total</span>
-                <span className="text-base font-bold tabular-nums text-foreground">
-                  {Intl.NumberFormat('en-IN', { notation: 'compact', maximumFractionDigits: 1 }).format(total)} {unit}
+                <span className="text-sm font-bold tabular-nums text-foreground">
+                  {formatNumber(total)} {unit}
                 </span>
               </div>
             </div>

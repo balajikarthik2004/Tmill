@@ -1,0 +1,61 @@
+- generic [ref=f20e3]:
+  - complementary [ref=f20e5]:
+    - generic [ref=f20e11]:
+      - generic [ref=f20e12]: THIAGARAJAR MILLS
+      - generic [ref=f20e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f20e17]:
+      - link "Dashboard" [ref=f20e18] [cursor=pointer]:
+        - /url: /
+      - button "Sales & Orders" [ref=f20e26]
+      - button "Planning" [ref=f20e36]
+      - button "Procurement" [ref=f20e44]
+      - button "Cotton & Raw Materials" [ref=f20e53]
+      - button "Inventory" [ref=f20e61]
+      - button "Production" [ref=f20e76]
+      - button "Quality Management" [ref=f20e83]
+      - generic [ref=f20e90]:
+        - button "Maintenance" [expanded] [ref=f20e91]
+        - generic [ref=f20e97]:
+          - link "Machine Dashboard" [ref=f20e98] [cursor=pointer]:
+            - /url: /maintenance/machine-dashboard
+          - link "Preventive Maintenance" [ref=f20e99] [cursor=pointer]:
+            - /url: /maintenance/pm
+          - link "Breakdowns" [ref=f20e100] [cursor=pointer]:
+            - /url: /maintenance/breakdown
+          - link "Spare Parts" [ref=f20e101] [cursor=pointer]:
+            - /url: /maintenance/spare-parts
+      - button "Master Data" [ref=f20e103]
+      - link "Administration" [ref=f20e110] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f20e119]:
+      - generic [ref=f20e120]: Threading together
+      - generic [ref=f20e121]: Tradition & Technology
+    - generic [ref=f20e122]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f20e123]:
+    - banner [ref=f20e124]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f20e126]
+      - generic [ref=f20e127]:
+        - combobox [ref=f20e128]:
+          - generic: All Units
+        - combobox [ref=f20e131]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f20e134]
+        - button "BK Balaji Krishnan Managing Director" [ref=f20e135]:
+          - generic [ref=f20e136]: BK
+          - generic [ref=f20e138]:
+            - generic [ref=f20e139]: Balaji Krishnan
+            - generic [ref=f20e140]: Managing Director
+    - generic [ref=f20e141]:
+      - link "Dashboard" [ref=f20e142] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f20e148]: Maintenance
+      - generic [ref=f20e151]: Breakdowns
+    - main [ref=f20e152]:
+      - generic [ref=f20e153]:
+        - generic [ref=f20e155]:
+          - heading "Breakdowns" [level=1] [ref=f20e156]
+          - paragraph [ref=f20e157]: Unplanned stoppages on the Rieter, Trutzschler, Schlafhorst, Savio and loom fleet.
+        - generic [ref=f20e164]:
+          - heading "Breakdown Register" [level=3] [ref=f20e165]
+          - paragraph [ref=f20e166]: Every stoppage is matched to the machine make it occurred on.
+  - button "Ask T-Mills" [ref=f20e175]

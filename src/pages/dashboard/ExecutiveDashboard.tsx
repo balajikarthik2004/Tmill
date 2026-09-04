@@ -3,7 +3,7 @@ import { useAsync } from '@/hooks/useAsync'
 import {
   getActivities,
   getAlerts,
-  getEnergySummary,
+  getExportSummary,
   getFactoryPerformance,
   getInventorySummary,
   getKpiCards,
@@ -17,14 +17,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ProductionTrend } from '@/components/charts/ProductionTrend'
 import { FactoryBars } from '@/components/charts/FactoryBars'
 import { ProductDonut } from '@/components/charts/ProductDonut'
-import { EnergyMix } from '@/components/charts/EnergyMix'
 import { AlertCenter } from '@/components/alerts/AlertCenter'
 import { GreetingHero } from './GreetingHero'
 import { OrderStatusTiles } from './OrderStatusTiles'
 import { InventoryOverview } from './InventoryOverview'
 import { MaintenanceSummary } from './MaintenanceSummary'
 import { RecentActivities } from './RecentActivities'
-import { SustainabilityBanner } from './SustainabilityBanner'
+import { ExportOverview } from './ExportOverview'
 
 export default function ExecutiveDashboard() {
   const { factoryId, dateRangePreset } = useAppStore()
@@ -39,7 +38,7 @@ export default function ExecutiveDashboard() {
   const orderTiles = useAsync(getOrderStatusTiles, [])
   const inventory = useAsync(getInventorySummary, [])
   const maintenance = useAsync(getMaintenanceSummary, [])
-  const energySummary = useAsync(getEnergySummary, [])
+  const exportSummary = useAsync(getExportSummary, [])
   const alerts = useAsync(getAlerts, [])
   const activities = useAsync(getActivities, [])
 
@@ -99,18 +98,17 @@ export default function ExecutiveDashboard() {
         ) : (
           <MaintenanceSummary data={maintenance.data} />
         )}
-        {energySummary.isLoading || !energySummary.data ? (
+        {exportSummary.isLoading || !exportSummary.data ? (
           <Skeleton className="h-52 w-full rounded-lg" />
         ) : (
-          <EnergyMix summary={energySummary.data} />
+          <ExportOverview data={exportSummary.data} />
         )}
       </div>
 
-      {/* Alerts + activities + sustainability */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+      {/* Alerts + activities */}
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <AlertCenter alerts={alerts.data ?? []} isLoading={alerts.isLoading} />
         <RecentActivities activities={activities.data ?? []} isLoading={activities.isLoading} />
-        <SustainabilityBanner />
       </div>
     </div>
   )

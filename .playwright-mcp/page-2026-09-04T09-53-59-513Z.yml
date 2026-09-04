@@ -1,0 +1,69 @@
+- generic [ref=f15e3]:
+  - complementary [ref=f15e5]:
+    - generic [ref=f15e11]:
+      - generic [ref=f15e12]: THIAGARAJAR MILLS
+      - generic [ref=f15e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f15e17]:
+      - link "Dashboard" [ref=f15e18] [cursor=pointer]:
+        - /url: /
+      - button "Sales & Orders" [ref=f15e26]
+      - button "Planning" [ref=f15e36]
+      - button "Procurement" [ref=f15e44]
+      - button "Cotton & Raw Materials" [ref=f15e53]
+      - button "Inventory" [ref=f15e61]
+      - button "Production" [ref=f15e76]
+      - button "Quality Management" [ref=f15e83]
+      - button "Maintenance" [ref=f15e91]
+      - generic [ref=f15e97]:
+        - button "Master Data" [expanded] [ref=f15e98]
+        - generic [ref=f15e105]:
+          - link "Products" [ref=f15e106] [cursor=pointer]:
+            - /url: /master/products
+          - link "Customers" [ref=f15e107] [cursor=pointer]:
+            - /url: /master/customers
+          - link "Suppliers" [ref=f15e108] [cursor=pointer]:
+            - /url: /master/suppliers
+          - link "Machines" [ref=f15e109] [cursor=pointer]:
+            - /url: /master/machines
+          - link "Cotton Lots" [ref=f15e110] [cursor=pointer]:
+            - /url: /master/cotton-lots
+      - link "Administration" [ref=f15e111] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f15e120]:
+      - generic [ref=f15e121]: Threading together
+      - generic [ref=f15e122]: Tradition & Technology
+    - generic [ref=f15e123]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f15e124]:
+    - banner [ref=f15e125]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f15e127]
+      - generic [ref=f15e128]:
+        - combobox [ref=f15e129]:
+          - generic: All Units
+        - combobox [ref=f15e132]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f15e135]
+        - button "BK Balaji Krishnan Managing Director" [ref=f15e136]:
+          - generic [ref=f15e137]: BK
+          - generic [ref=f15e139]:
+            - generic [ref=f15e140]: Balaji Krishnan
+            - generic [ref=f15e141]: Managing Director
+    - generic [ref=f15e142]:
+      - link "Dashboard" [ref=f15e143] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f15e149]: Master Data
+      - generic [ref=f15e152]: Machines
+    - main [ref=f15e153]:
+      - generic [ref=f15e154]:
+        - generic [ref=f15e155]:
+          - generic [ref=f15e156]:
+            - heading "Machines" [level=1] [ref=f15e157]
+            - paragraph [ref=f15e158]: Machine master across blow room, carding, combing, drawing, roving, ring spinning, open end, winding, TFO, gassing and weaving.
+          - generic [ref=f15e160]:
+            - combobox [ref=f15e161]:
+              - generic: All units
+            - combobox [ref=f15e164]:
+              - generic: All processes
+        - generic [ref=f15e175]:
+          - heading "Machine Master" [level=3] [ref=f15e176]
+          - generic [ref=f15e177]: 0 machines · All five units
+  - button "Ask T-Mills" [ref=f15e186]
