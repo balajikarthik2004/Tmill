@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { Bot, Send, Sparkles, User } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { Bot, Send, Sparkles, User, Loader2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -70,82 +71,156 @@ export function AskTMillsPanel() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: "Hi, I'm Ask T-Mills — your executive assistant for production, quality, orders, and energy questions. This is a demo with canned responses. Try a suggested question below.",
+      text: "Hi, I'm Ask T-Mills — your executive AI assistant for production, quality, orders, and energy questions.",
     },
   ])
   const [input, setInput] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }, [messages, isTyping])
 
   function send(question: string) {
     const trimmed = question.trim()
-    if (!trimmed) return
+    if (!trimmed || isTyping) return
+    
     const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', text: trimmed }
-    const botMsg: ChatMessage = { id: crypto.randomUUID(), role: 'assistant', text: getStubResponse(trimmed) }
-    setMessages((prev) => [...prev, userMsg, botMsg])
+    setMessages((prev) => [...prev, userMsg])
     setInput('')
+    setIsTyping(true)
+
+    // Simulate 2-second loading for realistic AI feel
+    setTimeout(() => {
+      const botMsg: ChatMessage = { id: crypto.randomUUID(), role: 'assistant', text: getStubResponse(trimmed) }
+      setMessages((prev) => [...prev, botMsg])
+      setIsTyping(false)
+    }, 2000)
   }
 
   return (
-    <SheetContent side="right" className="flex w-full flex-col p-0 sm:max-w-md">
-      <SheetHeader className="border-b border-border">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-navy-900 text-brand-500">
-            <Sparkles className="h-4 w-4" />
+    <SheetContent side="right" className="flex w-full flex-col p-0 sm:max-w-md bg-white">
+      <SheetHeader className="border-b border-border bg-brand-50/50 p-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600 text-white shadow-md shadow-brand-500/20">
+            <Sparkles className="h-5 w-5" />
           </div>
-          <SheetTitle>Ask T-Mills</SheetTitle>
+          <div className="flex flex-col items-start">
+            <SheetTitle className="text-xl">Ask T-Mills AI</SheetTitle>
+            <SheetDescription className="text-brand-600">Executive Intelligence Agent</SheetDescription>
+          </div>
         </div>
-        <SheetDescription>AI assistant · UI preview, no live backend yet</SheetDescription>
       </SheetHeader>
 
-      <div className="flex-1 space-y-4 overflow-y-auto px-5 py-4">
-        {messages.map((m) => (
-          <div key={m.id} className={cn('flex gap-2.5', m.role === 'user' && 'flex-row-reverse')}>
-            <div
-              className={cn(
-                'flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-                m.role === 'assistant' ? 'bg-navy-900 text-brand-500' : 'bg-secondary text-secondary-foreground',
-              )}
+      <div ref={scrollRef} className="flex-1 space-y-6 overflow-y-auto px-6 py-6 scrollbar-thin">
+        <AnimatePresence initial={false}>
+          {messages.map((m) => (
+            <motion.div
+              key={m.id}
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className={cn('flex gap-3', m.role === 'user' && 'flex-row-reverse')}
             >
-              {m.role === 'assistant' ? <Bot className="h-4 w-4" /> : <User className="h-4 w-4" />}
-            </div>
-            <div
-              className={cn(
-                'max-w-[80%] rounded-lg px-3.5 py-2.5 text-sm leading-relaxed',
-                m.role === 'assistant' ? 'bg-muted text-foreground' : 'bg-primary text-primary-foreground',
-              )}
+              <div
+                className={cn(
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full shadow-sm',
+                  m.role === 'assistant' ? 'bg-brand-100 text-brand-600' : 'bg-secondary text-secondary-foreground',
+                )}
+              >
+                {m.role === 'assistant' ? <Bot className="h-4 w-4" /> : <User className="h-4 w-4" />}
+              </div>
+              <div
+                className={cn(
+                  'max-w-[82%] rounded-2xl px-4 py-3 text-[14px] leading-relaxed shadow-sm',
+                  m.role === 'assistant' 
+                    ? 'bg-white border border-brand-100 text-brand-950 rounded-tl-none' 
+                    : 'bg-brand-600 text-white rounded-tr-none',
+                )}
+              >
+                {m.text}
+              </div>
+            </motion.div>
+          ))}
+          
+          {isTyping && (
+            <motion.div
+              key="typing"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="flex gap-3"
             >
-              {m.text}
-            </div>
-          </div>
-        ))}
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600 shadow-sm">
+                <Bot className="h-4 w-4" />
+              </div>
+              <div className="flex max-w-[80%] rounded-2xl rounded-tl-none border border-brand-100 bg-white px-4 py-4 shadow-sm items-center gap-1.5">
+                <motion.div
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                  className="w-1.5 h-1.5 bg-brand-400 rounded-full"
+                />
+                <motion.div
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
+                  className="w-1.5 h-1.5 bg-brand-400 rounded-full"
+                />
+                <motion.div
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
+                  className="w-1.5 h-1.5 bg-brand-400 rounded-full"
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      <div className="border-t border-border p-4">
-        <div className="mb-3 flex flex-wrap gap-1.5">
-          {exampleQuestions.map((q) => (
-            <button
-              key={q}
-              type="button"
-              onClick={() => send(q)}
-              className="rounded-full border border-border bg-secondary px-2.5 py-1 text-[11px] font-medium text-secondary-foreground transition-colors hover:bg-accent"
-            >
-              {q}
-            </button>
-          ))}
-        </div>
+      <div className="border-t border-border bg-brand-50/30 p-5">
+        {!isTyping && messages.length <= 2 && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-4 flex flex-wrap gap-2"
+          >
+            {exampleQuestions.slice(0, 3).map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => send(q)}
+                className="rounded-full border border-brand-200 bg-white px-3 py-1.5 text-[12px] font-medium text-brand-700 transition-colors hover:bg-brand-100 hover:text-brand-900 shadow-sm"
+              >
+                {q}
+              </button>
+            ))}
+          </motion.div>
+        )}
         <form
-          className="flex items-center gap-2"
+          className="flex items-center gap-3"
           onSubmit={(e) => {
             e.preventDefault()
             send(input)
           }}
         >
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about production, quality, orders…"
-          />
-          <Button type="submit" size="icon" aria-label="Send">
-            <Send className="h-4 w-4" />
+          <div className="relative flex-1">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask the executive intelligence agent..."
+              className="pr-10 rounded-full border-brand-200 bg-white shadow-sm focus-visible:ring-brand-500"
+              disabled={isTyping}
+            />
+          </div>
+          <Button 
+            type="submit" 
+            size="icon" 
+            className="rounded-full shrink-0 bg-brand-600 hover:bg-brand-700 shadow-md transition-transform active:scale-95 disabled:opacity-50"
+            disabled={isTyping || !input.trim()}
+          >
+            {isTyping ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </Button>
         </form>
       </div>

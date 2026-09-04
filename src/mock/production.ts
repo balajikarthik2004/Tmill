@@ -1,8 +1,8 @@
 /**
  * Production history and orders.
  * Daily targets are calibrated to the output published on tmills.com:
- * approximately 25,000 kg of yarn and 60,000 metres of fabric per day,
- * split across the three spinning mills, the OE/post-spinning unit and weaving.
+ * approximately 25,000 kg of yarn per day,
+ * split across the three spinning mills and the OE/post-spinning unit.
  */
 import type { FactoryId, ProcessName, ProductionOrder, ProductionRecord, ProductType, Shift } from '@/types'
 import { makeRng } from '@/lib/random'
@@ -21,15 +21,13 @@ function isoDaysAgo(days: number) {
   return d.toISOString()
 }
 
-/** Daily targets — spinning/OE in kg (25,000 kg total), weaving in metres (60,000 m). */
+/** Daily targets — spinning/OE in kg (25,000 kg total). */
 const dailyTargetKg: Record<string, number> = {
   'mill-1': 6200,
   'mill-2': 7400,
   'mill-3': 6900,
   'oe-unit': 4500,
-  'weaving-unit': 0,
 }
-const dailyTargetMetres = 60000
 
 /** Which product types each unit makes, per its published count group. */
 const productTypesByFactory: Record<string, ProductType[]> = {
@@ -37,7 +35,6 @@ const productTypesByFactory: Record<string, ProductType[]> = {
   'mill-2': ['Single', 'Compact'],
   'mill-3': ['Single', 'Double'],
   'oe-unit': ['Open End', 'Double', 'Gassed'],
-  'weaving-unit': ['Fabric'],
 }
 
 export const productionRecords: ProductionRecord[] = []
@@ -49,8 +46,7 @@ for (let dayOffset = HISTORY_DAYS - 1; dayOffset >= 0; dayOffset--) {
 
   factories.forEach((factory) => {
     const types = productTypesByFactory[factory.id]
-    const isWeaving = factory.type === 'Weaving'
-    const target = isWeaving ? dailyTargetMetres : dailyTargetKg[factory.id]
+    const target = dailyTargetKg[factory.id]
     const perTypeTarget = target / types.length
     const factoryProcesses = processesByFactory[factory.id] as readonly ProcessName[]
 
@@ -66,10 +62,8 @@ for (let dayOffset = HISTORY_DAYS - 1; dayOffset >= 0; dayOffset--) {
         machineId: machine.id,
         shift: rng.pick(shifts),
         productType,
-        actualKg: isWeaving ? 0 : actual,
-        targetKg: isWeaving ? 0 : Math.round(perTypeTarget),
-        actualM: isWeaving ? actual : undefined,
-        targetM: isWeaving ? Math.round(perTypeTarget) : undefined,
+        actualKg: actual,
+        targetKg: Math.round(perTypeTarget),
       })
     })
   })
@@ -94,7 +88,7 @@ function isoDaysFromNow(days: number) {
 
 /** Route each product type to the unit that actually makes it. */
 function factoryForProductType(productType: ProductType): FactoryId {
-  const candidates = factories.filter((f) => productTypesByFactory[f.id].includes(productType))
+  const candidates = factories.filter((f) => productTypesByFactory[f.id] && productTypesByFactory[f.id].includes(productType))
   return (candidates.length ? rng.pick(candidates) : factories[0]).id
 }
 

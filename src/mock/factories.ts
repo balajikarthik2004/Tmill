@@ -54,19 +54,7 @@ export const factories: Factory[] = [
     spindles: 0,
     rotors: 480,
     looms: 0,
-  },
-  {
-    id: 'weaving-unit',
-    name: 'Weaving Unit',
-    shortName: 'WU',
-    type: 'Weaving',
-    location: 'Kappalur, Madurai',
-    countGroup: 'Greige fabric on air jet & Sulzer looms',
-    installedCapacity: '300 looms',
-    spindles: 0,
-    rotors: 0,
-    looms: 300,
-  },
+  }
 ]
 
 export const factoryById = new Map(factories.map((f) => [f.id, f]))
@@ -82,12 +70,10 @@ export const spinningProcesses = [
 ] as const
 
 export const postSpinningProcesses = ['Open End', 'Winding', 'TFO', 'Gassing'] as const
-export const weavingProcesses = ['Weaving'] as const
 
 export const processesByFactory: Record<string, readonly string[]> = {
   'mill-1': spinningProcesses,
   'mill-2': spinningProcesses,
   'mill-3': spinningProcesses,
   'oe-unit': postSpinningProcesses,
-  'weaving-unit': weavingProcesses,
 }

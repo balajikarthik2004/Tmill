@@ -13,7 +13,7 @@ const colors: Record<ProductType, string> = {
   'Open End': '#d97706',
   Compact: '#7c3aed',
   Gassed: '#db2777',
-  Fabric: '#16a34a',
+  // Fabric: '#16a34a',
 }
 
 export function ProductDonut({ data, unit }: { data: ProductTypeSlice[]; unit: string }) {

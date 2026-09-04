@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { ChevronDown, Leaf } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { navTree } from '@/lib/navigation'
 import { cn } from '@/lib/utils'
@@ -35,19 +36,19 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col bg-navy-900 text-navy-100">
-      <div className="flex h-16 items-center gap-2.5 border-b border-white/10 px-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-success-500 text-white">
+    <aside className="flex h-full w-64 shrink-0 flex-col bg-gradient-to-b from-[#011142] via-[#011C6B] to-[#011142] text-brand-50 shadow-[4px_0_24px_rgba(1,17,66,0.2)] z-20 border-r border-[#01258F]/30">
+      <div className="flex h-16 items-center gap-2.5 border-b border-[#01258F]/30 px-5 bg-[#011142]/40 backdrop-blur-sm">
+        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[#023BE6] text-white shadow-sm ring-1 ring-white/20">
           <Leaf className="h-5 w-5" />
         </div>
         <div className="leading-tight">
           <div className="text-[13px] font-bold tracking-wide text-white">THIAGARAJAR MILLS</div>
-          <div className="text-[10px] font-medium text-navy-300">Setting Standards. Exceeding Excellence.</div>
+          <div className="text-[10px] font-medium text-brand-200">Setting Standards. Exceeding Excellence.</div>
         </div>
       </div>
 
       <ScrollArea className="flex-1">
-        <nav className="flex flex-col gap-0.5 p-2.5">
+        <nav className="flex flex-col gap-1 p-3">
           {navTree.map((section) => {
             const Icon = section.icon
             if (!section.children) {
@@ -58,8 +59,8 @@ export function Sidebar() {
                   end={section.path === '/'}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium text-navy-200 transition-colors hover:bg-white/5 hover:text-white',
-                      isActive && 'bg-brand-500 text-white shadow-sm hover:bg-brand-500',
+                      'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium text-brand-100/80 transition-all hover:bg-[#01258F]/40 hover:text-white',
+                      isActive && 'bg-[#0231BD] text-white shadow-md ring-1 ring-white/10',
                     )
                   }
                 >
@@ -73,56 +74,67 @@ export function Sidebar() {
             const sectionIsActive = isSectionActive(section.children.map((c) => c.path), location.pathname)
 
             return (
-              <div key={section.label}>
+              <div key={section.label} className="flex flex-col gap-0.5">
                 <button
                   type="button"
                   onClick={() => toggleSection(section.label)}
                   className={cn(
-                    'flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left text-[13px] font-medium text-navy-200 transition-colors hover:bg-white/5 hover:text-white',
-                    sectionIsActive && !isOpen && 'text-brand-500',
+                    'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13px] font-medium text-brand-100/80 transition-all hover:bg-[#01258F]/40 hover:text-white',
+                    sectionIsActive && !isOpen && 'text-white font-semibold',
                   )}
                   aria-expanded={isOpen}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
                   <span className="flex-1 truncate">{section.label}</span>
                   <ChevronDown
-                    className={cn('h-3.5 w-3.5 shrink-0 transition-transform', isOpen && 'rotate-180')}
+                    className={cn('h-3.5 w-3.5 shrink-0 transition-transform duration-300', isOpen && 'rotate-180')}
                   />
                 </button>
-                {isOpen && (
-                  <div className="ml-4 mt-0.5 flex flex-col gap-0.5 border-l border-white/10 pl-3.5">
-                    {section.children.map((child) => (
-                      <NavLink
-                        key={child.path}
-                        to={child.path}
-                        className={({ isActive }) =>
-                          cn(
-                            'rounded-md px-3 py-1.5 text-[12.5px] font-medium text-navy-300 transition-colors hover:bg-white/5 hover:text-white',
-                            isActive && 'bg-brand-500 text-white',
-                          )
-                        }
-                      >
-                        {child.label}
-                      </NavLink>
-                    ))}
-                  </div>
-                )}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l border-[#01258F]/50 pl-3.5 mb-1">
+                        {section.children.map((child) => (
+                          <NavLink
+                            key={child.path}
+                            to={child.path}
+                            className={({ isActive }) =>
+                              cn(
+                                'rounded-md px-3 py-1.5 text-[12.5px] font-medium text-brand-200/70 transition-all hover:bg-[#01258F]/40 hover:text-white',
+                                isActive && 'bg-[#0231BD] text-white shadow-sm ring-1 ring-white/10',
+                              )
+                            }
+                          >
+                            {child.label}
+                          </NavLink>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             )
           })}
         </nav>
       </ScrollArea>
 
-      <div className="flex items-center gap-2.5 border-t border-white/10 px-4 py-3.5">
-        <Leaf className="h-6 w-6 shrink-0 text-success-500" />
+      <div className="flex items-center gap-2.5 border-t border-[#01258F]/30 px-4 py-3.5 bg-[#011142]/60 backdrop-blur-md">
+        <Leaf className="h-6 w-6 shrink-0 text-[#023BE6]" />
         <div className="leading-tight">
           <div className="text-[12px] font-semibold text-white">Threading together</div>
-          <div className="text-[11px] text-navy-300">Tradition &amp; Technology</div>
+          <div className="text-[11px] text-brand-200">Tradition &amp; Technology</div>
         </div>
       </div>
-      <div className="border-t border-white/10 px-4 py-2 text-center text-[10.5px] text-navy-400">
+      <div className="px-4 py-3 text-center text-[10.5px] text-brand-300/80 bg-[#011142]">
         © {new Date().getFullYear()} Thiagarajar Mills (P) Ltd.
       </div>
     </aside>
   )
 }
+

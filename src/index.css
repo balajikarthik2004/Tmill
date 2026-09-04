@@ -1,11 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
 @theme {
   --font-sans:
-    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
 
-  /* Brand deep forest-green family (sidebar) */
+  /* Brand deep forest-green family (legacy, kept for fallback) */
   --color-navy-950: #050f0c;
   --color-navy-900: #0a1f19;
   --color-navy-800: #0f2b23;
@@ -17,11 +18,20 @@
   --color-navy-200: #b3cec2;
   --color-navy-100: #dbe9e3;
 
-  /* Primary accent — teal/blue used for active nav, links, CTAs */
-  --color-brand-500: #2563eb;
-  --color-brand-600: #1d4ed8;
+  /* Primary accent — custom royal blue */
+  --color-brand-50: #e6ecfa;
+  --color-brand-100: #ccd9f5;
+  --color-brand-200: #99b3eb;
+  --color-brand-300: #668ce0;
+  --color-brand-400: #3366d6;
+  --color-brand-500: #023be6; /* #023BE6 */
+  --color-brand-600: #0231bd; /* #0231BD */
+  --color-brand-700: #01258f; /* #01258F */
+  --color-brand-800: #011c6b; /* #011C6B */
+  --color-brand-900: #011142; /* #011142 */
+  --color-brand-950: #000824;
 
-  /* Semantic status colors used across KPI trend pills, badges, alerts */
+  /* Semantic status colors */
   --color-success-50: #ecfdf3;
   --color-success-500: #16a34a;
   --color-success-600: #15803d;
@@ -35,7 +45,7 @@
   --color-info-500: #2563eb;
   --color-info-600: #1d4ed8;
 
-  /* Additional accent hues used for KPI icon badges */
+  /* Additional accent hues */
   --color-violet-tint: #7c3aed;
   --color-amber-tint: #d97706;
   --color-teal-tint: #0d9488;
@@ -72,35 +82,38 @@
 
 @layer base {
   :root {
-    --background: 216 33% 95%;
-    --foreground: 222 47% 11%;
+    /* Background is a very soft icy blue/slate mix */
+    --background: 216 33% 97%;
+    --foreground: 222 47% 15%;
 
+    /* Glassmorphic Card Background (will use bg-white/70 in utilities, base is white) */
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 222 47% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 222 47% 15%;
 
-    --primary: 221 83% 53%;
+    /* Primary Accent - Custom Royal Blue */
+    --primary: 225 98% 45%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary-foreground: 222 47% 15%;
 
     --muted: 210 30% 95%;
     --muted-foreground: 215 16% 47%;
 
     --accent: 214 40% 93%;
-    --accent-foreground: 222 47% 11%;
+    --accent-foreground: 222 47% 15%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214 25% 88%;
-    --input: 214 25% 88%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
     --ring: 221 83% 53%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
   }
 
   * {
@@ -110,10 +123,15 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 85%;
   }
 
   body {
-    background-color: hsl(var(--background));
+    /* Rich, subtle gradient using the lightest shades of the custom palette */
+    background: radial-gradient(circle at 15% 50%, #f6f8fd, transparent 25%),
+      radial-gradient(circle at 85% 30%, #eff3fc, transparent 25%),
+      linear-gradient(135deg, #f0f4fd 0%, #e6ecfa 100%);
+    background-attachment: fixed;
     color: hsl(var(--foreground));
     font-feature-settings: 'tnum' 1, 'cv11' 1;
     font-variant-numeric: tabular-nums;
@@ -129,8 +147,26 @@
     width: 6px;
     height: 6px;
   }
+
   .scrollbar-thin::-webkit-scrollbar-thumb {
     background-color: hsl(var(--border));
     border-radius: 999px;
   }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 30px -10px rgba(1, 17, 66, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .glass-card:hover {
+    box-shadow: 0 20px 40px -15px rgba(2, 59, 230, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
+    border-color: rgba(2, 59, 230, 0.2);
+    transform: translateY(-2px);
+  }
 }
+

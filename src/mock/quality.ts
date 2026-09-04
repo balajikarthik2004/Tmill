@@ -42,7 +42,7 @@ function yarnParameters() {
 }
 
 export const qualityTests: QualityTest[] = Array.from({ length: 64 }, (_, i) => {
-  const stage: QualityStage = i % 3 === 0 ? 'Cotton' : i % 7 === 0 ? 'Fabric' : 'Yarn'
+  const stage: QualityStage = i % 3 === 0 ? 'Cotton' : 'Yarn'
   const result = rng.bool(0.86) ? 'Pass' : rng.bool(0.65) ? 'Rework' : 'Fail'
 
   if (stage === 'Cotton') {
@@ -64,21 +64,6 @@ export const qualityTests: QualityTest[] = Array.from({ length: 64 }, (_, i) => 
       },
       result,
       remarks: result !== 'Pass' ? 'Parameter outside tolerance band' : undefined,
-      testedBy: rng.pick(testers),
-    }
-  }
-
-  if (stage === 'Fabric') {
-    return {
-      id: `qt-${String(i + 1).padStart(3, '0')}`,
-      testNo: `QT-${new Date().getFullYear()}-${String(i + 1).padStart(4, '0')}`,
-      stage,
-      instrument: rng.pick(fabricInstruments),
-      machineId: rng.pick(machines.filter((m) => m.process === 'Weaving')).id,
-      testedDate: daysAgoIso(rng.int(0, 30)),
-      parameters: { strength: rng.float(18, 26, 1), moisturePct: rng.float(5, 7, 1) },
-      result,
-      remarks: result !== 'Pass' ? 'Fabric defect noted on inspection' : undefined,
       testedBy: rng.pick(testers),
     }
   }
@@ -107,13 +92,12 @@ const rejectionReasons = [
   'Yarn breaks — weak place',
   'High imperfections (IPI)',
   'Hairiness out of band',
-  'Weft defect',
 ]
 
 export const rejections: Rejection[] = Array.from({ length: 26 }, (_, i) => ({
   id: `rj-${String(i + 1).padStart(3, '0')}`,
   date: daysAgoIso(rng.int(0, 30)),
-  stage: rng.pick(['Cotton', 'Yarn', 'Fabric'] as QualityStage[]),
+  stage: rng.pick(['Cotton', 'Yarn'] as QualityStage[]),
   reason: rng.pick(rejectionReasons),
   qtyKg: rng.int(20, 400),
   factoryId: rng.pick(factories).id,

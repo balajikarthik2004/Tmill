@@ -60,8 +60,36 @@ export default function SalesOrders() {
       <div>
         <h1 className="text-lg font-bold text-foreground">Sales Orders</h1>
         <p className="text-sm text-muted-foreground">
-          {riskParam ? `Filtered: ${riskFilterLabels[riskParam] ?? riskParam}` : 'All sales orders across factories'}
+          Track production progress against dispatch deadlines across all factories.
         </p>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onClick={() => setSearchParams(new URLSearchParams())}
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+            !riskParam
+              ? 'bg-brand-600 text-white shadow-sm'
+              : 'bg-white text-muted-foreground border border-border hover:bg-brand-50 hover:text-brand-900'
+          }`}
+        >
+          All Orders
+        </button>
+        {Object.entries(riskFilterLabels).map(([key, label]) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setSearchParams(new URLSearchParams({ risk: key }))}
+            className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+              riskParam === key
+                ? 'bg-brand-600 text-white shadow-sm'
+                : 'bg-white text-muted-foreground border border-border hover:bg-brand-50 hover:text-brand-900'
+            }`}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -88,7 +116,7 @@ export default function SalesOrders() {
             isLoading={isLoading}
             emptyMessage="No sales orders match this filter."
             onRowClick={(row) => navigate(`/sales/sales-orders?highlight=${row.id}`)}
-            pageSize={12}
+            pageSize={10}
           />
         </CardContent>
       </Card>

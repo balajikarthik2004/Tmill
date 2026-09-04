@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
@@ -9,6 +10,7 @@ import { AskTMillsButton } from '@/components/ai/AskTMillsButton'
 
 export function Shell() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const location = useLocation()
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
@@ -22,11 +24,22 @@ export function Shell() {
         </SheetContent>
       </Sheet>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col relative">
         <Header onMenuClick={() => setMobileNavOpen(true)} />
         <Breadcrumbs />
-        <main className="flex-1 overflow-y-auto">
-          <Outlet />
+        <main className="flex-1 overflow-y-auto relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="h-full"
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
 
@@ -34,3 +47,4 @@ export function Shell() {
     </div>
   )
 }
+

@@ -12,6 +12,7 @@ import Dispatch from '@/pages/sales/Dispatch'
 import PlanningProductionOrders from '@/pages/planning/ProductionOrders'
 import CapacityPlanning from '@/pages/planning/CapacityPlanning'
 
+import { ProcurementDashboard } from '@/pages/procurement/ProcurementDashboard'
 import ProcurementSuppliers from '@/pages/procurement/Suppliers'
 import PurchaseRequisitions from '@/pages/procurement/PurchaseRequisitions'
 import PurchaseOrders from '@/pages/procurement/PurchaseOrders'
@@ -21,10 +22,13 @@ import CottonLots from '@/pages/cotton/CottonLots'
 import CottonTesting from '@/pages/cotton/CottonTesting'
 import Traceability from '@/pages/cotton/Traceability'
 
+import { InventoryDashboard } from '@/pages/inventory/InventoryDashboard'
 import RawMaterials from '@/pages/inventory/RawMaterials'
 import Wip from '@/pages/inventory/Wip'
 import FinishedGoods from '@/pages/inventory/FinishedGoods'
 import StockMovements from '@/pages/inventory/StockMovements'
+
+import { EnergyDashboard } from '@/pages/energy/EnergyDashboard'
 
 import ProductionOverview from '@/pages/production/ProductionOverview'
 import BlowRoom from '@/pages/production/BlowRoom'
@@ -68,6 +72,7 @@ export const routes = [
   { path: 'planning/production-orders', element: <PlanningProductionOrders /> },
   { path: 'planning/capacity-planning', element: <CapacityPlanning /> },
 
+  { path: 'procurement', element: <ProcurementDashboard /> },
   { path: 'procurement/suppliers', element: <ProcurementSuppliers /> },
   { path: 'procurement/pr', element: <PurchaseRequisitions /> },
   { path: 'procurement/po', element: <PurchaseOrders /> },
@@ -77,10 +82,13 @@ export const routes = [
   { path: 'cotton/cotton-testing', element: <CottonTesting /> },
   { path: 'cotton/traceability', element: <Traceability /> },
 
+  { path: 'inventory', element: <InventoryDashboard /> },
   { path: 'inventory/raw-materials', element: <RawMaterials /> },
   { path: 'inventory/wip', element: <Wip /> },
   { path: 'inventory/finished-goods', element: <FinishedGoods /> },
   { path: 'inventory/stock-movements', element: <StockMovements /> },
+  
+  { path: 'energy', element: <EnergyDashboard /> },
 
   { path: 'production', element: <ProductionOverview /> },
   { path: 'production/blow-room', element: <BlowRoom /> },
@@ -93,13 +101,11 @@ export const routes = [
   { path: 'production/winding', element: <Winding /> },
   { path: 'production/tfo', element: <Tfo /> },
   { path: 'production/gassing', element: <Gassing /> },
-  { path: 'production/weaving', element: <Weaving /> },
 
   { path: 'quality/dashboard', element: <QualityDashboard /> },
   { path: 'quality/lab-tests', element: <LabTests /> },
   { path: 'quality/cotton-quality', element: <CottonQuality /> },
   { path: 'quality/yarn-quality', element: <YarnQuality /> },
-  { path: 'quality/fabric-quality', element: <FabricQuality /> },
   { path: 'quality/rejections', element: <Rejections /> },
   { path: 'quality/complaints', element: <Complaints /> },
 

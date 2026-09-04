@@ -11,6 +11,7 @@ import {
   ShoppingCart,
   Sprout,
   Wrench,
+  Zap
 } from 'lucide-react'
 
 export interface NavLeaf {
@@ -54,11 +55,17 @@ export const navTree: NavSection[] = [
     label: 'Procurement',
     icon: Package,
     children: [
+      { label: 'Overview', path: '/procurement' },
       { label: 'Suppliers', path: '/procurement/suppliers' },
       { label: 'Purchase Requisitions', path: '/procurement/pr' },
       { label: 'Purchase Orders', path: '/procurement/po' },
       { label: 'GRN', path: '/procurement/grn' },
     ],
+  },
+  {
+    label: 'Energy',
+    icon: Zap,
+    path: '/energy'
   },
   {
     label: 'Cotton & Raw Materials',
@@ -73,6 +80,7 @@ export const navTree: NavSection[] = [
     label: 'Inventory',
     icon: Boxes,
     children: [
+      { label: 'Overview', path: '/inventory' },
       { label: 'Raw Materials', path: '/inventory/raw-materials' },
       { label: 'WIP', path: '/inventory/wip' },
       { label: 'Finished Goods', path: '/inventory/finished-goods' },
@@ -94,7 +102,6 @@ export const navTree: NavSection[] = [
       { label: 'Winding', path: '/production/winding' },
       { label: 'TFO', path: '/production/tfo' },
       { label: 'Gassing', path: '/production/gassing' },
-      { label: 'Weaving', path: '/production/weaving' },
     ],
   },
   {
@@ -105,7 +112,6 @@ export const navTree: NavSection[] = [
       { label: 'Lab Tests', path: '/quality/lab-tests' },
       { label: 'Cotton Quality', path: '/quality/cotton-quality' },
       { label: 'Yarn Quality', path: '/quality/yarn-quality' },
-      { label: 'Fabric Quality', path: '/quality/fabric-quality' },
       { label: 'Rejections', path: '/quality/rejections' },
       { label: 'Complaints', path: '/quality/complaints' },
     ],

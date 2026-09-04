@@ -42,8 +42,8 @@ import { formatDate, formatKg, formatMeters, formatNumber, formatPct } from '@/l
 import { cn } from '@/lib/utils'
 import type { FactoryId, ProductType, ProductionOrder } from '@/types'
 
-const factoryIds: FactoryId[] = ['all', 'mill-1', 'mill-2', 'mill-3', 'oe-unit', 'weaving-unit']
-const productTypes: ProductType[] = ['Single', 'Double', 'Open End', 'Compact', 'Gassed', 'Fabric']
+const factoryIds: FactoryId[] = ['all', 'mill-1', 'mill-2', 'mill-3', 'oe-unit']
+const productTypes: ProductType[] = ['Single', 'Double', 'Open End', 'Compact', 'Gassed']
 
 const productColors: Record<ProductType, string> = {
   Single: '#2563eb',
@@ -51,7 +51,6 @@ const productColors: Record<ProductType, string> = {
   'Open End': '#d97706',
   Compact: '#7c3aed',
   Gassed: '#db2777',
-  Fabric: '#16a34a',
 }
 
 function barColor(pct: number) {
@@ -353,7 +352,7 @@ export default function ProductionOverview() {
     <div className="space-y-4 p-4 lg:p-6">
       <PageHeader
         title="Production Overview"
-        description={`Yarn and fabric output across ${scopeLabel}${productType ? ` · ${productType} only` : ''}.`}
+        description={`Yarn output across ${scopeLabel}${productType ? ` · ${productType} only` : ''}.`}
         actions={<PeriodDropdown />}
       />
 
@@ -390,20 +389,13 @@ export default function ProductionOverview() {
           ))}
         </div>
       ) : (
-        <StatGrid cols={4}>
+        <StatGrid cols={3}>
           <StatCard
             label="Yarn output"
             value={formatKg(s.yarnActualKg)}
             sublabel={`Target ${formatKg(s.yarnTargetKg)}`}
             icon={Package}
             tone="info"
-          />
-          <StatCard
-            label="Fabric output"
-            value={formatMeters(s.fabricActualM)}
-            sublabel={`Target ${formatMeters(s.fabricTargetM)}`}
-            icon={Ruler}
-            tone="success"
           />
           <StatCard
             label="Achievement"
@@ -509,12 +501,6 @@ export default function ProductionOverview() {
                     <span className="text-muted-foreground">Yarn</span>
                     <span className="font-semibold tabular-nums text-foreground">
                       {formatKg(dayDetail.data.actualKg)} / {formatKg(dayDetail.data.targetKg)}
-                    </span>
-                  </div>
-                  <div className="flex items-baseline justify-between text-sm">
-                    <span className="text-muted-foreground">Fabric</span>
-                    <span className="font-semibold tabular-nums text-foreground">
-                      {formatMeters(dayDetail.data.actualM)} / {formatMeters(dayDetail.data.targetM)}
                     </span>
                   </div>
                 </div>

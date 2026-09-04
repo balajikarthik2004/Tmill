@@ -2,7 +2,7 @@ import type { Trend } from './common'
 
 export type KpiId =
   | 'yarnProduction'
-  | 'fabricProduction'
+  | 'inventoryStock'
   | 'oee'
   | 'qualityPassRate'
   | 'ordersOnTime'

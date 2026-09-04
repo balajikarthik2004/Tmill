@@ -1,5 +1,5 @@
 /** Product types as published on tmills.com. */
-export type ProductType = 'Single' | 'Double' | 'Open End' | 'Compact' | 'Gassed' | 'Fabric'
+export type ProductType = 'Single' | 'Double' | 'Open End' | 'Compact' | 'Gassed' 
 
 export type ProductCategory = 'Yarn' | 'Fabric'
 

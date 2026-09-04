@@ -40,7 +40,7 @@ const rangeNameByType: Record<ProductType, string> = {
   'Open End': 'Open End Yarn',
   Compact: 'Compact Yarn',
   Gassed: 'Gassed Yarn',
-  Fabric: 'Fabric',
+  // Fabric: 'Fabric',
 }
 
 const applicationVariant: Record<YarnApplication, NonNullable<BadgeProps['variant']>> = {
