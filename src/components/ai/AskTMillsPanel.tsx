@@ -93,12 +93,13 @@ export function AskTMillsPanel() {
     setInput('')
     setIsTyping(true)
 
-    // Simulate 2-second loading for realistic AI feel
+    // Simulate variable loading based on text length for realistic AI feel
+    const delay = Math.min(Math.max(1000, trimmed.length * 50), 3000)
     setTimeout(() => {
       const botMsg: ChatMessage = { id: crypto.randomUUID(), role: 'assistant', text: getStubResponse(trimmed) }
       setMessages((prev) => [...prev, botMsg])
       setIsTyping(false)
-    }, 2000)
+    }, delay)
   }
 
   return (
@@ -141,7 +142,30 @@ export function AskTMillsPanel() {
                     : 'bg-brand-600 text-white rounded-tr-none',
                 )}
               >
-                {m.text}
+                {m.role === 'assistant' ? (
+                  <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: { opacity: 1, transition: { staggerChildren: 0.015 } }
+                    }}
+                  >
+                    {m.text.split('').map((char, index) => (
+                      <motion.span
+                        key={`${m.id}-${index}`}
+                        variants={{
+                          hidden: { opacity: 0 },
+                          visible: { opacity: 1 }
+                        }}
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </motion.div>
+                ) : (
+                  m.text
+                )}
               </div>
             </motion.div>
           ))}
