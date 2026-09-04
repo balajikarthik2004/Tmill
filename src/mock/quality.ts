@@ -23,7 +23,6 @@ function daysAgoIso(days: number) {
 
 const testers = ['R. Anitha', 'S. Gopal', 'M. Devi', 'K. Rajesh', 'P. Saravanan']
 const yarnProducts = products.filter((p) => p.category === 'Yarn')
-const fabricInstruments: LabInstrument[] = ['USTER Eva Tester', 'USTER Strength Tester']
 
 function yarnParameters() {
   const product = rng.pick(yarnProducts)

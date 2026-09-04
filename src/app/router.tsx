@@ -41,13 +41,11 @@ import OpenEnd from '@/pages/production/OpenEnd'
 import Winding from '@/pages/production/Winding'
 import Tfo from '@/pages/production/Tfo'
 import Gassing from '@/pages/production/Gassing'
-import Weaving from '@/pages/production/Weaving'
 
 import QualityDashboard from '@/pages/quality/QualityDashboard'
 import LabTests from '@/pages/quality/LabTests'
 import CottonQuality from '@/pages/quality/CottonQuality'
 import YarnQuality from '@/pages/quality/YarnQuality'
-import FabricQuality from '@/pages/quality/FabricQuality'
 import Rejections from '@/pages/quality/Rejections'
 import Complaints from '@/pages/quality/Complaints'
 

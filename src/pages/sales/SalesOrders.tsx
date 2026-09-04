@@ -46,7 +46,7 @@ const riskFilterLabels: Record<string, string> = {
 }
 
 export default function SalesOrders() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const riskParam = searchParams.get('risk') as RiskLevel | 'high' | null
 

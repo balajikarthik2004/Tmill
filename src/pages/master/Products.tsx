@@ -12,7 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatNumber } from '@/lib/format'
 import type { Product, ProductType, YarnApplication } from '@/types'
 
-const typeOrder: ProductType[] = ['Single', 'Double', 'Open End', 'Compact', 'Gassed', 'Fabric']
+const typeOrder: ProductType[] = ['Single', 'Double', 'Open End', 'Compact', 'Gassed']
 
 const typeColors: Record<ProductType, string> = {
   Single: '#2563eb',
@@ -20,7 +20,6 @@ const typeColors: Record<ProductType, string> = {
   'Open End': '#d97706',
   Compact: '#7c3aed',
   Gassed: '#db2777',
-  Fabric: '#16a34a',
 }
 
 /** The count range published for each type on tmills.com. */
@@ -30,7 +29,6 @@ const publishedRange: Record<ProductType, string> = {
   'Open End': 'NE 6s–12s',
   Compact: 'Up to NE 140s',
   Gassed: 'Specialty counts',
-  Fabric: 'Greige, by the metre',
 }
 
 /** Which published product range describes each catalogue type. */
@@ -40,7 +38,6 @@ const rangeNameByType: Record<ProductType, string> = {
   'Open End': 'Open End Yarn',
   Compact: 'Compact Yarn',
   Gassed: 'Gassed Yarn',
-  // Fabric: 'Fabric',
 }
 
 const applicationVariant: Record<YarnApplication, NonNullable<BadgeProps['variant']>> = {
@@ -101,17 +98,12 @@ export default function Products() {
   const visibleGroups = tab === ALL ? groups : groups.filter((g) => g.type === tab)
 
   const yarnCount = (products.data ?? []).filter((p) => p.category === 'Yarn').length
-  const fabricCount = (products.data ?? []).filter((p) => p.category === 'Fabric').length
-
-  const fabricDetail = company.data
-    ? `Greige fabric woven on ${formatNumber(company.data.infrastructure.looms)} air jet & Sulzer looms — about ${formatNumber(company.data.infrastructure.dailyFabricMetres)} m a day`
-    : 'Greige fabric woven on air jet & Sulzer looms'
 
   return (
     <div className="space-y-4 p-4 lg:p-6">
       <PageHeader
         title="Products"
-        description="The yarn and greige fabric catalogue, grouped by the product ranges published by Thiagarajar Mills."
+        description="The yarn catalogue, grouped by the product ranges published by Thiagarajar Mills."
         actions={
           <Tabs value={tab} onValueChange={setTab}>
             <TabsList className="flex-wrap">
@@ -141,7 +133,6 @@ export default function Products() {
             icon={Boxes}
           />
           <StatCard label="Yarn products" value={formatNumber(yarnCount)} sublabel="Single, double, OE, compact, gassed" icon={Layers} tone="info" />
-          <StatCard label="Fabric products" value={formatNumber(fabricCount)} sublabel="Greige, from the weaving unit" icon={Shirt} tone="success" />
           <StatCard
             label="Compact spinning"
             value="Rieter ComforSpin K44"
@@ -176,7 +167,7 @@ export default function Products() {
                   <Badge variant="secondary">{formatNumber(group.items.length)} items</Badge>
                 </div>
                 <p className="text-xs leading-relaxed text-muted-foreground">
-                  {group.type === 'Fabric' ? fabricDetail : (rangeDetail.get(rangeNameByType[group.type]) ?? publishedRange[group.type])}
+                  {rangeDetail.get(rangeNameByType[group.type]) ?? publishedRange[group.type]}
                 </p>
               </CardHeader>
               <CardContent>

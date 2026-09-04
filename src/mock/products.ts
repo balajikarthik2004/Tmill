@@ -34,15 +34,11 @@ export const products: Product[] = [
   { id: 'p-g60', code: 'G-60', name: '60s Gassed', category: 'Yarn', type: 'Gassed', count: '60s', unit: 'kg', application: 'Weaving', description: 'Singed gassed yarn — house specialty' },
   { id: 'p-g2-80', code: 'G-2/80', name: '2/80s Gassed', category: 'Yarn', type: 'Gassed', count: '2/80s', unit: 'kg', application: 'Weaving', description: 'Doubled and gassed specialty yarn' },
 
-  // Greige fabric from the weaving unit
-  { id: 'p-f-shirt', code: 'F-SHIRT', name: 'Greige Shirting Fabric', category: 'Fabric', type: 'Fabric', unit: 'm', application: 'Weaving', description: 'Greige shirting woven on air jet looms' },
-  { id: 'p-f-poplin', code: 'F-POPLIN', name: 'Greige Poplin', category: 'Fabric', type: 'Fabric', unit: 'm', application: 'Weaving', description: 'Plain weave greige poplin on Sulzer looms' },
 ]
 
 export const productById = new Map(products.map((p) => [p.id, p]))
 
-/** Product types actually made, per the published product range. */
-export const productTypes = ['Single', 'Double', 'Open End', 'Compact', 'Gassed', 'Fabric'] as const
+export const productTypes = ['Single', 'Double', 'Open End', 'Compact', 'Gassed'] as const
 
 /** Marketing categories as listed on tmills.com. */
 export const productCategories = [

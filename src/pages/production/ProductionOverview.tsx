@@ -14,7 +14,7 @@ import {
   YAxis,
 } from 'recharts'
 import { format } from 'date-fns'
-import { Activity, BarChart3, ClipboardList, Layers, Package, Ruler, X } from 'lucide-react'
+import { Activity, BarChart3, ClipboardList, Layers, Package, X } from 'lucide-react'
 import type { ColumnDef } from '@tanstack/react-table'
 
 import { useAsync } from '@/hooks/useAsync'
