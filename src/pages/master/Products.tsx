@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Boxes, Layers, Shirt, Sparkles } from 'lucide-react'
+import { Boxes, Layers, Sparkles } from 'lucide-react'
 
 import { useAsync } from '@/hooks/useAsync'
 import { getCompany, getProducts } from '@/services'

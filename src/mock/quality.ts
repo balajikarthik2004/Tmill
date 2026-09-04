@@ -4,7 +4,7 @@
  * Zweigle hairiness, TPI & CSP testers, USTER HVI and AFIS PRO-2 for cotton).
  * Individual readings are illustrative.
  */
-import type { CustomerComplaint, LabInstrument, QualityStage, QualityTest, Rejection } from '@/types'
+import type { CustomerComplaint, QualityStage, QualityTest, Rejection } from '@/types'
 import { cottonInstruments, yarnInstruments } from '@/types'
 import { makeRng } from '@/lib/random'
 import { customers } from './customers'
