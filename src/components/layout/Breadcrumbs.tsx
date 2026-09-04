@@ -13,19 +13,22 @@ export function Breadcrumbs() {
   )
 
   return (
-    <div className="flex items-center gap-1.5 border-b border-border bg-background px-4 py-2.5 text-xs text-muted-foreground lg:px-6">
-      <Link to="/" className="flex items-center gap-1 hover:text-foreground">
+    <div className="flex items-center gap-1.5 px-4 pt-4 text-xs text-muted-foreground lg:px-6">
+      <Link
+        to="/"
+        className="flex items-center gap-1 rounded-md px-1.5 py-0.5 transition-colors hover:bg-accent hover:text-foreground"
+      >
         <Home className="h-3.5 w-3.5" />
         Dashboard
       </Link>
       {entry && (
         <>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-muted-foreground">{entry.sectionLabel}</span>
+          <ChevronRight className="h-3 w-3 text-muted-foreground/50" />
+          <span>{entry.sectionLabel}</span>
           {entry.sectionLabel !== entry.label && (
             <>
-              <ChevronRight className="h-3 w-3" />
-              <span className="font-medium text-foreground">{entry.label}</span>
+              <ChevronRight className="h-3 w-3 text-muted-foreground/50" />
+              <span className="font-semibold text-foreground">{entry.label}</span>
             </>
           )}
         </>

@@ -56,8 +56,8 @@ export function DataTable<TData>({
 
   if (data.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border py-14 text-center">
-        <Inbox className="h-8 w-8 text-muted-foreground" />
+      <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-secondary/40 py-14 text-center">
+        <Inbox className="h-8 w-8 text-muted-foreground/60" />
         <p className="text-sm text-muted-foreground">{emptyMessage}</p>
       </div>
     )
@@ -65,17 +65,17 @@ export function DataTable<TData>({
 
   return (
     <div className="space-y-3">
-      <div className="scrollbar-thin overflow-x-auto rounded-md border border-border">
+      <div className="scrollbar-thin overflow-x-auto rounded-xl border border-border bg-card">
         <table className="w-full text-left text-sm">
-          <thead className="bg-muted/60">
+          <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
+              <tr key={headerGroup.id} className="border-b border-border bg-secondary/60">
                 {headerGroup.headers.map((header) => {
                   const sortDir = header.column.getIsSorted()
                   return (
                     <th
                       key={header.id}
-                      className="whitespace-nowrap px-3.5 py-2.5 text-xs font-semibold text-muted-foreground"
+                      className="whitespace-nowrap px-3.5 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground"
                     >
                       {header.isPlaceholder ? null : (
                         <button
@@ -83,8 +83,9 @@ export function DataTable<TData>({
                           disabled={!header.column.getCanSort()}
                           onClick={header.column.getToggleSortingHandler()}
                           className={cn(
-                            'flex items-center gap-1',
-                            header.column.getCanSort() && 'cursor-pointer hover:text-foreground',
+                            'flex items-center gap-1 uppercase tracking-wider',
+                            header.column.getCanSort() && 'cursor-pointer transition-colors hover:text-primary',
+                            sortDir && 'text-primary',
                           )}
                         >
                           {flexRender(header.column.columnDef.header, header.getContext())}
@@ -94,7 +95,7 @@ export function DataTable<TData>({
                             ) : sortDir === 'desc' ? (
                               <ArrowDown className="h-3 w-3" />
                             ) : (
-                              <ArrowUpDown className="h-3 w-3 opacity-40" />
+                              <ArrowUpDown className="h-3 w-3 opacity-30" />
                             ))}
                         </button>
                       )}
@@ -110,8 +111,9 @@ export function DataTable<TData>({
                 key={row.id}
                 onClick={() => onRowClick?.(row.original)}
                 className={cn(
-                  'border-t border-border transition-colors',
+                  'border-b border-border/70 transition-colors last:border-0',
                   onRowClick && 'cursor-pointer hover:bg-accent',
+                  !onRowClick && 'hover:bg-secondary/40',
                 )}
               >
                 {row.getVisibleCells().map((cell) => (
@@ -128,7 +130,8 @@ export function DataTable<TData>({
       {table.getPageCount() > 1 && (
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>
-            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()} · {data.length} records
+            Page <span className="font-semibold text-foreground">{table.getState().pagination.pageIndex + 1}</span> of{' '}
+            {table.getPageCount()} · {data.length} records
           </span>
           <div className="flex items-center gap-1.5">
             <Button

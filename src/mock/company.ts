@@ -13,7 +13,7 @@ export const company = {
   positioning:
     'One of the largest manufacturers and exporters of 100% Indian cotton yarn, and among the first in India to install Rieter ComforSpin K44 machines for compact yarn.',
   about:
-    'Established in 1936 to supply quality cotton yarn to the industry, Thiagarajar Mills runs three spinning mills — each specialising in a distinct yarn count group — alongside weaving operations at Kappalur, Madurai.',
+    'Established in 1936 to supply quality cotton yarn to the industry, Thiagarajar Mills runs three spinning mills — each specialising in a distinct yarn count group.',
   vision: 'To create new benchmarks in manufacturing quality yarn and exceed expectations.',
   qualityPolicy:
     'Committed to producing cotton and blended yarns that consistently meet customer requirements in an environmentally friendly manner — through continual improvement of products, processes and systems, reduction of air pollution, conservation of natural resources, compliance with legal and environmental regulations, and employee participation.',
@@ -31,15 +31,12 @@ export const company = {
     testingReports: 'https://www.tmills.co.in',
   },
 
-  /** Published infrastructure figures. */
   infrastructure: {
-    facilities: 5,
+    facilities: 4,
     spindles: 86112,
     rotors: 480,
-    looms: 300,
     employees: 1600,
     dailyYarnKg: 25000,
-    dailyFabricMetres: 60000,
   },
 
   /** Published export profile. */

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { PageHeader } from '@/components/common/PageHeader'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Package, AlertCircle, RefreshCw, Box } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -18,11 +19,9 @@ export function InventoryDashboard() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground">Inventory Overview</h2>
-      </div>
-      
+    <div className="space-y-4 p-4 lg:p-6">
+      <PageHeader title="Inventory Overview" description="Stock position from raw cotton through to finished yarn." />
+
       <motion.div 
         variants={container}
         initial="hidden"
@@ -36,7 +35,7 @@ export function InventoryDashboard() {
               <Package className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">4,200</div>
+              <div className="num text-2xl font-semibold">4,200</div>
               <p className="text-xs text-muted-foreground mt-1">12 days coverage</p>
             </CardContent>
           </Card>
@@ -49,21 +48,21 @@ export function InventoryDashboard() {
               <Box className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">145,000</div>
+              <div className="num text-2xl font-semibold">145,000</div>
               <p className="text-xs text-muted-foreground mt-1">+5% from last week</p>
             </CardContent>
           </Card>
         </motion.div>
         
         <motion.div variants={item}>
-          <Card className="glass-card border-amber-200">
+          <Card className="glass-card border-warning-100 bg-warning-50/40">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-amber-700">Reorder Alerts</CardTitle>
-              <AlertCircle className="h-4 w-4 text-amber-600" />
+              <CardTitle className="text-warning-700">Reorder Alerts</CardTitle>
+              <AlertCircle className="h-4 w-4 text-warning-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums text-amber-600">3</div>
-              <p className="text-xs text-amber-600/80 mt-1">Critical spares & dyes</p>
+              <div className="num text-2xl font-semibold text-warning-700">3</div>
+              <p className="text-xs text-warning-600 mt-1">Critical spares &amp; dyes</p>
             </CardContent>
           </Card>
         </motion.div>
@@ -75,7 +74,7 @@ export function InventoryDashboard() {
               <RefreshCw className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">18.2x</div>
+              <div className="num text-2xl font-semibold">18.2x</div>
               <p className="text-xs text-muted-foreground mt-1">Annualized rate</p>
             </CardContent>
           </Card>

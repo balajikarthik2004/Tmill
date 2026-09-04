@@ -25,7 +25,8 @@ import { formatDate, formatNumber, formatPct } from '@/lib/format'
 import type { QualityTest } from '@/types'
 
 const chartTooltipStyle = {
-  borderRadius: 8,
+  borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
   border: '1px solid hsl(var(--border))',
   fontSize: 12,
   background: 'hsl(var(--popover))',
@@ -251,9 +252,9 @@ export default function YarnQuality() {
                       type="monotone"
                       dataKey="csp"
                       name="Avg CSP"
-                      stroke="#2563eb"
+                      stroke="#0f6e56"
                       strokeWidth={2}
-                      dot={{ r: 2, fill: '#2563eb' }}
+                      dot={{ r: 2, fill: '#0f6e56' }}
                     />
                   </ComposedChart>
                 </ResponsiveContainer>
@@ -297,7 +298,7 @@ export default function YarnQuality() {
                       contentStyle={chartTooltipStyle}
                       formatter={(value) => [`${formatNumber(Number(value))} tests`, 'U% band']}
                     />
-                    <Bar dataKey="tests" name="Tests" radius={[4, 4, 0, 0]} maxBarSize={40} fill="#7c3aed" />
+                    <Bar dataKey="tests" name="Tests" radius={[4, 4, 0, 0]} maxBarSize={40} fill="#7c4a6e" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

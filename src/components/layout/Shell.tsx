@@ -13,7 +13,7 @@ export function Shell() {
   const location = useLocation()
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
+    <div className="flex h-screen w-full overflow-hidden">
       <div className="hidden lg:flex">
         <Sidebar />
       </div>
@@ -24,10 +24,9 @@ export function Shell() {
         </SheetContent>
       </Sheet>
 
-      <div className="flex min-w-0 flex-1 flex-col relative">
+      <div className="relative flex min-w-0 flex-1 flex-col">
         <Header onMenuClick={() => setMobileNavOpen(true)} />
-        <Breadcrumbs />
-        <main className="flex-1 overflow-y-auto relative">
+        <main className="scrollbar-thin relative flex-1 overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -37,6 +36,7 @@ export function Shell() {
               transition={{ duration: 0.2 }}
               className="h-full"
             >
+              <Breadcrumbs />
               <Outlet />
             </motion.div>
           </AnimatePresence>

@@ -4,16 +4,16 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PeriodDropdown } from '@/components/common/PeriodDropdown'
 import { formatNumber } from '@/lib/format'
+import { chartPalette } from '@/lib/chartColors'
 import type { ProductType } from '@/types'
 import type { ProductTypeSlice } from '@/services/productionService'
 
 const colors: Record<ProductType, string> = {
-  Single: '#2563eb',
-  Double: '#0d9488',
-  'Open End': '#d97706',
-  Compact: '#7c3aed',
-  Gassed: '#db2777',
-  // Fabric: '#16a34a',
+  Single: chartPalette[0],
+  Double: chartPalette[2],
+  'Open End': chartPalette[1],
+  Compact: chartPalette[3],
+  Gassed: chartPalette[4],
 }
 
 export function ProductDonut({ data, unit }: { data: ProductTypeSlice[]; unit: string }) {
@@ -40,9 +40,9 @@ export function ProductDonut({ data, unit }: { data: ProductTypeSlice[]; unit: s
                     data={data}
                     dataKey="qty"
                     nameKey="productType"
-                    innerRadius="68%"
+                    innerRadius="70%"
                     outerRadius="98%"
-                    paddingAngle={2}
+                    paddingAngle={2.5}
                     isAnimationActive={false}
                     onClick={(entry) => {
                       const productType = (entry as unknown as ProductTypeSlice).productType
@@ -51,7 +51,7 @@ export function ProductDonut({ data, unit }: { data: ProductTypeSlice[]; unit: s
                     className="cursor-pointer"
                   >
                     {data.map((slice) => (
-                      <Cell key={slice.productType} fill={colors[slice.productType]} stroke="hsl(var(--card))" />
+                      <Cell key={slice.productType} fill={colors[slice.productType]} stroke="hsl(var(--card))" strokeWidth={2} />
                     ))}
                   </Pie>
                   <Tooltip
@@ -60,7 +60,8 @@ export function ProductDonut({ data, unit }: { data: ProductTypeSlice[]; unit: s
                       return [`${formatNumber(n)} (${((n / total) * 100).toFixed(1)}%)`, String(name)]
                     }}
                     contentStyle={{
-                      borderRadius: 8,
+                      borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                       border: '1px solid hsl(var(--border))',
                       fontSize: 12,
                       background: 'hsl(var(--popover))',

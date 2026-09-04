@@ -9,9 +9,9 @@ export function AskTMillsButton() {
       <SheetTrigger asChild>
         <button
           type="button"
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-navy-900 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105 hover:bg-navy-800"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-linear-to-br from-forest-800 to-forest-950 px-4 py-3 text-sm font-semibold text-white shadow-xl ring-1 ring-white/10 transition-all hover:-translate-y-0.5 hover:shadow-2xl"
         >
-          <Sparkles className="h-4 w-4 text-brand-500" />
+          <Sparkles className="h-4 w-4 text-copper-300" />
           Ask T-Mills
         </button>
       </SheetTrigger>

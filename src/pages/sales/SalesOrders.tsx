@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress'
 import { DataTable } from '@/components/tables/DataTable'
 import { RiskBadge } from '@/components/tables/RiskBadge'
 import type { RiskLevel, SalesOrder } from '@/types'
+import { PageHeader } from '@/components/common/PageHeader'
 
 function ProgressCell({ value }: { value: number }) {
   return (
@@ -57,12 +58,10 @@ export default function SalesOrders() {
 
   return (
     <div className="space-y-4 p-4 lg:p-6">
-      <div>
-        <h1 className="text-lg font-bold text-foreground">Sales Orders</h1>
-        <p className="text-sm text-muted-foreground">
-          Track production progress against dispatch deadlines across all factories.
-        </p>
-      </div>
+      <PageHeader
+        title="Sales Orders"
+        description="Track production progress against dispatch deadlines across all factories."
+      />
 
       <div className="flex flex-wrap items-center gap-2">
         <button
@@ -71,7 +70,7 @@ export default function SalesOrders() {
           className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
             !riskParam
               ? 'bg-brand-600 text-white shadow-sm'
-              : 'bg-white text-muted-foreground border border-border hover:bg-brand-50 hover:text-brand-900'
+              : 'bg-card text-muted-foreground border border-border hover:border-brand-200 hover:bg-accent hover:text-foreground'
           }`}
         >
           All Orders
@@ -95,11 +94,11 @@ export default function SalesOrders() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Card className="p-3.5">
           <div className="text-xs text-muted-foreground">Orders shown</div>
-          <div className="text-lg font-bold tabular-nums text-foreground">{formatNumber(total)}</div>
+          <div className="num text-lg font-semibold text-foreground">{formatNumber(total)}</div>
         </Card>
         <Card className="p-3.5">
           <div className="text-xs text-muted-foreground">Total value</div>
-          <div className="text-lg font-bold tabular-nums text-foreground">
+          <div className="num text-lg font-semibold text-foreground">
             ₹{Intl.NumberFormat('en-IN', { notation: 'compact' }).format(totalValue)}
           </div>
         </Card>

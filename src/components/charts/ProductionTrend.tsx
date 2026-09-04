@@ -14,6 +14,7 @@ import { format } from 'date-fns'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PeriodDropdown } from '@/components/common/PeriodDropdown'
+import { chartMuted, chartPalette } from '@/lib/chartColors'
 import type { ProductionTrendPoint } from '@/services/productionService'
 
 interface Props {
@@ -73,7 +74,8 @@ export function ProductionTrend({ points, unit }: Props) {
                 <Tooltip
                   cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}
                   contentStyle={{
-                    borderRadius: 8,
+                    borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                     border: '1px solid hsl(var(--border))',
                     fontSize: 12,
                     background: 'hsl(var(--popover))',
@@ -85,10 +87,13 @@ export function ProductionTrend({ points, unit }: Props) {
                 />
                 <Bar dataKey="actual" name="Actual" radius={[4, 4, 0, 0]} maxBarSize={36} className="cursor-pointer">
                   {chartData.map((_, i) => (
-                    <Cell key={i} fill={i === chartData.length - 1 ? '#2563eb' : '#93c5fd'} />
+                    <Cell key={i} fill={i === chartData.length - 1 ? chartPalette[0] : chartMuted} />
                   ))}
                 </Bar>
-                <Line type="monotone" dataKey="target" name="Target" stroke="#d97706" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="target" name="Target" stroke={chartPalette[1]}
+                  strokeWidth={2}
+                  strokeDasharray="5 4"
+                  dot={false} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>

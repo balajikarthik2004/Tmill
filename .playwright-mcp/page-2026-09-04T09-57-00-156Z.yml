@@ -30,16 +30,16 @@
         - combobox [ref=f19e126]:
           - generic: Last 7 Days
         - button "Notifications" [ref=f19e129]
-        - button "BK Balaji Krishnan Managing Director" [ref=f19e130]:
+        - button "BK Hari Thiagarajan Managing Director" [ref=f19e130]:
           - generic [ref=f19e131]: BK
           - generic [ref=f19e133]:
-            - generic [ref=f19e134]: Balaji Krishnan
+            - generic [ref=f19e134]: Hari Thiagarajan
             - generic [ref=f19e135]: Managing Director
     - main [ref=f19e136]:
       - generic [ref=f19e137]:
         - generic [ref=f19e138]:
           - generic [ref=f19e139]:
-            - heading "Good Afternoon, Mr. Krishnan 👋" [level=1] [ref=f19e140]
+            - heading "Good Afternoon, Mr. Hari👋" [level=1] [ref=f19e140]
             - paragraph [ref=f19e141]: Here's what's happening at Thiagarajar Mills today.
           - generic [ref=f19e149]:
             - generic [ref=f19e150]: Fri, 4 Sep 2026

@@ -4,6 +4,7 @@ import { company, factories } from '@/mock'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatNumber } from '@/lib/format'
+import { PageHeader } from '@/components/common/PageHeader'
 
 export default function Administration() {
   const { headquarters, contact, infrastructure, exports } = company
@@ -12,23 +13,22 @@ export default function Administration() {
     { label: 'Facilities', value: formatNumber(infrastructure.facilities) },
     { label: 'Spindles', value: formatNumber(infrastructure.spindles) },
     { label: 'Rotors', value: formatNumber(infrastructure.rotors) },
-    { label: 'Looms', value: formatNumber(infrastructure.looms) },
     { label: 'Employees', value: `~${formatNumber(infrastructure.employees)}` },
     { label: 'Established', value: String(company.establishedYear) },
   ]
 
   return (
     <div className="space-y-4 p-4 lg:p-6">
-      <div>
-        <h1 className="text-lg font-bold text-foreground">Administration</h1>
-        <p className="text-sm text-muted-foreground">Company profile, plant registry and certifications.</p>
-      </div>
+      <PageHeader
+        title="Administration"
+        description="Company profile, plant registry and certifications."
+      />
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
         {stats.map((s) => (
           <Card key={s.label} className="p-3.5">
             <div className="text-xs text-muted-foreground">{s.label}</div>
-            <div className="mt-0.5 text-lg font-bold tabular-nums text-foreground">{s.value}</div>
+            <div className="mt-0.5 num text-lg font-semibold text-foreground">{s.value}</div>
           </Card>
         ))}
       </div>
@@ -132,7 +132,7 @@ export default function Administration() {
 
         <Card>
           <CardHeader className="flex-row items-center gap-2 space-y-0">
-            <Award className="h-4 w-4 text-amber-600" />
+            <Award className="h-4 w-4 text-copper-600" />
             <CardTitle>Awards &amp; Certifications</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">

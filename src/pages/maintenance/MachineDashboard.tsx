@@ -36,17 +36,18 @@ import { cn } from '@/lib/utils'
 import type { Machine, MachineStatus, ProcessName } from '@/types'
 
 const chartTooltipStyle = {
-  borderRadius: 8,
+  borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
   border: '1px solid hsl(var(--border))',
   fontSize: 12,
   background: 'hsl(var(--popover))',
 }
 
 const statusColors: Record<MachineStatus, string> = {
-  Running: '#16a34a',
-  Idle: '#d97706',
-  Breakdown: '#dc2626',
-  Maintenance: '#2563eb',
+  Running: '#4a8a3c',
+  Idle: '#b4632a',
+  Breakdown: '#b23a2f',
+  Maintenance: '#0f6e56',
 }
 
 const statusOrder: MachineStatus[] = ['Running', 'Idle', 'Breakdown', 'Maintenance']
@@ -67,9 +68,9 @@ const processOptions: ProcessName[] = [
 ]
 
 function oeeColor(pct: number) {
-  if (pct >= 88) return '#16a34a'
-  if (pct >= 80) return '#d97706'
-  return '#dc2626'
+  if (pct >= 88) return '#4a8a3c'
+  if (pct >= 80) return '#b4632a'
+  return '#b23a2f'
 }
 
 function oeeBarTone(pct: number) {

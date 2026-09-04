@@ -22,9 +22,9 @@ const origins: CottonOrigin[] = ['Indian extra-long staple', 'Egyptian Cotton', 
 const lotStatuses: CottonLot['status'][] = ['In Testing', 'Approved', 'In Use', 'Consumed', 'On Hold']
 
 const originColors: Record<CottonOrigin, string> = {
-  'Indian extra-long staple': '#2563eb',
-  'Egyptian Cotton': '#0d9488',
-  'US Pima': '#d97706',
+  'Indian extra-long staple': '#0f6e56',
+  'Egyptian Cotton': '#3a7d8c',
+  'US Pima': '#b4632a',
 }
 
 const statusVariant: Record<CottonLot['status'], 'warning' | 'success' | 'info' | 'secondary' | 'danger'> = {
@@ -310,7 +310,8 @@ export default function CottonLots() {
                       <Tooltip
                         formatter={(value, name) => [`${formatNumber(Number(value))} kg`, String(name)]}
                         contentStyle={{
-                          borderRadius: 8,
+                          borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                           border: '1px solid hsl(var(--border))',
                           fontSize: 12,
                           background: 'hsl(var(--popover))',

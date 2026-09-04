@@ -28,6 +28,28 @@ pnpm lint       # oxlint
 | Tables | TanStack Table v8 |
 | Dates | date-fns |
 
+## Design system
+
+**"Forest & Cream"** — defined entirely in `src/index.css` (`@theme` + `:root` tokens), so pages
+inherit it without local colour choices.
+
+| Role | Token / value |
+| --- | --- |
+| Shell (sidebar, dark surfaces) | `forest-950 → forest-900` ink green |
+| Canvas | warm cream `#f6f4ef` with two very soft emerald/copper blooms |
+| Surface | white cards, hairline `border` (warm, not blue-grey), soft ink shadows |
+| Primary | emerald `brand-500` `#0f6e56` |
+| Accent | copper `copper-500` `#b4632a` — active markers, eyebrow labels, target lines |
+| Status | `success` moss · `warning` amber · `danger` brick · `info` slate-teal |
+| Charts | `src/lib/chartColors.ts` — six earthy categorical hues, cream-safe |
+| Display type | **Sora** (headings, KPI figures via the `.num` utility) |
+| UI type | **Inter** (body, tables, controls), tabular figures everywhere |
+| Radius / elevation | `--radius: 0.75rem`; warm-ink shadow ramp `shadow-xs … shadow-2xl` |
+
+Utilities worth knowing: `.paper-card` (aliased as `.glass-card`) for the house card treatment,
+`.hover-lift` for interactive cards, `.num` for display-font figures, `.section-label` for eyebrow
+labels, `.weave` for the woven-cloth texture on dark hero surfaces.
+
 ## Architecture
 
 ```

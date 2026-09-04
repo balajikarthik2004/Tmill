@@ -18,9 +18,9 @@ import { cn } from '@/lib/utils'
 import type { CottonOrigin, StockMovement } from '@/types'
 
 const originColors: Record<CottonOrigin, string> = {
-  'Indian extra-long staple': '#2563eb',
-  'Egyptian Cotton': '#0d9488',
-  'US Pima': '#d97706',
+  'Indian extra-long staple': '#0f6e56',
+  'Egyptian Cotton': '#3a7d8c',
+  'US Pima': '#b4632a',
 }
 
 /** Lots still physically in the godown — anything not yet fully consumed. */
@@ -142,7 +142,7 @@ export default function RawMaterials() {
                 <div className="flex items-end justify-between">
                   <div>
                     <div className="text-xs text-muted-foreground">Current stock</div>
-                    <div className="text-2xl font-bold tabular-nums text-foreground">
+                    <div className="num text-2xl font-semibold text-foreground">
                       {formatNumber(cotton.currentQty)} <span className="text-base font-medium">{cotton.unit}</span>
                     </div>
                   </div>
@@ -211,7 +211,8 @@ export default function RawMaterials() {
                           return [`${formatNumber(n)} kg (${formatPct((n / totalOnHandKg) * 100, 1)})`, String(name)]
                         }}
                         contentStyle={{
-                          borderRadius: 8,
+                          borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                           border: '1px solid hsl(var(--border))',
                           fontSize: 12,
                           background: 'hsl(var(--popover))',

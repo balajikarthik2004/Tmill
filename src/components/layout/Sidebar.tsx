@@ -36,19 +36,23 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col bg-gradient-to-b from-[#011142] via-[#011C6B] to-[#011142] text-brand-50 shadow-[4px_0_24px_rgba(1,17,66,0.2)] z-20 border-r border-[#01258F]/30">
-      <div className="flex h-16 items-center gap-2.5 border-b border-[#01258F]/30 px-5 bg-[#011142]/40 backdrop-blur-sm">
-        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[#023BE6] text-white shadow-sm ring-1 ring-white/20">
-          <Leaf className="h-5 w-5" />
+    <aside className="relative z-20 flex h-full w-64 shrink-0 flex-col bg-linear-to-b from-forest-950 via-forest-900 to-forest-950 text-forest-100">
+      {/* Brand */}
+      <div className="relative flex h-16 items-center gap-3 border-b border-white/8 px-5">
+        <div className="weave pointer-events-none absolute inset-0 opacity-60" />
+        <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-brand-400 to-brand-600 text-white shadow-md ring-1 ring-white/15">
+          <Leaf className="h-4.5 w-4.5" />
         </div>
-        <div className="leading-tight">
-          <div className="text-[13px] font-bold tracking-wide text-white">THIAGARAJAR MILLS</div>
-          <div className="text-[10px] font-medium text-brand-200">Setting Standards. Exceeding Excellence.</div>
+        <div className="relative leading-tight">
+          <div className="font-display text-[13px] font-semibold tracking-wide text-white">
+            THIAGARAJAR MILLS
+          </div>
+          <div className="text-[10px] font-medium text-copper-300">Setting Standards. Exceeding Excellence.</div>
         </div>
       </div>
 
       <ScrollArea className="flex-1">
-        <nav className="flex flex-col gap-1 p-3">
+        <nav className="flex flex-col gap-0.5 p-3">
           {navTree.map((section) => {
             const Icon = section.icon
             if (!section.children) {
@@ -59,13 +63,26 @@ export function Sidebar() {
                   end={section.path === '/'}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium text-brand-100/80 transition-all hover:bg-[#01258F]/40 hover:text-white',
-                      isActive && 'bg-[#0231BD] text-white shadow-md ring-1 ring-white/10',
+                      'group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium text-forest-200 transition-colors',
+                      'hover:bg-white/6 hover:text-white',
+                      isActive && 'bg-white/10 font-semibold text-white',
                     )
                   }
                 >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  <span className="truncate">{section.label}</span>
+                  {({ isActive }) => (
+                    <>
+                      {isActive && (
+                        <span className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full bg-copper-400" />
+                      )}
+                      <Icon
+                        className={cn(
+                          'h-4 w-4 shrink-0 transition-colors',
+                          isActive ? 'text-copper-300' : 'text-forest-300 group-hover:text-forest-100',
+                        )}
+                      />
+                      <span className="truncate">{section.label}</span>
+                    </>
+                  )}
                 </NavLink>
               )
             }
@@ -74,20 +91,29 @@ export function Sidebar() {
             const sectionIsActive = isSectionActive(section.children.map((c) => c.path), location.pathname)
 
             return (
-              <div key={section.label} className="flex flex-col gap-0.5">
+              <div key={section.label} className="flex flex-col">
                 <button
                   type="button"
                   onClick={() => toggleSection(section.label)}
                   className={cn(
-                    'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13px] font-medium text-brand-100/80 transition-all hover:bg-[#01258F]/40 hover:text-white',
-                    sectionIsActive && !isOpen && 'text-white font-semibold',
+                    'group flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13px] font-medium text-forest-200 transition-colors',
+                    'hover:bg-white/6 hover:text-white',
+                    sectionIsActive && 'text-white',
                   )}
                   aria-expanded={isOpen}
                 >
-                  <Icon className="h-4 w-4 shrink-0" />
+                  <Icon
+                    className={cn(
+                      'h-4 w-4 shrink-0 transition-colors',
+                      sectionIsActive ? 'text-copper-300' : 'text-forest-300 group-hover:text-forest-100',
+                    )}
+                  />
                   <span className="flex-1 truncate">{section.label}</span>
                   <ChevronDown
-                    className={cn('h-3.5 w-3.5 shrink-0 transition-transform duration-300', isOpen && 'rotate-180')}
+                    className={cn(
+                      'h-3.5 w-3.5 shrink-0 text-forest-400 transition-transform duration-300',
+                      isOpen && 'rotate-180 text-forest-200',
+                    )}
                   />
                 </button>
                 <AnimatePresence initial={false}>
@@ -99,19 +125,27 @@ export function Sidebar() {
                       transition={{ duration: 0.2, ease: 'easeInOut' }}
                       className="overflow-hidden"
                     >
-                      <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l border-[#01258F]/50 pl-3.5 mb-1">
+                      <div className="mb-1 ml-[1.65rem] mt-0.5 flex flex-col gap-0.5 border-l border-white/10 pl-3">
                         {section.children.map((child) => (
                           <NavLink
                             key={child.path}
                             to={child.path}
                             className={({ isActive }) =>
                               cn(
-                                'rounded-md px-3 py-1.5 text-[12.5px] font-medium text-brand-200/70 transition-all hover:bg-[#01258F]/40 hover:text-white',
-                                isActive && 'bg-[#0231BD] text-white shadow-sm ring-1 ring-white/10',
+                                'relative rounded-md px-2.5 py-1.5 text-[12.5px] font-medium text-forest-300 transition-colors',
+                                'hover:bg-white/6 hover:text-white',
+                                isActive && 'bg-brand-500/25 font-semibold text-white',
                               )
                             }
                           >
-                            {child.label}
+                            {({ isActive }) => (
+                              <>
+                                {isActive && (
+                                  <span className="absolute -left-3 top-1/2 h-4 w-[2px] -translate-y-1/2 rounded-full bg-copper-400" />
+                                )}
+                                {child.label}
+                              </>
+                            )}
                           </NavLink>
                         ))}
                       </div>
@@ -124,17 +158,21 @@ export function Sidebar() {
         </nav>
       </ScrollArea>
 
-      <div className="flex items-center gap-2.5 border-t border-[#01258F]/30 px-4 py-3.5 bg-[#011142]/60 backdrop-blur-md">
-        <Leaf className="h-6 w-6 shrink-0 text-[#023BE6]" />
-        <div className="leading-tight">
-          <div className="text-[12px] font-semibold text-white">Threading together</div>
-          <div className="text-[11px] text-brand-200">Tradition &amp; Technology</div>
+      {/* Footer */}
+      <div className="border-t border-white/8 px-4 py-3.5">
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-white/8 text-copper-300">
+            <Leaf className="h-3.5 w-3.5" />
+          </span>
+          <div className="leading-tight">
+            <div className="text-[12px] font-semibold text-white">Threading together</div>
+            <div className="text-[11px] text-forest-300">Tradition &amp; Technology</div>
+          </div>
         </div>
-      </div>
-      <div className="px-4 py-3 text-center text-[10.5px] text-brand-300/80 bg-[#011142]">
-        © {new Date().getFullYear()} Thiagarajar Mills (P) Ltd.
+        <div className="mt-3 text-[10.5px] text-forest-400">
+          © {new Date().getFullYear()} Thiagarajar Mills (P) Ltd.
+        </div>
       </div>
     </aside>
   )
 }
-

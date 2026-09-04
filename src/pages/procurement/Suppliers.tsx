@@ -61,19 +61,19 @@ function SupplierDetail({ supplier }: { supplier: Supplier }) {
       <div className="grid grid-cols-2 gap-2.5">
         <div className="rounded-md border border-border p-3">
           <div className="text-xs text-muted-foreground">Purchase orders on file</div>
-          <div className="text-lg font-bold tabular-nums text-foreground">{formatNumber(orders.data?.length ?? 0)}</div>
+          <div className="num text-lg font-semibold text-foreground">{formatNumber(orders.data?.length ?? 0)}</div>
         </div>
         <div className="rounded-md border border-border p-3">
           <div className="text-xs text-muted-foreground">Lifetime POs</div>
-          <div className="text-lg font-bold tabular-nums text-foreground">{formatNumber(supplier.totalPOs)}</div>
+          <div className="num text-lg font-semibold text-foreground">{formatNumber(supplier.totalPOs)}</div>
         </div>
         <div className="rounded-md border border-border p-3">
           <div className="text-xs text-muted-foreground">Ordered value</div>
-          <div className="text-lg font-bold tabular-nums text-foreground">{formatInrCompact(totalValue)}</div>
+          <div className="num text-lg font-semibold text-foreground">{formatInrCompact(totalValue)}</div>
         </div>
         <div className="rounded-md border border-border p-3">
           <div className="text-xs text-muted-foreground">Open commitment</div>
-          <div className="text-lg font-bold tabular-nums text-foreground">{formatInrCompact(openValue)}</div>
+          <div className="num text-lg font-semibold text-foreground">{formatInrCompact(openValue)}</div>
         </div>
       </div>
 

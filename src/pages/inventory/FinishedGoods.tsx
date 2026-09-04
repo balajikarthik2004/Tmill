@@ -15,10 +15,11 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formatDate, formatNumber, formatPct } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { InventoryCategory, InventorySummary, StockMovement } from '@/types'
+import { chartPalette } from '@/lib/chartColors'
 
 const finishedCategories: InventoryCategory[] = ['Finished Yarn', 'Fabric']
 
-const sliceColors = ['#2563eb', '#0d9488', '#d97706', '#7c3aed', '#db2777', '#16a34a']
+const sliceColors = [...chartPalette]
 
 const receiptTypes = new Set(['Prod Receipt', 'GRN'])
 
@@ -48,7 +49,7 @@ function PositionCard({ summary, icon: Icon }: { summary: InventorySummary; icon
         <div className="flex items-end justify-between">
           <div>
             <div className="text-xs text-muted-foreground">Current stock</div>
-            <div className="text-2xl font-bold tabular-nums text-foreground">
+            <div className="num text-2xl font-semibold text-foreground">
               {formatNumber(summary.currentQty)} <span className="text-base font-medium">{summary.unit}</span>
             </div>
           </div>
@@ -327,7 +328,8 @@ export default function FinishedGoods() {
                           return [`${formatNumber(n)} MT (${formatPct((n / yarnProduced) * 100, 1)})`, String(name)]
                         }}
                         contentStyle={{
-                          borderRadius: 8,
+                          borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                           border: '1px solid hsl(var(--border))',
                           fontSize: 12,
                           background: 'hsl(var(--popover))',

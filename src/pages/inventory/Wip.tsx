@@ -161,7 +161,7 @@ export default function Wip() {
                 <div className="flex items-end justify-between">
                   <div>
                     <div className="text-xs text-muted-foreground">Held on the line</div>
-                    <div className="text-2xl font-bold tabular-nums text-foreground">
+                    <div className="num text-2xl font-semibold text-foreground">
                       {formatNumber(wip.currentQty)} <span className="text-base font-medium">{wip.unit}</span>
                     </div>
                   </div>
@@ -227,7 +227,8 @@ export default function Wip() {
                     <Tooltip
                       cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}
                       contentStyle={{
-                        borderRadius: 8,
+                        borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                         border: '1px solid hsl(var(--border))',
                         fontSize: 12,
                         background: 'hsl(var(--popover))',
@@ -235,9 +236,9 @@ export default function Wip() {
                       formatter={(value, name) => [`${formatNumber(Number(value))} MT`, String(name)]}
                     />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
-                    <Bar dataKey="received" name="Received" fill="#2563eb" radius={[4, 4, 0, 0]} maxBarSize={40} />
-                    <Bar dataKey="consumed" name="Consumed" fill="#d97706" radius={[4, 4, 0, 0]} maxBarSize={40} />
-                    <Bar dataKey="transferred" name="Transferred" fill="#0d9488" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                    <Bar dataKey="received" name="Received" fill="#0f6e56" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                    <Bar dataKey="consumed" name="Consumed" fill="#b4632a" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                    <Bar dataKey="transferred" name="Transferred" fill="#3a7d8c" radius={[4, 4, 0, 0]} maxBarSize={40} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

@@ -27,22 +27,23 @@ import { formatDate, formatKg, formatNumber, formatPct } from '@/lib/format'
 import { cn } from '@/lib/utils'
 
 const resultColors: Record<string, string> = {
-  Pass: '#16a34a',
-  Rework: '#d97706',
-  Fail: '#dc2626',
+  Pass: '#4a8a3c',
+  Rework: '#b4632a',
+  Fail: '#b23a2f',
 }
 
 const chartTooltipStyle = {
-  borderRadius: 8,
+  borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
   border: '1px solid hsl(var(--border))',
   fontSize: 12,
   background: 'hsl(var(--popover))',
 }
 
 function stageBarColor(pct: number) {
-  if (pct >= 90) return '#16a34a'
-  if (pct >= 80) return '#d97706'
-  return '#dc2626'
+  if (pct >= 90) return '#4a8a3c'
+  if (pct >= 80) return '#b4632a'
+  return '#b23a2f'
 }
 
 function passRateTone(pct: number) {
@@ -317,7 +318,7 @@ export default function QualityDashboard() {
                       contentStyle={chartTooltipStyle}
                       formatter={(value) => [formatKg(Number(value)), 'Rejected']}
                     />
-                    <Bar dataKey="qtyKg" name="Rejected" radius={[0, 4, 4, 0]} maxBarSize={18} fill="#dc2626" />
+                    <Bar dataKey="qtyKg" name="Rejected" radius={[0, 4, 4, 0]} maxBarSize={18} fill="#b23a2f" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

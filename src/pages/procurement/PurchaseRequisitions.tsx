@@ -126,7 +126,7 @@ export default function PurchaseRequisitions() {
                 <ClipboardList className="h-3.5 w-3.5" />
                 All requisitions
               </div>
-              <div className="mt-0.5 text-lg font-bold tabular-nums text-foreground">{formatNumber(total)}</div>
+              <div className="mt-0.5 num text-lg font-semibold text-foreground">{formatNumber(total)}</div>
             </Card>
           </button>
           {prStatuses.map((s) => (
@@ -138,7 +138,7 @@ export default function PurchaseRequisitions() {
                 )}
               >
                 <div className="truncate text-xs text-muted-foreground">{s}</div>
-                <div className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
+                <div className="mt-0.5 num text-lg font-semibold text-foreground">
                   {formatNumber(countsByStatus.get(s) ?? 0)}
                 </div>
               </Card>

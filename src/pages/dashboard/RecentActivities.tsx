@@ -16,11 +16,11 @@ import type { Activity, ActivityType } from '@/types'
 
 const iconByType: Record<ActivityType, { icon: typeof FileText; color: string }> = {
   'SO Received': { icon: ShoppingBag, color: 'text-info-600 bg-info-50' },
-  'PO Started': { icon: ClipboardCheck, color: 'text-violet-600 bg-violet-100' },
-  'Quality Test': { icon: FlaskConical, color: 'text-teal-600 bg-teal-100' },
+  'PO Started': { icon: ClipboardCheck, color: 'text-copper-600 bg-copper-50' },
+  'Quality Test': { icon: FlaskConical, color: 'text-info-600 bg-info-50' },
   'Material Received': { icon: PackageCheck, color: 'text-success-600 bg-success-50' },
-  'Invoice Generated': { icon: FileText, color: 'text-amber-600 bg-amber-100' },
-  'Dispatch Completed': { icon: Truck, color: 'text-indigo-600 bg-indigo-100' },
+  'Invoice Generated': { icon: FileText, color: 'text-warning-600 bg-warning-50' },
+  'Dispatch Completed': { icon: Truck, color: 'text-forest-600 bg-forest-50' },
 }
 
 export function RecentActivities({ activities, isLoading }: { activities: Activity[]; isLoading?: boolean }) {

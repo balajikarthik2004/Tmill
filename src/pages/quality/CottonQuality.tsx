@@ -26,7 +26,8 @@ import type { QualityTest } from '@/types'
 import { cottonInstruments } from '@/types'
 
 const chartTooltipStyle = {
-  borderRadius: 8,
+  borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
   border: '1px solid hsl(var(--border))',
   fontSize: 12,
   background: 'hsl(var(--popover))',
@@ -258,7 +259,7 @@ export default function CottonQuality() {
                     />
                     <Bar dataKey="tests" name="Tests" radius={[4, 4, 0, 0]} maxBarSize={44}>
                       {micronaireDistribution.map((band) => (
-                        <Cell key={band.label} fill={band.premium ? '#16a34a' : '#93c5fd'} />
+                        <Cell key={band.label} fill={band.premium ? '#4a8a3c' : '#93c3b2'} />
                       ))}
                     </Bar>
                   </BarChart>
@@ -303,7 +304,7 @@ export default function CottonQuality() {
                       contentStyle={chartTooltipStyle}
                       formatter={(value) => [`${formatNumber(Number(value))} tests`, 'Staple band']}
                     />
-                    <Bar dataKey="tests" name="Tests" radius={[4, 4, 0, 0]} maxBarSize={44} fill="#0d9488" />
+                    <Bar dataKey="tests" name="Tests" radius={[4, 4, 0, 0]} maxBarSize={44} fill="#3a7d8c" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

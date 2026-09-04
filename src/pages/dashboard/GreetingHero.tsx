@@ -14,22 +14,31 @@ export function GreetingHero({ firstName }: { firstName: string }) {
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch">
       <div className="flex flex-col justify-center gap-1 lg:w-2/5">
-        <h1 className="text-xl font-bold tracking-tight text-foreground lg:text-2xl">
-          {greeting}, {firstName} 👋
+        <div className="section-label text-copper-600">Executive Command Center</div>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground lg:text-[1.75rem]">
+          {greeting}, {firstName}
         </h1>
-        <p className="text-sm text-muted-foreground">Here&apos;s what&apos;s happening at Thiagarajar Mills today.</p>
+        <p className="text-sm text-muted-foreground">
+          Here&apos;s what&apos;s happening at Thiagarajar Mills today.
+        </p>
       </div>
 
-      <div className="relative flex-1 overflow-hidden rounded-xl bg-linear-to-r from-navy-800 via-success-600 to-info-600">
-        <div className="absolute -right-10 -top-12 h-44 w-44 rounded-full bg-white/10" />
-        <div className="absolute -bottom-14 right-28 h-32 w-32 rounded-full bg-white/10" />
-        <div className="absolute bottom-4 right-52 h-16 w-16 rounded-full bg-white/5" />
-        <Sprout className="absolute -bottom-5 left-4 h-28 w-28 text-white/10" />
-        <div className="relative flex h-full min-h-28 flex-col justify-between gap-2 p-5 text-right">
-          <div className="text-xs font-medium text-white/80">{format(now, 'EEE, d MMM yyyy')}</div>
-          <div className="leading-relaxed text-white">
-            <div className="text-sm font-semibold uppercase tracking-wide">Setting Standards. Exceeding Excellence</div>
-            <div className="text-xs text-white/80">
+      <div className="relative flex-1 overflow-hidden rounded-2xl bg-linear-to-br from-forest-950 via-forest-800 to-forest-900 shadow-lg ring-1 ring-forest-700/50">
+        <div className="weave pointer-events-none absolute inset-0 opacity-70" />
+        <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-brand-400/15 blur-2xl" />
+        <div className="pointer-events-none absolute -bottom-20 right-24 h-40 w-40 rounded-full bg-copper-400/15 blur-2xl" />
+        <Sprout className="pointer-events-none absolute -bottom-4 left-5 h-28 w-28 text-white/8" />
+
+        <div className="relative flex h-full min-h-32 flex-col justify-between gap-3 p-5 text-right">
+          <div className="flex items-center justify-end gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-copper-400" />
+            <span className="text-xs font-medium text-forest-200">{format(now, 'EEE, d MMM yyyy')}</span>
+          </div>
+          <div className="leading-relaxed">
+            <div className="font-display text-sm font-semibold uppercase tracking-[0.14em] text-white">
+              Setting Standards. Exceeding Excellence
+            </div>
+            <div className="mt-1 text-xs text-forest-200">
               100% Indian cotton yarn since 1936 · Kappalur, Madurai
             </div>
           </div>

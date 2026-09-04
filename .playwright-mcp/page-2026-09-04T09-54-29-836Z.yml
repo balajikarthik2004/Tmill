@@ -40,10 +40,10 @@
         - combobox [ref=f16e131]:
           - generic: Last 7 Days
         - button "Notifications" [ref=f16e134]
-        - button "BK Balaji Krishnan Managing Director" [ref=f16e135]:
+        - button "BK Hari Thiagarajan Managing Director" [ref=f16e135]:
           - generic [ref=f16e136]: BK
           - generic [ref=f16e138]:
-            - generic [ref=f16e139]: Balaji Krishnan
+            - generic [ref=f16e139]: Hari Thiagarajan
             - generic [ref=f16e140]: Managing Director
     - generic [ref=f16e141]:
       - link "Dashboard" [ref=f16e142] [cursor=pointer]:

@@ -20,11 +20,11 @@ import { cn } from '@/lib/utils'
 import type { Customer } from '@/types'
 
 const regionColors: Record<string, string> = {
-  Europe: '#2563eb',
-  America: '#0d9488',
-  'South Asia': '#d97706',
-  Australia: '#7c3aed',
-  Domestic: '#16a34a',
+  Europe: '#0f6e56',
+  America: '#3a7d8c',
+  'South Asia': '#b4632a',
+  Australia: '#7c4a6e',
+  Domestic: '#4a8a3c',
 }
 
 const currencySymbols: Record<Customer['currency'], string> = { INR: '₹', USD: '$', EUR: '€' }
@@ -188,7 +188,7 @@ export default function Customers() {
           <span className="flex items-center gap-1.5">
             <span
               className="h-2 w-2 shrink-0 rounded-full"
-              style={{ backgroundColor: regionColors[row.original.region ?? 'Domestic'] ?? '#94a3b8' }}
+              style={{ backgroundColor: regionColors[row.original.region ?? 'Domestic'] ?? '#9aa39b' }}
             />
             {row.original.region ?? 'Domestic'}
           </span>
@@ -299,13 +299,14 @@ export default function Customers() {
                         isAnimationActive={false}
                       >
                         {byRegion.map((r) => (
-                          <Cell key={r.region} fill={regionColors[r.region] ?? '#94a3b8'} stroke="hsl(var(--card))" />
+                          <Cell key={r.region} fill={regionColors[r.region] ?? '#9aa39b'} stroke="hsl(var(--card))" />
                         ))}
                       </Pie>
                       <Tooltip
                         formatter={(value, name) => [`${formatNumber(Number(value))} customers`, String(name)]}
                         contentStyle={{
-                          borderRadius: 8,
+                          borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                           border: '1px solid hsl(var(--border))',
                           fontSize: 12,
                           background: 'hsl(var(--popover))',
@@ -326,7 +327,7 @@ export default function Customers() {
                       <span className="flex items-center gap-1.5">
                         <span
                           className="h-2 w-2 rounded-full"
-                          style={{ backgroundColor: regionColors[r.region] ?? '#94a3b8' }}
+                          style={{ backgroundColor: regionColors[r.region] ?? '#9aa39b' }}
                         />
                         <span className="font-medium text-foreground">{r.region}</span>
                       </span>

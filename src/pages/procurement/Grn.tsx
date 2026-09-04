@@ -156,7 +156,7 @@ export default function Grn() {
                 <PackageCheck className="h-3.5 w-3.5" />
                 All receipts
               </div>
-              <div className="mt-0.5 text-lg font-bold tabular-nums text-foreground">{formatNumber(total)}</div>
+              <div className="mt-0.5 num text-lg font-semibold text-foreground">{formatNumber(total)}</div>
             </Card>
           </button>
           {grnStatuses.map((s) => (
@@ -168,7 +168,7 @@ export default function Grn() {
                 )}
               >
                 <div className="truncate text-xs text-muted-foreground">{s}</div>
-                <div className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
+                <div className="mt-0.5 num text-lg font-semibold text-foreground">
                   {formatNumber(countsByStatus.get(s) ?? 0)}
                 </div>
               </Card>
@@ -176,7 +176,7 @@ export default function Grn() {
           ))}
           <Card className="h-full p-3">
             <div className="truncate text-xs text-muted-foreground">Overall acceptance</div>
-            <div className="mt-0.5 text-lg font-bold tabular-nums text-foreground">{formatPct(overallAcceptance, 1)}</div>
+            <div className="mt-0.5 num text-lg font-semibold text-foreground">{formatPct(overallAcceptance, 1)}</div>
           </Card>
         </div>
       )}

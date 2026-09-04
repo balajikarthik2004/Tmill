@@ -40,9 +40,9 @@ const processNames: ProcessName[] = [
 ]
 
 function bandColor(pct: number) {
-  if (pct >= 95) return '#16a34a'
-  if (pct >= 85) return '#d97706'
-  return '#dc2626'
+  if (pct >= 95) return '#4a8a3c'
+  if (pct >= 85) return '#b4632a'
+  return '#b23a2f'
 }
 
 function bandClass(pct: number) {
@@ -257,7 +257,7 @@ export default function CapacityPlanning() {
                       <div className="mt-0.5 text-xs text-muted-foreground">{u.countGroup}</div>
                     </div>
                     <div className="shrink-0 text-right">
-                      <div className="text-lg font-bold tabular-nums text-foreground">
+                      <div className="num text-lg font-semibold text-foreground">
                         {formatPct(u.achievedPct)}
                       </div>
                       <div className="text-[11px] text-muted-foreground">of 30-day target</div>
@@ -339,7 +339,8 @@ export default function CapacityPlanning() {
                     <Tooltip
                       cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}
                       contentStyle={{
-                        borderRadius: 8,
+                        borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                         border: '1px solid hsl(var(--border))',
                         fontSize: 12,
                         background: 'hsl(var(--popover))',
@@ -354,7 +355,7 @@ export default function CapacityPlanning() {
                         <Cell key={d.name} fill={bandColor(d.achievedPct)} />
                       ))}
                     </Bar>
-                    <Line type="monotone" dataKey="plan" name="Plan" stroke="#d97706" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="plan" name="Plan" stroke="#b4632a" strokeWidth={2} dot={false} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </div>

@@ -22,15 +22,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formatDate, formatKg, formatNumber } from '@/lib/format'
 import type { Rejection } from '@/types'
+import { chartPalette } from '@/lib/chartColors'
 
 const chartTooltipStyle = {
-  borderRadius: 8,
+  borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
   border: '1px solid hsl(var(--border))',
   fontSize: 12,
   background: 'hsl(var(--popover))',
 }
 
-const unitColors = ['#2563eb', '#0d9488', '#7c3aed', '#d97706', '#db2777']
+const unitColors = [...chartPalette]
 
 export default function Rejections() {
   const rejections = useAsync(getRejections, [])
@@ -168,7 +170,7 @@ export default function Rejections() {
                       contentStyle={chartTooltipStyle}
                       formatter={(value) => [formatKg(Number(value)), 'Rejected']}
                     />
-                    <Bar dataKey="qtyKg" name="Rejected" radius={[0, 4, 4, 0]} maxBarSize={20} fill="#dc2626" />
+                    <Bar dataKey="qtyKg" name="Rejected" radius={[0, 4, 4, 0]} maxBarSize={20} fill="#b23a2f" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

@@ -1,55 +1,118 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* ==========================================================================
+   T-MILLS ERP — "Forest & Cream" design system
+   Type   Sora (display / figures) + Inter (UI, body, tables)
+   Color  deep ink-green shell · warm cream canvas · emerald primary ·
+          copper accent · earthy categorical chart palette
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
 @theme {
-  --font-sans:
-    'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  /* ---------- Type ---------- */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Sora', 'Inter', system-ui, sans-serif;
 
-  /* Brand deep forest-green family (legacy, kept for fallback) */
-  --color-navy-950: #050f0c;
+  /* ---------- Forest: the shell (sidebar, dark surfaces) ---------- */
+  --color-forest-50: #edf5f0;
+  --color-forest-100: #d5e5dc;
+  --color-forest-200: #a6c7b7;
+  --color-forest-300: #6ba18a;
+  --color-forest-400: #3c7a62;
+  --color-forest-500: #235c48;
+  --color-forest-600: #1a4737;
+  --color-forest-700: #13372c;
+  --color-forest-800: #0e2b22;
+  --color-forest-900: #0a1f19;
+  --color-forest-950: #06120e;
+
+  /* Legacy alias — `navy-*` classes across the app resolve to the forest ramp */
+  --color-navy-50: #edf5f0;
+  --color-navy-100: #d5e5dc;
+  --color-navy-200: #a6c7b7;
+  --color-navy-300: #6ba18a;
+  --color-navy-400: #3c7a62;
+  --color-navy-500: #235c48;
+  --color-navy-600: #1a4737;
+  --color-navy-700: #13372c;
+  --color-navy-800: #0e2b22;
   --color-navy-900: #0a1f19;
-  --color-navy-800: #0f2b23;
-  --color-navy-700: #15382d;
-  --color-navy-600: #1c4a3c;
-  --color-navy-500: #276353;
-  --color-navy-400: #4d8672;
-  --color-navy-300: #82ab9a;
-  --color-navy-200: #b3cec2;
-  --color-navy-100: #dbe9e3;
+  --color-navy-950: #06120e;
 
-  /* Primary accent — custom royal blue */
-  --color-brand-50: #e6ecfa;
-  --color-brand-100: #ccd9f5;
-  --color-brand-200: #99b3eb;
-  --color-brand-300: #668ce0;
-  --color-brand-400: #3366d6;
-  --color-brand-500: #023be6; /* #023BE6 */
-  --color-brand-600: #0231bd; /* #0231BD */
-  --color-brand-700: #01258f; /* #01258F */
-  --color-brand-800: #011c6b; /* #011C6B */
-  --color-brand-900: #011142; /* #011142 */
-  --color-brand-950: #000824;
+  /* ---------- Brand: emerald primary ---------- */
+  --color-brand-50: #e8f3ee;
+  --color-brand-100: #cbe5da;
+  --color-brand-200: #9bcbb6;
+  --color-brand-300: #63ac90;
+  --color-brand-400: #2c8a6b;
+  --color-brand-500: #0f6e56;
+  --color-brand-600: #0b5b47;
+  --color-brand-700: #084839;
+  --color-brand-800: #06372c;
+  --color-brand-900: #04261e;
+  --color-brand-950: #021712;
 
-  /* Semantic status colors */
-  --color-success-50: #ecfdf3;
-  --color-success-500: #16a34a;
-  --color-success-600: #15803d;
-  --color-warning-50: #fffbeb;
-  --color-warning-500: #d97706;
-  --color-warning-600: #b45309;
-  --color-danger-50: #fef2f2;
-  --color-danger-500: #dc2626;
-  --color-danger-600: #b91c1c;
-  --color-info-50: #eff6ff;
-  --color-info-500: #2563eb;
-  --color-info-600: #1d4ed8;
+  /* ---------- Copper: the accent ---------- */
+  --color-copper-50: #fbf2ea;
+  --color-copper-100: #f4dfcc;
+  --color-copper-200: #e7bf9c;
+  --color-copper-300: #d79e6c;
+  --color-copper-400: #c77e44;
+  --color-copper-500: #b4632a;
+  --color-copper-600: #954f20;
+  --color-copper-700: #763e1a;
+  --color-copper-800: #572d13;
+  --color-copper-900: #3b1e0d;
 
-  /* Additional accent hues */
-  --color-violet-tint: #7c3aed;
-  --color-amber-tint: #d97706;
-  --color-teal-tint: #0d9488;
-  --color-indigo-tint: #4f46e5;
+  /* ---------- Semantic status ---------- */
+  --color-success-50: #eef5e9;
+  --color-success-100: #dbebd0;
+  --color-success-500: #4a8a3c;
+  --color-success-600: #3c7331;
+  --color-success-700: #2f5a27;
+
+  --color-warning-50: #fbf2e3;
+  --color-warning-100: #f6e4c4;
+  --color-warning-500: #b4761a;
+  --color-warning-600: #955f14;
+  --color-warning-700: #77490f;
+
+  --color-danger-50: #fbeceb;
+  --color-danger-100: #f6d8d4;
+  --color-danger-500: #b23a2f;
+  --color-danger-600: #942c23;
+  --color-danger-700: #75211a;
+
+  --color-info-50: #eaf2f4;
+  --color-info-100: #d2e5e9;
+  --color-info-500: #3a7d8c;
+  --color-info-600: #2e6672;
+  --color-info-700: #24505a;
+
+  /* ---------- Categorical chart ramp (earthy, cream-safe) ---------- */
+  --color-chart-1: #0f6e56;
+  --color-chart-2: #b4632a;
+  --color-chart-3: #3a7d8c;
+  --color-chart-4: #7c4a6e;
+  --color-chart-5: #4a6fa5;
+  --color-chart-6: #4a8a3c;
+  --color-chart-muted: #93c3b2;
+
+  /* ---------- Single-hue accents kept from the old theme ---------- */
+  --color-violet-tint: #7c4a6e;
+  --color-amber-tint: #b4761a;
+  --color-teal-tint: #3a7d8c;
+  --color-indigo-tint: #4a6fa5;
+
+  /* ---------- Elevation: warm ink, never blue-grey ---------- */
+  --shadow-2xs: 0 1px 1px 0 rgb(26 33 29 / 0.03);
+  --shadow-xs: 0 1px 2px 0 rgb(26 33 29 / 0.04);
+  --shadow-sm: 0 1px 2px 0 rgb(26 33 29 / 0.05), 0 1px 3px 0 rgb(26 33 29 / 0.04);
+  --shadow-md: 0 2px 4px -1px rgb(26 33 29 / 0.06), 0 6px 16px -4px rgb(26 33 29 / 0.08);
+  --shadow-lg: 0 4px 8px -2px rgb(26 33 29 / 0.06), 0 12px 28px -8px rgb(26 33 29 / 0.12);
+  --shadow-xl: 0 8px 16px -4px rgb(26 33 29 / 0.07), 0 24px 48px -12px rgb(26 33 29 / 0.15);
+  --shadow-2xl: 0 32px 64px -16px rgb(26 33 29 / 0.22);
 }
 
 @theme inline {
@@ -76,44 +139,45 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
 }
 
 @custom-variant dark (&:is(.dark *));
 
 @layer base {
   :root {
-    /* Background is a very soft icy blue/slate mix */
-    --background: 216 33% 97%;
-    --foreground: 222 47% 15%;
+    /* Warm cream paper canvas */
+    --background: 48 26% 96%;
+    --foreground: 146 12% 12%;
 
-    /* Glassmorphic Card Background (will use bg-white/70 in utilities, base is white) */
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 15%;
+    --card-foreground: 146 12% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 15%;
+    --popover-foreground: 146 12% 12%;
 
-    /* Primary Accent - Custom Royal Blue */
-    --primary: 225 98% 45%;
-    --primary-foreground: 210 40% 98%;
+    /* Emerald */
+    --primary: 165 76% 25%;
+    --primary-foreground: 48 30% 98%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 15%;
+    --secondary: 45 20% 93%;
+    --secondary-foreground: 146 12% 14%;
 
-    --muted: 210 30% 95%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 45 20% 94%;
+    --muted-foreground: 155 7% 38%;
 
-    --accent: 214 40% 93%;
-    --accent-foreground: 222 47% 15%;
+    /* Hover / selected wash — a whisper of the primary hue */
+    --accent: 155 22% 94%;
+    --accent-foreground: 165 40% 18%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 5 58% 44%;
+    --destructive-foreground: 48 30% 98%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    --border: 45 16% 87%;
+    --input: 45 16% 85%;
+    --ring: 165 55% 30%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
   }
 
   * {
@@ -123,18 +187,40 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 85%;
+    font-size: 87.5%;
   }
 
   body {
-    /* Rich, subtle gradient using the lightest shades of the custom palette */
-    background: radial-gradient(circle at 15% 50%, #f6f8fd, transparent 25%),
-      radial-gradient(circle at 85% 30%, #eff3fc, transparent 25%),
-      linear-gradient(135deg, #f0f4fd 0%, #e6ecfa 100%);
+    background-color: hsl(var(--background));
+    /* Two very soft blooms — emerald top-right, copper bottom-left */
+    background-image:
+      radial-gradient(1100px 620px at 100% -8%, rgb(15 110 86 / 0.055), transparent 62%),
+      radial-gradient(900px 520px at -8% 108%, rgb(180 99 42 / 0.05), transparent 62%);
     background-attachment: fixed;
     color: hsl(var(--foreground));
-    font-feature-settings: 'tnum' 1, 'cv11' 1;
+    font-family: var(--font-sans);
+    letter-spacing: -0.005em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-display);
+    letter-spacing: -0.018em;
+  }
+
+  /* Figures read as engineered data everywhere */
+  table,
+  th,
+  td {
     font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: hsl(155 40% 82%);
+    color: hsl(165 45% 16%);
   }
 }
 
@@ -143,30 +229,84 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Display-font figure, for KPI values and big counts */
+  .num {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* Small uppercase eyebrow label */
+  .section-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
   .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: hsl(var(--border));
+    background-color: hsl(45 12% 80%);
     border-radius: 999px;
   }
 
-  .glass-card {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 1.25rem;
-    box-shadow: 0 10px 30px -10px rgba(1, 17, 66, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(152 10% 68%);
   }
-  
+
+  /* The house card: warm paper, hairline edge, soft ink shadow.
+     Kept under the old `.glass-card` name so existing pages inherit it. */
+  .paper-card,
+  .glass-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    box-shadow:
+      0 1px 2px 0 rgb(26 33 29 / 0.04),
+      0 4px 14px -6px rgb(26 33 29 / 0.07);
+    transition:
+      box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .paper-card:hover,
   .glass-card:hover {
-    box-shadow: 0 20px 40px -15px rgba(2, 59, 230, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
-    border-color: rgba(2, 59, 230, 0.2);
+    border-color: hsl(155 25% 78%);
+    box-shadow:
+      0 2px 4px -1px rgb(26 33 29 / 0.05),
+      0 14px 30px -12px rgb(15 110 86 / 0.16);
     transform: translateY(-2px);
   }
-}
 
+  .hover-lift {
+    transition:
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    border-color: hsl(155 25% 78%);
+    box-shadow:
+      0 2px 4px -1px rgb(26 33 29 / 0.05),
+      0 12px 26px -12px rgb(15 110 86 / 0.16);
+  }
+
+  /* Woven-cloth texture — a nod to the mill. Used on dark hero surfaces. */
+  .weave {
+    background-image:
+      repeating-linear-gradient(45deg, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 7px),
+      repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.04) 0 1px, transparent 1px 7px);
+  }
+}

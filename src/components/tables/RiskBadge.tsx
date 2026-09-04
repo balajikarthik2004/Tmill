@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/badge'
+import { StatusBadge } from './StatusBadge'
 import type { RiskLevel } from '@/types'
 
 const config: Record<RiskLevel, { label: string; variant: 'success' | 'warning' | 'danger' | 'secondary' }> = {
@@ -10,5 +10,5 @@ const config: Record<RiskLevel, { label: string; variant: 'success' | 'warning' 
 
 export function RiskBadge({ risk }: { risk: RiskLevel }) {
   const { label, variant } = config[risk]
-  return <Badge variant={variant}>{label}</Badge>
+  return <StatusBadge status={label} variant={variant} />
 }

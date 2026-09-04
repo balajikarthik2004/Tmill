@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { PageHeader } from '@/components/common/PageHeader'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Zap, Wind, TrendingDown, LeafyGreen } from 'lucide-react'
 
@@ -17,11 +18,9 @@ export function EnergyDashboard() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground">Energy Management</h2>
-      </div>
-      
+    <div className="space-y-4 p-4 lg:p-6">
+      <PageHeader title="Energy Management" description="Live load, renewable share and carbon performance across the group." />
+
       <motion.div 
         variants={container}
         initial="hidden"
@@ -35,7 +34,7 @@ export function EnergyDashboard() {
               <Zap className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">4.2 MW</div>
+              <div className="num text-2xl font-semibold">4.2 MW</div>
               <p className="text-xs text-muted-foreground mt-1">Normal operating range</p>
             </CardContent>
           </Card>
@@ -48,7 +47,7 @@ export function EnergyDashboard() {
               <Wind className="h-4 w-4 text-success-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums text-success-600">68%</div>
+              <div className="num text-2xl font-semibold text-success-600">68%</div>
               <p className="text-xs text-muted-foreground mt-1">Wind & Solar captive</p>
             </CardContent>
           </Card>
@@ -61,7 +60,7 @@ export function EnergyDashboard() {
               <TrendingDown className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">2.8 kWh/kg</div>
+              <div className="num text-2xl font-semibold">2.8 kWh/kg</div>
               <p className="text-xs text-success-600 mt-1">-5% vs target (3.0)</p>
             </CardContent>
           </Card>
@@ -74,7 +73,7 @@ export function EnergyDashboard() {
               <LeafyGreen className="h-4 w-4 text-success-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">1,240 tCO2e</div>
+              <div className="num text-2xl font-semibold">1,240 tCO2e</div>
               <p className="text-xs text-muted-foreground mt-1">YTD avoided emissions</p>
             </CardContent>
           </Card>
@@ -131,20 +130,20 @@ export function EnergyDashboard() {
                   <span className="font-bold tabular-nums text-success-700">52%</span>
                 </div>
                 
-                <div className="flex justify-between items-center px-4 py-2 bg-amber-50 rounded-md border border-amber-100">
+                <div className="flex justify-between items-center px-4 py-2 bg-copper-50 rounded-lg border border-copper-100">
                   <div className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-amber-600" />
-                    <span className="text-sm font-medium text-amber-700">Solar Plant</span>
+                    <Zap className="w-4 h-4 text-copper-600" />
+                    <span className="text-sm font-medium text-copper-700">Solar Plant</span>
                   </div>
-                  <span className="font-bold tabular-nums text-amber-700">16%</span>
+                  <span className="num font-semibold text-copper-700">16%</span>
                 </div>
                 
-                <div className="flex justify-between items-center px-4 py-2 bg-slate-50 rounded-md border border-slate-200">
+                <div className="flex justify-between items-center px-4 py-2 bg-secondary rounded-lg border border-border">
                   <div className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-slate-600" />
-                    <span className="text-sm font-medium text-slate-700">TANGEDCO Grid</span>
+                    <Zap className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">TANGEDCO Grid</span>
                   </div>
-                  <span className="font-bold tabular-nums text-slate-700">32%</span>
+                  <span className="num font-semibold text-foreground">32%</span>
                 </div>
              </div>
           </CardContent>

@@ -155,7 +155,7 @@ export default function StockMovements() {
                 <ArrowLeftRight className="h-3.5 w-3.5" />
                 All movements
               </div>
-              <div className="mt-0.5 text-lg font-bold tabular-nums text-foreground">{formatNumber(totalCount)}</div>
+              <div className="mt-0.5 num text-lg font-semibold text-foreground">{formatNumber(totalCount)}</div>
             </Card>
           </button>
           {movementTypes.map((t) => (
@@ -167,7 +167,7 @@ export default function StockMovements() {
                 )}
               >
                 <div className="truncate text-xs text-muted-foreground">{t}</div>
-                <div className="mt-0.5 text-lg font-bold tabular-nums text-foreground">
+                <div className="mt-0.5 num text-lg font-semibold text-foreground">
                   {formatNumber(countsByType.get(t) ?? 0)}
                 </div>
               </Card>

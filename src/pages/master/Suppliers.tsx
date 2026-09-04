@@ -28,10 +28,10 @@ const categoryVariant: Record<SupplierCategory, NonNullable<BadgeProps['variant'
 }
 
 const categoryColor: Record<SupplierCategory, string> = {
-  Cotton: '#16a34a',
-  Spares: '#2563eb',
-  'Packing Material': '#d97706',
-  Consumables: '#7c3aed',
+  Cotton: '#4a8a3c',
+  Spares: '#0f6e56',
+  'Packing Material': '#b4632a',
+  Consumables: '#7c4a6e',
 }
 
 const cottonOrigins = ['Indian extra-long staple', 'Egyptian Cotton', 'US Pima']
@@ -304,7 +304,8 @@ export default function Suppliers() {
                     <Tooltip
                       cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}
                       contentStyle={{
-                        borderRadius: 8,
+                        borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                         border: '1px solid hsl(var(--border))',
                         fontSize: 12,
                         background: 'hsl(var(--popover))',
@@ -313,7 +314,7 @@ export default function Suppliers() {
                     />
                     <Bar dataKey="count" radius={[0, 4, 4, 0]} maxBarSize={22}>
                       {byCountry.map((c) => (
-                        <Cell key={c.country} fill={c.count === maxCountry ? '#2563eb' : '#93c5fd'} />
+                        <Cell key={c.country} fill={c.count === maxCountry ? '#0f6e56' : '#93c3b2'} />
                       ))}
                     </Bar>
                   </BarChart>

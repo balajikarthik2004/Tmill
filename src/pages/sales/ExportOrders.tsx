@@ -18,10 +18,10 @@ type ExportSummary = Awaited<ReturnType<typeof getExportSummary>>
 
 /** The four export regions published on tmills.com. */
 const regionColors: Record<string, string> = {
-  America: '#7c3aed',
-  Australia: '#0d9488',
-  Europe: '#2563eb',
-  'South Asia': '#d97706',
+  America: '#7c4a6e',
+  Australia: '#3a7d8c',
+  Europe: '#0f6e56',
+  'South Asia': '#b4632a',
 }
 
 const columns: ColumnDef<SalesOrder, any>[] = [
@@ -39,7 +39,7 @@ const columns: ColumnDef<SalesOrder, any>[] = [
       <span className="flex items-center gap-1.5">
         <span
           className="h-2 w-2 shrink-0 rounded-full"
-          style={{ backgroundColor: regionColors[row.original.region ?? ''] ?? '#94a3b8' }}
+          style={{ backgroundColor: regionColors[row.original.region ?? ''] ?? '#9aa39b' }}
         />
         {row.original.region ?? '—'}
       </span>
@@ -67,28 +67,28 @@ const columns: ColumnDef<SalesOrder, any>[] = [
 function PublishedProfile({ summary }: { summary: ExportSummary }) {
   const { published } = summary
   return (
-    <div className="rounded-xl bg-linear-to-br from-navy-800 via-navy-600 to-success-600 p-4 text-white">
+    <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-forest-950 via-forest-800 to-brand-700 p-4 text-white shadow-md ring-1 ring-forest-700/40">
       <div className="flex items-center gap-2">
         <Globe2 className="h-4 w-4" />
         <span className="text-xs font-semibold uppercase tracking-wide text-white/80">Published export profile</span>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div>
-          <div className="text-2xl font-bold tabular-nums">{published.exportSharePct}%</div>
+          <div className="num text-2xl font-semibold">{published.exportSharePct}%</div>
           <div className="text-xs text-white/75">of production exported</div>
         </div>
         <div>
-          <div className="text-2xl font-bold tabular-nums">{published.countries}</div>
+          <div className="num text-2xl font-semibold">{published.countries}</div>
           <div className="text-xs text-white/75">countries served</div>
         </div>
         <div>
-          <div className="text-2xl font-bold tabular-nums">
+          <div className="num text-2xl font-semibold">
             US${(published.annualSalesUsd / 1_000_000).toFixed(0)}M+
           </div>
           <div className="text-xs text-white/75">annual sales</div>
         </div>
         <div>
-          <div className="text-2xl font-bold tabular-nums">{published.regions.length}</div>
+          <div className="num text-2xl font-semibold">{published.regions.length}</div>
           <div className="text-xs text-white/75">regions</div>
         </div>
       </div>
@@ -140,7 +140,8 @@ function RegionChart({ summary }: { summary: ExportSummary }) {
                   <Tooltip
                     cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}
                     contentStyle={{
-                      borderRadius: 8,
+                      borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                       border: '1px solid hsl(var(--border))',
                       fontSize: 12,
                       background: 'hsl(var(--popover))',
@@ -149,7 +150,7 @@ function RegionChart({ summary }: { summary: ExportSummary }) {
                   />
                   <Bar dataKey="valueInr" name="Order value" radius={[4, 4, 0, 0]} maxBarSize={64}>
                     {data.map((r) => (
-                      <Cell key={r.region} fill={regionColors[r.region] ?? '#94a3b8'} />
+                      <Cell key={r.region} fill={regionColors[r.region] ?? '#9aa39b'} />
                     ))}
                   </Bar>
                 </BarChart>
@@ -161,7 +162,7 @@ function RegionChart({ summary }: { summary: ExportSummary }) {
                   <span className="flex items-center gap-1.5">
                     <span
                       className="h-2 w-2 rounded-full"
-                      style={{ backgroundColor: regionColors[r.region] ?? '#94a3b8' }}
+                      style={{ backgroundColor: regionColors[r.region] ?? '#9aa39b' }}
                     />
                     <span className="font-medium text-foreground">{r.region}</span>
                   </span>

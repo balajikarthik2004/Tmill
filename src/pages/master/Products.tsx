@@ -15,11 +15,11 @@ import type { Product, ProductType, YarnApplication } from '@/types'
 const typeOrder: ProductType[] = ['Single', 'Double', 'Open End', 'Compact', 'Gassed']
 
 const typeColors: Record<ProductType, string> = {
-  Single: '#2563eb',
-  Double: '#0d9488',
-  'Open End': '#d97706',
-  Compact: '#7c3aed',
-  Gassed: '#db2777',
+  Single: '#0f6e56',
+  Double: '#3a7d8c',
+  'Open End': '#b4632a',
+  Compact: '#7c4a6e',
+  Gassed: '#4a6fa5',
 }
 
 /** The count range published for each type on tmills.com. */

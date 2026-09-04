@@ -46,11 +46,11 @@ const factoryIds: FactoryId[] = ['all', 'mill-1', 'mill-2', 'mill-3', 'oe-unit']
 const productTypes: ProductType[] = ['Single', 'Double', 'Open End', 'Compact', 'Gassed']
 
 const productColors: Record<ProductType, string> = {
-  Single: '#2563eb',
-  Double: '#0d9488',
-  'Open End': '#d97706',
-  Compact: '#7c3aed',
-  Gassed: '#db2777',
+  Single: '#0f6e56',
+  Double: '#3a7d8c',
+  'Open End': '#b4632a',
+  Compact: '#7c4a6e',
+  Gassed: '#4a6fa5',
 }
 
 function barColor(pct: number) {
@@ -121,7 +121,8 @@ function TrendChart({
                 <Tooltip
                   cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}
                   contentStyle={{
-                    borderRadius: 8,
+                    borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                     border: '1px solid hsl(var(--border))',
                     fontSize: 12,
                     background: 'hsl(var(--popover))',
@@ -138,16 +139,16 @@ function TrendChart({
                       fill={
                         selectedDate
                           ? p.date === selectedDate
-                            ? '#1d4ed8'
-                            : '#dbeafe'
+                            ? '#0a5340'
+                            : '#e3ede7'
                           : i === chartData.length - 1
-                            ? '#2563eb'
-                            : '#93c5fd'
+                            ? '#0f6e56'
+                            : '#93c3b2'
                       }
                     />
                   ))}
                 </Bar>
-                <Line type="monotone" dataKey="target" name="Target" stroke="#d97706" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="target" name="Target" stroke="#b4632a" strokeWidth={2} dot={false} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
@@ -212,7 +213,8 @@ function ProductMix({
                       return [`${formatNumber(n)} kg-eq (${((n / total) * 100).toFixed(1)}%)`, String(name)]
                     }}
                     contentStyle={{
-                      borderRadius: 8,
+                      borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                       border: '1px solid hsl(var(--border))',
                       fontSize: 12,
                       background: 'hsl(var(--popover))',

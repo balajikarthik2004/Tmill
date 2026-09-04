@@ -158,7 +158,8 @@ function MicronaireChart({ tests }: { tests: QualityTest[] }) {
                 <Tooltip
                   cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}
                   contentStyle={{
-                    borderRadius: 8,
+                    borderRadius: 12,
+                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
                     border: '1px solid hsl(var(--border))',
                     fontSize: 12,
                     background: 'hsl(var(--popover))',
@@ -167,7 +168,7 @@ function MicronaireChart({ tests }: { tests: QualityTest[] }) {
                 />
                 <Bar dataKey="count" name="Tests" radius={[4, 4, 0, 0]} maxBarSize={44}>
                   {data.map((d) => (
-                    <Cell key={d.label} fill={d.preferred ? '#16a34a' : '#93c5fd'} />
+                    <Cell key={d.label} fill={d.preferred ? '#4a8a3c' : '#93c3b2'} />
                   ))}
                 </Bar>
               </BarChart>

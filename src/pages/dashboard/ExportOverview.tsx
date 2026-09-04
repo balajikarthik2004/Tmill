@@ -14,10 +14,10 @@ interface ExportSummary {
 }
 
 const regionColors: Record<string, string> = {
-  Europe: 'bg-info-500',
-  America: 'bg-violet-500',
-  'South Asia': 'bg-amber-500',
-  Australia: 'bg-teal-500',
+  Europe: 'bg-brand-500',
+  America: 'bg-copper-500',
+  'South Asia': 'bg-info-500',
+  Australia: 'bg-warning-500',
 }
 
 export function ExportOverview({ data }: { data: ExportSummary }) {

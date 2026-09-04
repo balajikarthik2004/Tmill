@@ -28,7 +28,7 @@ export function OrderStatusTiles({ data }: { data: OrderStatusTilesData }) {
             className={`rounded-md p-3 transition-transform hover:-translate-y-0.5 ${tile.classes}`}
           >
             <div className="text-xs font-medium">{tile.label}</div>
-            <div className="mt-1 text-xl font-bold tabular-nums">{formatNumber(data[tile.key])}</div>
+            <div className="mt-1 num text-xl font-semibold">{formatNumber(data[tile.key])}</div>
           </Link>
         ))}
       </CardContent>

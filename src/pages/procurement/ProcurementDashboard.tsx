@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { PageHeader } from '@/components/common/PageHeader'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Truck, Users, Clock, ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -18,11 +19,9 @@ export function ProcurementDashboard() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground">Procurement</h2>
-      </div>
-      
+    <div className="space-y-4 p-4 lg:p-6">
+      <PageHeader title="Procurement" description="Supplier deliveries, purchase pipeline and on-time performance." />
+
       <motion.div 
         variants={container}
         initial="hidden"
@@ -36,7 +35,7 @@ export function ProcurementDashboard() {
               <Truck className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">12</div>
+              <div className="num text-2xl font-semibold">12</div>
               <p className="text-xs text-muted-foreground mt-1">Bales en route today</p>
             </CardContent>
           </Card>
@@ -49,7 +48,7 @@ export function ProcurementDashboard() {
               <Users className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">24</div>
+              <div className="num text-2xl font-semibold">24</div>
               <p className="text-xs text-muted-foreground mt-1">Across 3 countries</p>
             </CardContent>
           </Card>
@@ -62,7 +61,7 @@ export function ProcurementDashboard() {
               <Clock className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums text-success-600">94.2%</div>
+              <div className="num text-2xl font-semibold text-success-600">94.2%</div>
               <p className="text-xs text-muted-foreground mt-1">Trailing 30 days</p>
             </CardContent>
           </Card>
@@ -75,7 +74,7 @@ export function ProcurementDashboard() {
               <ShieldCheck className="h-4 w-4 text-brand-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">1.8%</div>
+              <div className="num text-2xl font-semibold">1.8%</div>
               <p className="text-xs text-muted-foreground mt-1">-0.4% vs last month</p>
             </CardContent>
           </Card>
@@ -120,7 +119,7 @@ export function ProcurementDashboard() {
                           "inline-flex items-center rounded-full px-2 py-1 text-xs font-medium",
                           row.status === 'Received' ? 'bg-success-50 text-success-600' :
                           row.status === 'In Transit' ? 'bg-brand-50 text-brand-600' :
-                          'bg-amber-50 text-amber-600'
+                          'bg-warning-50 text-warning-700'
                         )}>
                           {row.status}
                         </span>
