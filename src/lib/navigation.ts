@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react'
 import {
   Boxes,
+  Bot,
   ClipboardList,
   Factory,
   Gauge,
@@ -31,8 +32,21 @@ export interface NavSection {
  * cotton intake, three spinning mills, OE/post-spinning, weaving, the Central
  * Testing Laboratory, and the export-led order book.
  */
+/** The AI module gets its own visual treatment in the sidebar. */
+export const AI_SECTION_LABEL = 'T-Mills AI'
+
 export const navTree: NavSection[] = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/' },
+  {
+    label: AI_SECTION_LABEL,
+    icon: Bot,
+    children: [
+      { label: 'AI Copilot', path: '/ai' },
+      { label: 'Insights & Anomalies', path: '/ai/insights' },
+      { label: 'Resolution Playbooks', path: '/ai/playbooks' },
+      { label: 'Expert Network', path: '/ai/experts' },
+    ],
+  },
   {
     label: 'Sales & Orders',
     icon: ShoppingCart,

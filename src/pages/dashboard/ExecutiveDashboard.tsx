@@ -24,6 +24,7 @@ import { InventoryOverview } from './InventoryOverview'
 import { MaintenanceSummary } from './MaintenanceSummary'
 import { RecentActivities } from './RecentActivities'
 import { ExportOverview } from './ExportOverview'
+import { AiInsightStrip } from '@/components/ai/AiInsightStrip'
 
 export default function ExecutiveDashboard() {
   const { factoryId, dateRangePreset } = useAppStore()
@@ -48,6 +49,12 @@ export default function ExecutiveDashboard() {
   return (
     <div className="space-y-4 p-4 pb-20 lg:p-6 lg:pb-20">
       <GreetingHero firstName="Mr. Hari" />
+
+      <AiInsightStrip
+        scope="dashboard"
+        title="What the copilot is watching"
+        description="Generated from today's production, order book, asset and quality position."
+      />
 
       {/* KPI cards */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">

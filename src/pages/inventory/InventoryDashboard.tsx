@@ -3,6 +3,7 @@ import { PageHeader } from '@/components/common/PageHeader'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Package, AlertCircle, RefreshCw, Box } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { AiInsightStrip } from '@/components/ai/AiInsightStrip'
 
 export function InventoryDashboard() {
   const container = {
@@ -21,6 +22,8 @@ export function InventoryDashboard() {
   return (
     <div className="space-y-4 p-4 lg:p-6">
       <PageHeader title="Inventory Overview" description="Stock position from raw cotton through to finished yarn." />
+
+      <AiInsightStrip scope="inventory" limit={3} />
 
       <motion.div 
         variants={container}

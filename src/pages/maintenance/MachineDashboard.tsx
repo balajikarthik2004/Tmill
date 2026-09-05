@@ -34,6 +34,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formatNumber, formatPct } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { Machine, MachineStatus, ProcessName } from '@/types'
+import { AiInsightStrip } from '@/components/ai/AiInsightStrip'
 
 const chartTooltipStyle = {
   borderRadius: 12,
@@ -211,6 +212,8 @@ export default function MachineDashboard() {
           </div>
         }
       />
+
+      <AiInsightStrip scope="maintenance" limit={3} />
 
       {summary.isLoading || !summary.data ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7">

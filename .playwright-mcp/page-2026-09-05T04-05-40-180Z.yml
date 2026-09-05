@@ -1,0 +1,80 @@
+- generic [ref=e3]:
+  - complementary [ref=e5]:
+    - generic [ref=e11]:
+      - generic [ref=e12]: THIAGARAJAR MILLS
+      - generic [ref=e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=e17]:
+      - link "Dashboard" [ref=e18] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e25]:
+        - button "T-Mills AI" [expanded] [ref=e26]
+        - generic [ref=e34]:
+          - link "AI Copilot" [ref=e35] [cursor=pointer]:
+            - /url: /ai
+          - link "Insights & Anomalies" [ref=e37] [cursor=pointer]:
+            - /url: /ai/insights
+          - link "Resolution Playbooks" [ref=e38] [cursor=pointer]:
+            - /url: /ai/playbooks
+          - link "Expert Network" [ref=e39] [cursor=pointer]:
+            - /url: /ai/experts
+      - button "Sales & Orders" [ref=e41]
+      - button "Planning" [ref=e51]
+      - button "Procurement" [ref=e59]
+      - link "Energy" [ref=e67] [cursor=pointer]:
+        - /url: /energy
+      - button "Cotton & Raw Materials" [ref=e72]
+      - button "Inventory" [ref=e80]
+      - button "Production" [ref=e95]
+      - button "Quality Management" [ref=e102]
+      - button "Maintenance" [ref=e110]
+      - button "Master Data" [ref=e117]
+      - link "Administration" [ref=e124] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=e129]:
+      - generic [ref=e135]:
+        - generic [ref=e136]: Threading together
+        - generic [ref=e137]: Tradition & Technology
+      - generic [ref=e138]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=e139]:
+    - banner [ref=e140]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=e142]
+      - generic [ref=e143]:
+        - combobox [ref=e144]:
+          - generic: All Units
+        - combobox [ref=e147]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=e150]
+        - button "HT Hari Thiagarajan Managing Director" [ref=e151]:
+          - generic [ref=e152]: HT
+          - generic [ref=e154]:
+            - generic [ref=e155]: Hari Thiagarajan
+            - generic [ref=e156]: Managing Director
+    - main [ref=e157]:
+      - generic [ref=e158]:
+        - generic [ref=e159]:
+          - link "Dashboard" [ref=e160] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e166]: T-Mills AI
+          - generic [ref=e169]: AI Copilot
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e177]:
+              - heading "T-Mills Copilot" [level=1] [ref=e178]
+              - paragraph [ref=e179]: Ask about a machine, an order, a lot, a deviation — or just describe what went wrong.
+            - generic [ref=e180]: Online
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - generic [ref=e184]: I'm the T-Mills Copilot. I read the live plant record - machines, orders, lab tests, cotton lots, energy - alongside a knowledge base of closed cases. Describe a problem and I will give you the probable cause, how we resolved it before, who resolved it, and a costed plan with a realistic time to fix.
+              - generic [ref=e190]:
+                - generic [ref=e191]: Try one of these
+                - generic [ref=e192]:
+                  - button "Which machine is down and how long will it take to fix?" [ref=e193]
+                  - button "Which sales orders are at risk and what do we do about them?" [ref=e194]
+                  - button "Why did production fall short this week and how do we recover it?" [ref=e195]
+                  - button "What is driving the quality deviations in the lab results?" [ref=e196]
+            - generic [ref=e197]:
+              - generic [ref=e198]:
+                - textbox "Describe a problem, name a machine or an order, or ask for a plan…" [ref=e199]
+                - button "Send" [disabled]
+              - paragraph [ref=e200]: Answers are composed from live plant records and the resolution knowledge base. Verify before acting on a commitment.
+  - button [ref=e201]

@@ -46,6 +46,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatDate, formatInrCompact, formatNumber, formatPct } from '@/lib/format'
 import { cn } from '@/lib/utils'
+import { AiInsightStrip } from '@/components/ai/AiInsightStrip'
 
 const chartTooltipStyle = {
   borderRadius: 12,
@@ -188,6 +189,8 @@ export function EnergyDashboard() {
         description="What the mills draw, where it goes, what never reaches yarn, and which unit moved against last period."
         actions={<PeriodDropdown />}
       />
+
+      <AiInsightStrip scope="energy" limit={3} />
 
       {/* ---- Headline ----------------------------------------------------- */}
       {usage.isLoading || !o ? (

@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { ChevronDown, Leaf } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-import { navTree } from '@/lib/navigation'
+import { AI_SECTION_LABEL, navTree } from '@/lib/navigation'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
@@ -22,8 +22,9 @@ export function Sidebar() {
     return null
   }, [location.pathname])
 
+  // The AI section starts open — it is the entry point we want people to see.
   const [openSections, setOpenSections] = useState<Set<string>>(
-    () => new Set(activeSectionLabel ? [activeSectionLabel] : []),
+    () => new Set([AI_SECTION_LABEL, ...(activeSectionLabel ? [activeSectionLabel] : [])]),
   )
 
   function toggleSection(label: string) {
@@ -89,9 +90,19 @@ export function Sidebar() {
 
             const isOpen = openSections.has(section.label)
             const sectionIsActive = isSectionActive(section.children.map((c) => c.path), location.pathname)
+            // The AI module is the flagship surface, so it is lifted out of the
+            // flat nav treatment with its own emerald panel and badge.
+            const isAi = section.label === AI_SECTION_LABEL
 
             return (
-              <div key={section.label} className="flex flex-col">
+              <div
+                key={section.label}
+                className={cn(
+                  'flex flex-col',
+                  isAi &&
+                    'ai-glow ai-sheen relative my-1.5 overflow-hidden rounded-xl bg-linear-to-br from-brand-500/25 via-brand-600/12 to-transparent p-1',
+                )}
+              >
                 <button
                   type="button"
                   onClick={() => toggleSection(section.label)}
@@ -99,6 +110,7 @@ export function Sidebar() {
                     'group flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[13px] font-medium text-forest-200 transition-colors',
                     'hover:bg-white/6 hover:text-white',
                     sectionIsActive && 'text-white',
+                    isAi && 'font-semibold text-white',
                   )}
                   aria-expanded={isOpen}
                 >
@@ -106,9 +118,15 @@ export function Sidebar() {
                     className={cn(
                       'h-4 w-4 shrink-0 transition-colors',
                       sectionIsActive ? 'text-copper-300' : 'text-forest-300 group-hover:text-forest-100',
+                      isAi && !sectionIsActive && 'text-brand-300',
                     )}
                   />
                   <span className="flex-1 truncate">{section.label}</span>
+                  {isAi && (
+                    <span className="shrink-0 rounded-full bg-copper-400/90 px-1.5 py-px text-[8.5px] font-bold uppercase tracking-wider text-forest-950">
+                      AI
+                    </span>
+                  )}
                   <ChevronDown
                     className={cn(
                       'h-3.5 w-3.5 shrink-0 text-forest-400 transition-transform duration-300',

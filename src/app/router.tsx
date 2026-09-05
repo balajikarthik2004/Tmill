@@ -4,6 +4,11 @@ import { Shell } from '@/components/layout/Shell'
 import ExecutiveDashboard from '@/pages/dashboard/ExecutiveDashboard'
 import Administration from '@/pages/admin/Administration'
 
+import Copilot from '@/pages/ai/Copilot'
+import AiInsightsPage from '@/pages/ai/AiInsights'
+import Playbooks from '@/pages/ai/Playbooks'
+import ExpertNetwork from '@/pages/ai/ExpertNetwork'
+
 import Customers from '@/pages/sales/Customers'
 import SalesOrders from '@/pages/sales/SalesOrders'
 import ExportOrders from '@/pages/sales/ExportOrders'
@@ -20,7 +25,7 @@ import Grn from '@/pages/procurement/Grn'
 
 import CottonLots from '@/pages/cotton/CottonLots'
 import CottonTesting from '@/pages/cotton/CottonTesting'
-import Traceability from '@/pages/cotton/Traceability'
+// import Traceability from '@/pages/cotton/Traceability'
 
 import { InventoryDashboard } from '@/pages/inventory/InventoryDashboard'
 import RawMaterials from '@/pages/inventory/RawMaterials'
@@ -62,6 +67,11 @@ import MasterCottonLots from '@/pages/master/CottonLots'
 
 /** Every leaf in the navigation tree resolves to a real, data-backed page. */
 export const routes = [
+  { path: 'ai', element: <Copilot /> },
+  { path: 'ai/insights', element: <AiInsightsPage /> },
+  { path: 'ai/playbooks', element: <Playbooks /> },
+  { path: 'ai/experts', element: <ExpertNetwork /> },
+
   { path: 'sales/customers', element: <Customers /> },
   { path: 'sales/sales-orders', element: <SalesOrders /> },
   { path: 'sales/export-orders', element: <ExportOrders /> },
@@ -78,7 +88,7 @@ export const routes = [
 
   { path: 'cotton/cotton-lots', element: <CottonLots /> },
   { path: 'cotton/cotton-testing', element: <CottonTesting /> },
-  { path: 'cotton/traceability', element: <Traceability /> },
+  // { path: 'cotton/traceability', element: <Traceability /> },
 
   { path: 'inventory', element: <InventoryDashboard /> },
   { path: 'inventory/raw-materials', element: <RawMaterials /> },

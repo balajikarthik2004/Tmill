@@ -1,0 +1,72 @@
+- generic [ref=f5e3]:
+  - complementary [ref=f5e5]:
+    - generic [ref=f5e11]:
+      - generic [ref=f5e12]: THIAGARAJAR MILLS
+      - generic [ref=f5e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f5e17]:
+      - link "Dashboard" [ref=f5e18] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f5e25]:
+        - button "T-Mills AI" [expanded] [ref=f5e26]
+        - generic [ref=f5e34]:
+          - link "AI Copilot" [ref=f5e35] [cursor=pointer]:
+            - /url: /ai
+          - link "Insights & Anomalies" [ref=f5e37] [cursor=pointer]:
+            - /url: /ai/insights
+          - link "Resolution Playbooks" [ref=f5e38] [cursor=pointer]:
+            - /url: /ai/playbooks
+          - link "Expert Network" [ref=f5e39] [cursor=pointer]:
+            - /url: /ai/experts
+      - button "Sales & Orders" [ref=f5e42]
+      - button "Planning" [ref=f5e52]
+      - button "Procurement" [ref=f5e60]
+      - link "Energy" [ref=f5e68] [cursor=pointer]:
+        - /url: /energy
+      - button "Cotton & Raw Materials" [ref=f5e73]
+      - button "Inventory" [ref=f5e81]
+      - button "Production" [ref=f5e96]
+      - button "Quality Management" [ref=f5e103]
+      - button "Maintenance" [ref=f5e111]
+      - button "Master Data" [ref=f5e118]
+      - link "Administration" [ref=f5e125] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f5e130]:
+      - generic [ref=f5e136]:
+        - generic [ref=f5e137]: Threading together
+        - generic [ref=f5e138]: Tradition & Technology
+      - generic [ref=f5e139]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f5e140]:
+    - banner [ref=f5e141]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f5e143]
+      - generic [ref=f5e144]:
+        - combobox [ref=f5e145]:
+          - generic: All Units
+        - combobox [ref=f5e148]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f5e151]
+        - button "HT Hari Thiagarajan Managing Director" [ref=f5e152]:
+          - generic [ref=f5e153]: HT
+          - generic [ref=f5e155]:
+            - generic [ref=f5e156]: Hari Thiagarajan
+            - generic [ref=f5e157]: Managing Director
+    - main [ref=f5e158]:
+      - generic [ref=f5e159]:
+        - generic [ref=f5e160]:
+          - link "Dashboard" [ref=f5e161] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f5e167]: T-Mills AI
+          - generic [ref=f5e170]: Expert Network
+        - generic [ref=f5e171]:
+          - generic [ref=f5e173]:
+            - heading "Expert Network" [level=1] [ref=f5e174]
+            - paragraph [ref=f5e177]: Who the copilot draws on when it recommends an owner — speciality, past resolutions from the knowledge base, first-time fix rate, mean time to repair and current availability.
+          - generic [ref=f5e183]:
+            - textbox "Search a name, skill or certification…" [ref=f5e185]
+            - generic [ref=f5e186]:
+              - button "All departments" [ref=f5e187]
+              - button "Maintenance" [ref=f5e188]
+              - button "Production" [ref=f5e189]
+              - button "Quality" [ref=f5e190]
+              - button "Utilities" [ref=f5e191]
+              - button "Planning" [ref=f5e192]
+  - button [ref=f5e200]

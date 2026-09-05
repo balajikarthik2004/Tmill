@@ -1,0 +1,54 @@
+- generic [ref=f2e3]:
+  - complementary [ref=f2e5]:
+    - generic [ref=f2e11]:
+      - generic [ref=f2e12]: THIAGARAJAR MILLS
+      - generic [ref=f2e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f2e17]:
+      - link "Dashboard" [ref=f2e18] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f2e25]:
+        - button "T-Mills AI AI" [expanded] [ref=f2e26]:
+          - generic [ref=f2e30]: T-Mills AI
+          - generic [ref=f2e31]: AI
+        - generic [ref=f2e35]:
+          - link "AI Copilot" [ref=f2e36] [cursor=pointer]:
+            - /url: /ai
+          - link "Insights & Anomalies" [ref=f2e38] [cursor=pointer]:
+            - /url: /ai/insights
+          - link "Resolution Playbooks" [ref=f2e39] [cursor=pointer]:
+            - /url: /ai/playbooks
+          - link "Expert Network" [ref=f2e40] [cursor=pointer]:
+            - /url: /ai/experts
+      - button "Sales & Orders" [ref=f2e42]
+      - button "Planning" [ref=f2e52]
+      - button "Procurement" [ref=f2e60]
+      - link "Energy" [ref=f2e68] [cursor=pointer]:
+        - /url: /energy
+      - button "Cotton & Raw Materials" [ref=f2e73]
+      - button "Inventory" [ref=f2e81]
+      - button "Production" [ref=f2e96]
+      - button "Quality Management" [ref=f2e103]
+      - button "Maintenance" [ref=f2e111]
+      - button "Master Data" [ref=f2e118]
+      - link "Administration" [ref=f2e125] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f2e130]:
+      - generic [ref=f2e136]:
+        - generic [ref=f2e137]: Threading together
+        - generic [ref=f2e138]: Tradition & Technology
+      - generic [ref=f2e139]: © 2026 Thiagarajar Mills (P) Ltd.
+  - main [ref=f2e141]:
+    - generic [ref=f2e143]:
+      - generic [ref=f2e146]:
+        - heading "How can I help at the mill today?" [level=2] [ref=f2e151]
+        - paragraph [ref=f2e152]: Describe a problem, or name a machine, an order or a lot. I will give you the probable cause, how it was resolved before, who resolved it, and a plan with a realistic time to fix.
+      - generic [ref=f2e154]:
+        - generic [ref=f2e155]:
+          - button "Which machine is down and how long will it take to fix?" [ref=f2e156]
+          - button "Which sales orders are at risk and what do we do about them?" [ref=f2e157]
+          - button "Why did production fall short this week and how do we recover it?" [ref=f2e158]
+          - button "What is driving the quality deviations in the lab results?" [ref=f2e159]
+        - generic [ref=f2e160]:
+          - textbox "Describe a problem, name a machine (RF-014) or an order (SO-291)…" [ref=f2e161]
+          - button "Send" [disabled] [ref=f2e162]
+        - paragraph [ref=f2e165]: Grounded in live plant records and the resolution knowledge base. Verify before acting on a customer commitment.

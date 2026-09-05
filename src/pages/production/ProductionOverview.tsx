@@ -358,6 +358,7 @@ export default function ProductionOverview() {
         actions={<PeriodDropdown />}
       />
 
+
       {activeFilters.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-border bg-muted/40 px-3 py-2">
           <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Filtered by</span>

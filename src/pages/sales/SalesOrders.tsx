@@ -11,6 +11,7 @@ import { DataTable } from '@/components/tables/DataTable'
 import { RiskBadge } from '@/components/tables/RiskBadge'
 import type { RiskLevel, SalesOrder } from '@/types'
 import { PageHeader } from '@/components/common/PageHeader'
+import { AiInsightStrip } from '@/components/ai/AiInsightStrip'
 
 function ProgressCell({ value }: { value: number }) {
   return (
@@ -62,6 +63,8 @@ export default function SalesOrders() {
         title="Sales Orders"
         description="Track production progress against dispatch deadlines across all factories."
       />
+
+      <AiInsightStrip scope="sales" limit={3} />
 
       <div className="flex flex-wrap items-center gap-2">
         <button

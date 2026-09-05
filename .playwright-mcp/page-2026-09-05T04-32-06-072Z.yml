@@ -1,0 +1,56 @@
+- generic [ref=f1e3]:
+  - complementary [ref=f1e5]:
+    - generic [ref=f1e11]:
+      - generic [ref=f1e12]: THIAGARAJAR MILLS
+      - generic [ref=f1e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f1e17]:
+      - link "Dashboard" [ref=f1e18] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f1e25]:
+        - button "T-Mills AI AI" [expanded] [ref=f1e26]:
+          - generic [ref=f1e30]: T-Mills AI
+          - generic [ref=f1e31]: AI
+        - generic [ref=f1e35]:
+          - link "AI Copilot" [ref=f1e36] [cursor=pointer]:
+            - /url: /ai
+          - link "Insights & Anomalies" [ref=f1e38] [cursor=pointer]:
+            - /url: /ai/insights
+          - link "Resolution Playbooks" [ref=f1e39] [cursor=pointer]:
+            - /url: /ai/playbooks
+          - link "Expert Network" [ref=f1e40] [cursor=pointer]:
+            - /url: /ai/experts
+      - button "Sales & Orders" [ref=f1e42]
+      - button "Planning" [ref=f1e52]
+      - button "Procurement" [ref=f1e60]
+      - link "Energy" [ref=f1e68] [cursor=pointer]:
+        - /url: /energy
+      - button "Cotton & Raw Materials" [ref=f1e73]
+      - button "Inventory" [ref=f1e81]
+      - button "Production" [ref=f1e96]
+      - button "Quality Management" [ref=f1e103]
+      - button "Maintenance" [ref=f1e111]
+      - button "Master Data" [ref=f1e118]
+      - link "Administration" [ref=f1e125] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f1e130]:
+      - generic [ref=f1e136]:
+        - generic [ref=f1e137]: Threading together
+        - generic [ref=f1e138]: Tradition & Technology
+      - generic [ref=f1e139]: © 2026 Thiagarajar Mills (P) Ltd.
+  - main [ref=f1e141]:
+    - generic [ref=f1e143]:
+      - generic [ref=f1e166]:
+        - generic [ref=f1e167]: Which machine is down and how long will it take to fix?
+        - generic [ref=f1e178]:
+          - generic [ref=f1e179]: Working through the plant record
+          - generic [ref=f1e182]:
+            - generic [ref=f1e183]: Reading the question and pulling out entities
+            - generic [ref=f1e188]: Querying live plant records
+            - generic [ref=f1e193]: Searching closed cases in the knowledge base
+            - generic [ref=f1e198]: Matching engineers on past resolutions
+      - generic [ref=f1e154]:
+        - generic [ref=f1e160]:
+          - button "Start a new conversation" [ref=f1e210]
+          - textbox "Describe a problem, name a machine (RF-014) or an order (SO-291)…" [disabled] [ref=f1e161]
+          - button "Send" [disabled] [ref=f1e162]
+        - paragraph [ref=f1e165]: Grounded in live plant records and the resolution knowledge base. Verify before acting on a customer commitment.

@@ -1,0 +1,134 @@
+- generic [ref=f1e3]:
+  - complementary [ref=f1e5]:
+    - generic [ref=f1e11]:
+      - generic [ref=f1e12]: THIAGARAJAR MILLS
+      - generic [ref=f1e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f1e17]:
+      - link "Dashboard" [ref=f1e18] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f1e25]:
+        - button "T-Mills AI" [expanded] [ref=f1e26]
+        - generic [ref=f1e34]:
+          - link "AI Copilot" [ref=f1e35] [cursor=pointer]:
+            - /url: /ai
+          - link "Insights & Anomalies" [ref=f1e37] [cursor=pointer]:
+            - /url: /ai/insights
+          - link "Resolution Playbooks" [ref=f1e38] [cursor=pointer]:
+            - /url: /ai/playbooks
+          - link "Expert Network" [ref=f1e39] [cursor=pointer]:
+            - /url: /ai/experts
+      - button "Sales & Orders" [ref=f1e41]
+      - button "Planning" [ref=f1e51]
+      - button "Procurement" [ref=f1e59]
+      - link "Energy" [ref=f1e67] [cursor=pointer]:
+        - /url: /energy
+      - button "Cotton & Raw Materials" [ref=f1e72]
+      - button "Inventory" [ref=f1e80]
+      - button "Production" [ref=f1e95]
+      - button "Quality Management" [ref=f1e102]
+      - button "Maintenance" [ref=f1e110]
+      - button "Master Data" [ref=f1e117]
+      - link "Administration" [ref=f1e124] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f1e129]:
+      - generic [ref=f1e135]:
+        - generic [ref=f1e136]: Threading together
+        - generic [ref=f1e137]: Tradition & Technology
+      - generic [ref=f1e138]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f1e139]:
+    - banner [ref=f1e140]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f1e142]
+      - generic [ref=f1e143]:
+        - combobox [ref=f1e144]:
+          - generic: All Units
+        - combobox [ref=f1e147]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f1e150]
+        - button "HT Hari Thiagarajan Managing Director" [ref=f1e151]:
+          - generic [ref=f1e152]: HT
+          - generic [ref=f1e154]:
+            - generic [ref=f1e155]: Hari Thiagarajan
+            - generic [ref=f1e156]: Managing Director
+    - main [ref=f1e157]:
+      - generic [ref=f1e158]:
+        - generic [ref=f1e159]:
+          - link "Dashboard" [ref=f1e160] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f1e166]: T-Mills AI
+          - generic [ref=f1e169]: AI Copilot
+        - generic [ref=f1e170]:
+          - generic [ref=f1e171]:
+            - generic [ref=f1e172]:
+              - generic [ref=f1e177]:
+                - heading "T-Mills Copilot" [level=1] [ref=f1e178]
+                - paragraph [ref=f1e179]: Ask about a machine, an order, a lot, a deviation — or just describe what went wrong.
+              - generic [ref=f1e180]: Online
+            - generic [ref=f1e182]:
+              - generic [ref=f1e183]:
+                - generic [ref=f1e184]: I'm the T-Mills Copilot. I read the live plant record - machines, orders, lab tests, cotton lots, energy - alongside a knowledge base of closed cases. Describe a problem and I will give you the probable cause, how we resolved it before, who resolved it, and a costed plan with a realistic time to fix.
+                - generic [ref=f1e190]:
+                  - generic [ref=f1e191]:
+                    - generic [ref=f1e192]: Diagnose an issue
+                    - generic [ref=f1e193]:
+                      - button "Why did production fall short this week and how do we recover it?" [ref=f1e194]
+                      - button "Which machine is down and how long will it take to fix?" [ref=f1e195]
+                      - button "What is driving the quality deviations in the lab results?" [ref=f1e196]
+                  - generic [ref=f1e197]:
+                    - generic [ref=f1e198]: Protect an order
+                    - generic [ref=f1e199]:
+                      - button "Which sales orders are at risk and what do we do about them?" [ref=f1e200]
+                      - button "How do we recover the delayed export orders without pushing others out?" [ref=f1e201]
+                      - button "Which orders depend on the cotton lots still in testing?" [ref=f1e202]
+                  - generic [ref=f1e203]:
+                    - generic [ref=f1e204]: Plan and assign
+                    - generic [ref=f1e205]:
+                      - button "Who should I assign to the open breakdowns right now?" [ref=f1e206]
+                      - button "How long will it take to bring every machine back into service?" [ref=f1e207]
+                      - button "Where is our capacity constraint and how do we clear the queue?" [ref=f1e208]
+                  - generic [ref=f1e209]:
+                    - generic [ref=f1e210]: Cost and energy
+                    - generic [ref=f1e211]:
+                      - button "Why has our energy consumption per kg moved and where is the excess?" [ref=f1e212]
+                      - button "Which low spares put a current repair at risk?" [ref=f1e213]
+                      - button "What is the finished yarn stock position and what does it threaten?" [ref=f1e214]
+              - generic [ref=f1e215]:
+                - generic [ref=f1e216]:
+                  - textbox "Describe a problem, name a machine or an order, or ask for a plan…" [ref=f1e217]
+                  - button "Send" [disabled]
+                - paragraph [ref=f1e218]: Answers are composed from live plant records and the resolution knowledge base. Verify before acting on a commitment.
+          - complementary [ref=f1e219]:
+            - generic [ref=f1e220]:
+              - generic [ref=f1e221]: What this module does
+              - generic [ref=f1e222]:
+                - generic [ref=f1e227]:
+                  - generic [ref=f1e228]: Root cause diagnosis
+                  - paragraph [ref=f1e229]: Ranks probable causes against live readings and the failure signature.
+                - generic [ref=f1e234]:
+                  - generic [ref=f1e235]: Historical resolution
+                  - paragraph [ref=f1e236]: Retrieves closed cases with the same signature and what actually fixed them.
+                - generic [ref=f1e244]:
+                  - generic [ref=f1e245]: Expert recommendation
+                  - paragraph [ref=f1e246]: Nominates engineers on past fixes, skills, MTTR and current availability.
+                - generic [ref=f1e252]:
+                  - generic [ref=f1e253]: Resolution planning
+                  - paragraph [ref=f1e254]: Phased plan with owners, critical path and a calibrated time to fix.
+            - generic [ref=f1e255]: Connected data
+            - generic [ref=f1e263]:
+              - link "Insights & anomalies What the copilot flagged on its own" [ref=f1e264] [cursor=pointer]:
+                - /url: /ai/insights
+                - generic [ref=f1e273]:
+                  - generic [ref=f1e274]: Insights & anomalies
+                  - generic [ref=f1e275]: What the copilot flagged on its own
+              - link "Resolution playbooks How every recurring issue was fixed" [ref=f1e276] [cursor=pointer]:
+                - /url: /ai/playbooks
+                - generic [ref=f1e280]:
+                  - generic [ref=f1e281]: Resolution playbooks
+                  - generic [ref=f1e282]: How every recurring issue was fixed
+              - link "Expert network Who resolves what, and how fast" [ref=f1e283] [cursor=pointer]:
+                - /url: /ai/experts
+                - generic [ref=f1e290]:
+                  - generic [ref=f1e291]: Expert network
+                  - generic [ref=f1e292]: Who resolves what, and how fast
+            - paragraph [ref=f1e299]: The copilot answers only from records held in this system. It quotes the rows it used, so every figure can be traced back to the module it came from.
+            - paragraph [ref=f1e303]: "Tip: name a machine (RF-014), an order (SO-291) or a lot number and the answer narrows to that record."
+  - button [ref=f1e304]

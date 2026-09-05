@@ -1,0 +1,69 @@
+- generic [ref=f3e3]:
+  - complementary [ref=f3e5]:
+    - generic [ref=f3e11]:
+      - generic [ref=f3e12]: THIAGARAJAR MILLS
+      - generic [ref=f3e13]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f3e17]:
+      - link "Dashboard" [ref=f3e18] [cursor=pointer]:
+        - /url: /
+      - button "T-Mills AI" [ref=f3e27]
+      - button "Sales & Orders" [ref=f3e35]
+      - button "Planning" [ref=f3e45]
+      - button "Procurement" [ref=f3e53]
+      - link "Energy" [ref=f3e61] [cursor=pointer]:
+        - /url: /energy
+      - button "Cotton & Raw Materials" [ref=f3e66]
+      - button "Inventory" [ref=f3e74]
+      - button "Production" [ref=f3e89]
+      - button "Quality Management" [ref=f3e96]
+      - button "Maintenance" [ref=f3e104]
+      - button "Master Data" [ref=f3e111]
+      - link "Administration" [ref=f3e118] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f3e123]:
+      - generic [ref=f3e129]:
+        - generic [ref=f3e130]: Threading together
+        - generic [ref=f3e131]: Tradition & Technology
+      - generic [ref=f3e132]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f3e133]:
+    - banner [ref=f3e134]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f3e136]
+      - generic [ref=f3e137]:
+        - combobox [ref=f3e138]:
+          - generic: All Units
+        - combobox [ref=f3e141]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f3e144]
+        - button "HT Hari Thiagarajan Managing Director" [ref=f3e145]:
+          - generic [ref=f3e146]: HT
+          - generic [ref=f3e148]:
+            - generic [ref=f3e149]: Hari Thiagarajan
+            - generic [ref=f3e150]: Managing Director
+    - main [ref=f3e151]:
+      - generic [ref=f3e153]:
+        - generic [ref=f3e154]:
+          - generic [ref=f3e155]:
+            - generic [ref=f3e156]: Executive Command Center
+            - heading "Good Morning, Mr. Hari" [level=1] [ref=f3e157]
+            - paragraph [ref=f3e158]: Here's what's happening at Thiagarajar Mills today.
+          - generic [ref=f3e160]:
+            - generic [ref=f3e161]: Sat, 5 Sep 2026
+            - generic [ref=f3e164]:
+              - generic [ref=f3e165]: Setting Standards. Exceeding Excellence
+              - generic [ref=f3e166]: 100% Indian cotton yarn since 1936 · Kappalur, Madurai
+        - generic [ref=f3e168]:
+          - heading "What the copilot is watching" [level=3] [ref=f3e173]
+          - generic [ref=f3e174]: Live
+          - paragraph [ref=f3e175]: Generated from today's production, order book, asset and quality position.
+          - link "All insights" [ref=f3e176] [cursor=pointer]:
+            - /url: /ai/insights
+        - generic [ref=f3e202]:
+          - generic [ref=f3e204]:
+            - heading "Recent Alerts" [level=3] [ref=f3e205]
+            - link "View All" [ref=f3e206] [cursor=pointer]:
+              - /url: /reports
+          - generic [ref=f3e214]:
+            - heading "Recent Activities" [level=3] [ref=f3e215]
+            - link "View All" [ref=f3e216] [cursor=pointer]:
+              - /url: /reports
+  - button [ref=f3e223]

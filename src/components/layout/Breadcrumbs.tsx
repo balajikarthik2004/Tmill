@@ -8,9 +8,12 @@ export function Breadcrumbs() {
 
   if (location.pathname === '/') return null
 
-  const entry = flatNavEntries.find(
-    (e) => e.path === location.pathname || location.pathname.startsWith(`${e.path}/`),
-  )
+  // Exact match wins. Sections with both an overview leaf and children under it
+  // (/ai, /procurement, /inventory) would otherwise resolve every child to the
+  // overview, because the overview path is a prefix of all of them.
+  const entry =
+    flatNavEntries.find((e) => e.path === location.pathname) ??
+    flatNavEntries.find((e) => location.pathname.startsWith(`${e.path}/`))
 
   return (
     <div className="flex items-center gap-1.5 px-4 pt-4 text-xs text-muted-foreground lg:px-6">
