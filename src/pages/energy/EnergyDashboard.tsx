@@ -47,6 +47,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatDate, formatInrCompact, formatNumber, formatPct } from '@/lib/format'
 import { cn } from '@/lib/utils'
 
+/**
+ * Same skin as the app-wide FilterChip, applied to real tab triggers so the
+ * selected view reads at a glance instead of as a faint pill.
+ */
+const chipTab =
+  'rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] font-semibold text-foreground shadow-xs ' +
+  'hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800 ' +
+  'data-[state=active]:border-brand-600 data-[state=active]:bg-brand-600 data-[state=active]:text-white ' +
+  'data-[state=active]:shadow-sm data-[state=active]:ring-2 data-[state=active]:ring-brand-500/25'
+
 const chartTooltipStyle = {
   borderRadius: 12,
   boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
@@ -238,11 +248,19 @@ export function EnergyDashboard() {
       )}
 
       <Tabs defaultValue="usage">
-        <TabsList className="h-auto flex-wrap justify-start">
-          <TabsTrigger value="usage">What we use</TabsTrigger>
-          <TabsTrigger value="losses">Where it is lost</TabsTrigger>
-          <TabsTrigger value="units">Which unit, and why</TabsTrigger>
-          <TabsTrigger value="water">Water in detail</TabsTrigger>
+        <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-none border-0 bg-transparent p-0">
+          <TabsTrigger value="usage" className={chipTab}>
+            What we use
+          </TabsTrigger>
+          <TabsTrigger value="losses" className={chipTab}>
+            Where it is lost
+          </TabsTrigger>
+          <TabsTrigger value="units" className={chipTab}>
+            Which unit, and why
+          </TabsTrigger>
+          <TabsTrigger value="water" className={chipTab}>
+            Water in detail
+          </TabsTrigger>
         </TabsList>
 
         {/* =================== 1. WHAT WE USE =============================== */}
