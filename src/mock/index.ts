@@ -1,5 +1,7 @@
 export * from './company'
 export * from './factories'
+export * from './capacity'
+export * from './energy'
 export * from './products'
 export * from './customers'
 export * from './suppliers'

@@ -1,383 +1,1051 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
-  Bar,
+  Area,
+  AreaChart,
   CartesianGrid,
-  Cell,
-  ComposedChart,
-  Line,
+  ReferenceArea,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts'
-import { Activity, Cog, Factory, Gauge } from 'lucide-react'
+import {
+  AlertTriangle,
+  ArrowRight,
+  CalendarClock,
+  CheckCircle2,
+  CirclePause,
+  ClipboardCheck,
+  Cog,
+  Gauge,
+  PackageCheck,
+  PlayCircle,
+  TriangleAlert,
+  Wrench,
+} from 'lucide-react'
 import type { ColumnDef } from '@tanstack/react-table'
 
 import { useAsync } from '@/hooks/useAsync'
-import { getFactories, getFactoryPerformance, getMachines, getProcessSummary, getProductionOrders } from '@/services'
+import { useAppStore } from '@/store/appStore'
+import { assessOrderFeasibility, getCapacityPlan, getMachineRunOut } from '@/services'
+import type {
+  MachineRunOutRow,
+  ProcessCapacityRow,
+  UnitCapacityRow,
+} from '@/services'
 import { PageHeader } from '@/components/common/PageHeader'
 import { StatCard, StatGrid } from '@/components/common/StatCard'
 import { DataTable } from '@/components/tables/DataTable'
+import { StatusBadge } from '@/components/tables/StatusBadge'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
-import { formatKg, formatMeters, formatNumber, formatPct } from '@/lib/format'
-import type { ProcessName } from '@/types'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { formatDate, formatKg, formatNumber, formatPct } from '@/lib/format'
+import { cn } from '@/lib/utils'
 
-const processNames: ProcessName[] = [
-  'Blow Room',
-  'Carding',
-  'Combing',
-  'Drawing',
-  'Roving',
-  'Ring Spinning',
-  'Open End',
-  'Winding',
-  'TFO',
-  'Gassing',
-  'Weaving',
-]
+const horizons = [7, 14, 30] as const
+type Horizon = (typeof horizons)[number]
 
-function bandColor(pct: number) {
-  if (pct >= 95) return '#4a8a3c'
-  if (pct >= 85) return '#b4632a'
-  return '#b23a2f'
+/** Load bands. Unlike achievement, a high number here is the warning. */
+function loadTone(pct: number) {
+  if (pct >= 95) return 'danger'
+  if (pct >= 80) return 'warning'
+  return 'success'
 }
 
-function bandClass(pct: number) {
-  if (pct >= 95) return 'bg-success-500'
-  if (pct >= 85) return 'bg-warning-500'
-  return 'bg-danger-500'
+const barByTone: Record<string, string> = {
+  danger: 'bg-danger-500',
+  warning: 'bg-warning-500',
+  success: 'bg-success-500',
 }
 
-interface ProcessLoadRow {
-  process: ProcessName
-  unit: 'kg' | 'm'
-  actual: number
-  target: number
-  achievedPct: number
-  orderCount: number
-  inProgress: number
-  machines: number
-  running: number
-  avgUtilizationPct: number
+/** Written out in full so Tailwind keeps these classes — never interpolated. */
+const textByTone: Record<string, string> = {
+  danger: 'text-danger-700',
+  warning: 'text-warning-700',
+  success: 'text-success-700',
 }
 
-const processColumns: ColumnDef<ProcessLoadRow, any>[] = [
-  { accessorKey: 'process', header: 'Process' },
-  { accessorKey: 'machines', header: 'Machines' },
+function formatDays(days: number | null | undefined) {
+  if (days === null || days === undefined) return '—'
+  if (days < 1) return `${Math.round(days * 24)} h`
+  return `${days.toFixed(1)} d`
+}
+
+function formatHours(hours: number | null | undefined) {
+  if (hours === null || hours === undefined) return '—'
+  if (hours < 1) return '< 1 h'
+  if (hours < 48) return `${Math.round(hours)} h`
+  return `${(hours / 24).toFixed(1)} d`
+}
+
+const chartTooltipStyle = {
+  borderRadius: 12,
+  boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
+  border: '1px solid hsl(var(--border))',
+  fontSize: 12,
+  background: 'hsl(var(--popover))',
+}
+
+interface BurndownDatum {
+  label: string
+  backlogKg: number
+  backlogWithOnHoldKg: number
+}
+
+/**
+ * Says in a sentence what the point on the line means. A raw "142,300 kg" tells
+ * a planner nothing on its own — how many days of running it represents does.
+ */
+function BurndownTooltip({
+  active,
+  payload,
+  label,
+  dailyKg,
+}: {
+  active?: boolean
+  payload?: { payload: BurndownDatum }[]
+  label?: string | number
+  dailyKg: number
+}) {
+  const point = payload?.[0]?.payload
+  if (!active || !point) return null
+
+  const daysLeft = dailyKg > 0 ? point.backlogKg / dailyKg : 0
+  const heldGap = point.backlogWithOnHoldKg - point.backlogKg
+
+  return (
+    <div style={chartTooltipStyle} className="max-w-56 px-3 py-2">
+      <div className="text-xs font-semibold text-foreground">{String(label)}</div>
+      {point.backlogKg > 0 ? (
+        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+          <span className="font-semibold text-foreground">{formatKg(point.backlogKg)}</span> of promised
+          yarn still to make — about {formatDays(daysLeft)} of running left.
+        </p>
+      ) : (
+        <p className="mt-1 text-[11px] leading-relaxed text-success-700">
+          Everything promised is made. The machines are free from here.
+        </p>
+      )}
+      {heldGap > 0 && (
+        <p className="mt-1 border-t border-border/60 pt-1 text-[11px] leading-relaxed text-copper-700">
+          {formatKg(heldGap)} more if the held orders are released.
+        </p>
+      )}
+    </div>
+  )
+}
+
+/** One step of the derivation, so every headline figure can be traced back. */
+function FlowStep({
+  step,
+  label,
+  value,
+  formula,
+  tone = 'default',
+}: {
+  step: number
+  label: string
+  value: string
+  formula: string
+  tone?: 'default' | 'success' | 'warning' | 'danger'
+}) {
+  const valueTone = {
+    default: 'text-foreground',
+    success: 'text-success-700',
+    warning: 'text-warning-700',
+    danger: 'text-danger-700',
+  }[tone]
+
+  return (
+    <div className="flex min-w-0 flex-1 items-start gap-2.5">
+      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-secondary text-[10px] font-semibold text-muted-foreground">
+        {step}
+      </span>
+      <div className="min-w-0">
+        <div className="section-label text-[10px] uppercase tracking-wider text-copper-600">{label}</div>
+        <div className={cn('num mt-0.5 text-base font-semibold leading-tight', valueTone)}>{value}</div>
+        <div className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{formula}</div>
+      </div>
+    </div>
+  )
+}
+
+const stageColumns: ColumnDef<ProcessCapacityRow, any>[] = [
   {
-    accessorKey: 'running',
-    header: 'Running',
-    cell: ({ row }) => `${row.original.running} / ${row.original.machines}`,
-  },
-  {
-    accessorKey: 'avgUtilizationPct',
-    header: 'Utilisation',
+    accessorKey: 'process',
+    header: 'Stage',
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Progress
-          value={Math.min(row.original.avgUtilizationPct, 100)}
-          className="h-1.5 w-16"
-          indicatorClassName={bandClass(row.original.avgUtilizationPct)}
-        />
-        <span className="w-11 shrink-0 text-xs tabular-nums text-muted-foreground">
-          {formatPct(row.original.avgUtilizationPct)}
-        </span>
+      <div className="flex items-center gap-1.5">
+        <span className="font-medium">{row.original.process}</span>
+        {row.original.isBottleneck && <Badge variant="danger">Bottleneck</Badge>}
+        {!row.original.onPrimaryRoute && <Badge variant="secondary">Off route</Badge>}
       </div>
     ),
   },
   {
-    accessorKey: 'actual',
-    header: 'Output (30d)',
-    cell: ({ row }) =>
-      row.original.unit === 'm' ? formatMeters(row.original.actual) : formatKg(row.original.actual),
-  },
-  {
-    accessorKey: 'target',
-    header: 'Target (30d)',
-    cell: ({ row }) =>
-      row.original.unit === 'm' ? formatMeters(row.original.target) : formatKg(row.original.target),
-  },
-  {
-    accessorKey: 'achievedPct',
-    header: 'Achievement',
+    id: 'fleet',
+    header: 'Running / Fleet',
+    accessorFn: (row) => row.fleet.running,
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Progress
-          value={Math.min(row.original.achievedPct, 100)}
-          className="h-1.5 w-16"
-          indicatorClassName={bandClass(row.original.achievedPct)}
-        />
-        <span className="w-11 shrink-0 text-xs tabular-nums text-muted-foreground">
-          {formatPct(row.original.achievedPct)}
-        </span>
-      </div>
+      <span className="tabular-nums">
+        {row.original.fleet.running} / {row.original.fleet.total}
+        {row.original.fleet.idle > 0 && (
+          <span className="text-muted-foreground"> · {row.original.fleet.idle} idle</span>
+        )}
+      </span>
     ),
   },
-  { accessorKey: 'orderCount', header: 'Orders' },
-  { accessorKey: 'inProgress', header: 'In Progress' },
+  {
+    accessorKey: 'dailyCapacityKg',
+    header: 'Capacity / day',
+    cell: ({ row }) => formatKg(row.original.dailyCapacityKg),
+  },
+  {
+    accessorKey: 'committedKg',
+    header: 'Committed',
+    cell: ({ row }) => formatKg(row.original.committedKg),
+  },
+  {
+    accessorKey: 'loadPct',
+    header: 'Load',
+    cell: ({ row }) => {
+      const tone = loadTone(row.original.loadPct)
+      return (
+        <div className="flex items-center gap-2">
+          <Progress
+            value={Math.min(row.original.loadPct, 100)}
+            className="h-1.5 w-16"
+            indicatorClassName={barByTone[tone]}
+          />
+          <span className="w-11 shrink-0 text-xs tabular-nums text-muted-foreground">
+            {formatPct(row.original.loadPct, 0)}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'freeKg',
+    header: 'Free',
+    cell: ({ row }) => formatKg(row.original.freeKg),
+  },
+  {
+    accessorKey: 'clearanceDays',
+    header: 'Clears in',
+    cell: ({ row }) => (
+      <span className="tabular-nums">{formatDays(row.original.clearanceDays)}</span>
+    ),
+  },
+  {
+    accessorKey: 'onHoldKg',
+    header: 'On hold',
+    cell: ({ row }) =>
+      row.original.onHoldKg > 0 ? (
+        <span className="text-warning-700">{formatKg(row.original.onHoldKg)}</span>
+      ) : (
+        <span className="text-muted-foreground">—</span>
+      ),
+  },
 ]
+
+const runOutColumns: ColumnDef<MachineRunOutRow, any>[] = [
+  { accessorKey: 'code', header: 'Machine' },
+  { accessorKey: 'unitName', header: 'Unit' },
+  {
+    accessorKey: 'process',
+    header: 'Stage',
+    cell: ({ row }) => <Badge variant="outline">{row.original.process}</Badge>,
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => <StatusBadge status={row.original.status} />,
+  },
+  {
+    accessorKey: 'currentOrderNo',
+    header: 'Current job',
+    cell: ({ row }) =>
+      row.original.currentOrderNo ? (
+        <div className="min-w-0">
+          <div className="font-medium">{row.original.currentOrderNo}</div>
+          <div className="truncate text-[11px] text-muted-foreground">{row.original.currentProduct}</div>
+        </div>
+      ) : (
+        <span className="text-muted-foreground">No job assigned</span>
+      ),
+  },
+  {
+    accessorKey: 'remainingKg',
+    header: 'Balance',
+    cell: ({ row }) =>
+      row.original.remainingKg > 0 ? formatKg(row.original.remainingKg) : <span className="text-muted-foreground">—</span>,
+  },
+  {
+    accessorKey: 'rateKgPerHr',
+    header: 'Rate',
+    cell: ({ row }) => <span className="tabular-nums">{row.original.rateKgPerHr} kg/h</span>,
+  },
+  {
+    accessorKey: 'hoursToFinish',
+    header: 'Time to finish',
+    cell: ({ row }) => <span className="tabular-nums">{formatHours(row.original.hoursToFinish)}</span>,
+  },
+  {
+    accessorKey: 'freeInHours',
+    header: 'Free from',
+    cell: ({ row }) => {
+      const tone =
+        row.original.state === 'Available now'
+          ? 'success'
+          : row.original.state === 'Under repair'
+            ? 'danger'
+            : row.original.state === 'PM window'
+              ? 'info'
+              : 'secondary'
+      return (
+        <div className="flex items-center gap-2">
+          <Badge variant={tone}>{row.original.state}</Badge>
+          <span className="tabular-nums text-xs text-muted-foreground">
+            {row.original.freeInHours <= 0 ? 'now' : formatDate(row.original.freeAtIso, 'dd MMM, h:mm a')}
+          </span>
+        </div>
+      )
+    },
+  },
+]
+
+function UnitCard({ unit }: { unit: UnitCapacityRow }) {
+  const tone = loadTone(unit.loadPct)
+  return (
+    <Card className="p-4">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm font-semibold text-foreground">{unit.name}</span>
+            <Badge variant="secondary">{unit.installedCapacity}</Badge>
+          </div>
+          <div className="mt-0.5 text-xs text-muted-foreground">{unit.countGroup}</div>
+        </div>
+        <div className="shrink-0 text-right">
+          <div className={cn('num text-lg font-semibold', textByTone[tone])}>{formatPct(unit.loadPct, 0)}</div>
+          <div className="text-[11px] text-muted-foreground">of horizon capacity committed</div>
+        </div>
+      </div>
+
+      <Progress
+        value={Math.min(unit.loadPct, 100)}
+        className="mt-3"
+        indicatorClassName={barByTone[tone]}
+      />
+
+      <div className="mt-3 grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
+        <div>
+          <div className="text-muted-foreground">Route throughput</div>
+          <div className="font-semibold tabular-nums text-foreground">{formatKg(unit.dailyCapacityKg)}/day</div>
+        </div>
+        <div>
+          <div className="text-muted-foreground">Committed / free</div>
+          <div className="font-semibold tabular-nums text-foreground">
+            {formatKg(unit.committedKg)} · {formatKg(unit.freeKg)}
+          </div>
+        </div>
+        <div>
+          <div className="text-muted-foreground">Machines running</div>
+          <div className="font-semibold tabular-nums text-foreground">
+            {unit.fleet.running} / {unit.fleet.total} · {unit.fleet.idle} idle
+          </div>
+        </div>
+        <div>
+          <div className="text-muted-foreground">Backlog clears</div>
+          <div className="font-semibold tabular-nums text-foreground">
+            {formatDays(unit.clearanceDays)}
+            {unit.clearanceDate && (
+              <span className="font-normal text-muted-foreground"> · {formatDate(unit.clearanceDate, 'dd MMM')}</span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-border pt-3 text-[11px] text-muted-foreground">
+        {unit.constrainingProcess && (
+          <Badge variant="copper">Capped by {unit.constrainingProcess}</Badge>
+        )}
+        {unit.slowestProcess && unit.slowestProcess !== unit.constrainingProcess && (
+          <Badge variant="outline">Longest queue at {unit.slowestProcess}</Badge>
+        )}
+        {unit.onHoldKg > 0 && (
+          <Badge variant="warning">
+            {formatKg(unit.onHoldKg)} on hold · {unit.onHoldOrders} orders
+          </Badge>
+        )}
+      </div>
+    </Card>
+  )
+}
 
 export default function CapacityPlanning() {
-  const factoriesQuery = useAsync(getFactories, [])
-  const performance = useAsync(() => getFactoryPerformance('30d'), [])
-  const machinesQuery = useAsync(() => getMachines({}), [])
-  const ordersQuery = useAsync(() => getProductionOrders({}), [])
-  const processQuery = useAsync(() => Promise.all(processNames.map((p) => getProcessSummary(p))), [])
+  const { factoryId } = useAppStore()
+  const [horizon, setHorizon] = useState<Horizon>(30)
+  const [qtyInput, setQtyInput] = useState('12000')
+  const [daysInput, setDaysInput] = useState('21')
 
-  const isLoading =
-    factoriesQuery.isLoading || performance.isLoading || machinesQuery.isLoading || ordersQuery.isLoading
+  const planQuery = useAsync(() => getCapacityPlan(horizon, factoryId), [horizon, factoryId])
+  const runOutQuery = useAsync(() => getMachineRunOut(factoryId), [factoryId])
 
-  const units = useMemo(() => {
-    const perf = new Map((performance.data ?? []).map((p) => [p.factoryId as string, p]))
-    const machines = machinesQuery.data ?? []
-    const orders = ordersQuery.data ?? []
+  const plan = planQuery.data
+  const isLoading = planQuery.isLoading
 
-    return (factoriesQuery.data ?? []).map((factory) => {
-      const p = perf.get(factory.id)
-      const unitMachines = machines.filter((m) => m.factoryId === factory.id)
-      const unitOrders = orders.filter((o) => o.factoryId === factory.id)
-      const utilSum = unitMachines.reduce((sum, m) => sum + m.utilizationPct, 0)
-      return {
-        ...factory,
-        actual: p?.actual ?? 0,
-        target: p?.target ?? 0,
-        achievedPct: p?.achievedPct ?? 0,
-        outputUnit: p?.unit ?? ('kg' as const),
-        machineCount: unitMachines.length,
-        runningCount: unitMachines.filter((m) => m.status === 'Running').length,
-        avgUtilizationPct: unitMachines.length > 0 ? utilSum / unitMachines.length : 0,
-        orderCount: unitOrders.length,
-        activeOrders: unitOrders.filter(
-          (o) => o.status === 'Planned' || o.status === 'In Progress' || o.status === 'Quality Check',
-        ).length,
-      }
+  const feasibility = useMemo(() => {
+    if (!plan) return null
+    return assessOrderFeasibility(plan, {
+      qtyKg: Number(qtyInput) || 0,
+      dueInDays: Number(daysInput) || 0,
     })
-  }, [factoriesQuery.data, performance.data, machinesQuery.data, ordersQuery.data])
+  }, [plan, qtyInput, daysInput])
 
-  const processRows = useMemo<ProcessLoadRow[]>(() => {
-    const machines = machinesQuery.data ?? []
-    return (processQuery.data ?? []).map((s) => {
-      const procMachines = machines.filter((m) => m.process === s.process)
-      const utilSum = procMachines.reduce((sum, m) => sum + m.utilizationPct, 0)
-      return {
-        process: s.process,
-        unit: s.process === 'Weaving' ? 'm' : 'kg',
-        actual: s.actual,
-        target: s.target,
-        achievedPct: s.achievedPct,
-        orderCount: s.orderCount,
-        inProgress: s.inProgress,
-        machines: procMachines.length,
-        running: procMachines.filter((m) => m.status === 'Running').length,
-        avgUtilizationPct: procMachines.length > 0 ? utilSum / procMachines.length : 0,
-      }
-    })
-  }, [processQuery.data, machinesQuery.data])
+  const burndown = useMemo(
+    () =>
+      (plan?.burndown ?? []).map((p) => ({
+        ...p,
+        label: formatDate(p.date, 'dd MMM'),
+      })),
+    [plan?.burndown],
+  )
 
-  const chartData = units.map((u) => ({
-    name: u.shortName,
-    fullName: u.name,
-    achievedPct: Math.round(u.achievedPct * 10) / 10,
-    plan: 100,
-  }))
+  const clearanceDay = plan?.plant.clearanceDays ?? null
+  const loadPct = plan?.plant.loadPct ?? 0
+  const plantTone = loadTone(loadPct)
 
-  const totals = useMemo(() => {
-    const spindles = units.reduce((sum, u) => sum + u.spindles, 0)
-    const rotors = units.reduce((sum, u) => sum + u.rotors, 0)
-    const looms = units.reduce((sum, u) => sum + u.looms, 0)
-    const machineCount = units.reduce((sum, u) => sum + u.machineCount, 0)
-    const utilWeighted = units.reduce((sum, u) => sum + u.avgUtilizationPct * u.machineCount, 0)
-    return {
-      spindles,
-      rotors,
-      looms,
-      machineCount,
-      avgUtilizationPct: machineCount > 0 ? utilWeighted / machineCount : 0,
-    }
-  }, [units])
+  const verdictStyles = {
+    accept: {
+      card: 'border-success-100 bg-success-50',
+      text: 'text-success-700',
+      icon: CheckCircle2,
+    },
+    tight: {
+      card: 'border-warning-100 bg-warning-50',
+      text: 'text-warning-700',
+      icon: TriangleAlert,
+    },
+    decline: {
+      card: 'border-danger-100 bg-danger-50',
+      text: 'text-danger-700',
+      icon: AlertTriangle,
+    },
+  } as const
 
   return (
     <div className="space-y-4 p-4 lg:p-6">
       <PageHeader
         title="Capacity Planning"
-        description="Installed capacity against the last 30 days of load, for all five units at Kappalur, Madurai."
+        description={
+          plan
+            ? `${plan.scopeLabel} — what the fleet can carry over the next ${horizon} days, what the order book has already claimed, and what is left to sell.`
+            : 'Machine availability, committed load and free capacity across the plant.'
+        }
+        actions={
+          <Tabs value={String(horizon)} onValueChange={(v) => setHorizon(Number(v) as Horizon)}>
+            <TabsList>
+              {horizons.map((h) => (
+                <TabsTrigger key={h} value={String(h)}>
+                  {h} days
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        }
       />
 
-      {isLoading ? (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className="h-17 w-full rounded-lg" />
+      {/* ---- The four questions ------------------------------------------ */}
+      {isLoading || !plan ? (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-20 w-full rounded-lg" />
           ))}
         </div>
       ) : (
-        <StatGrid cols={5}>
-          <StatCard label="Spindles installed" value={formatNumber(totals.spindles)} icon={Factory} tone="info" />
-          <StatCard label="Rotors installed" value={formatNumber(totals.rotors)} icon={Factory} tone="info" />
-          <StatCard label="Looms installed" value={formatNumber(totals.looms)} icon={Factory} tone="info" />
+        <StatGrid cols={4}>
           <StatCard
-            label="Production machines"
-            value={formatNumber(totals.machineCount)}
-            sublabel="Across 11 process stages"
-            icon={Cog}
+            label="Machines running now"
+            value={`${plan.fleet.running} of ${plan.fleet.total}`}
+            sublabel={`${formatPct(plan.fleet.avgUtilizationPct, 0)} average utilisation`}
+            icon={PlayCircle}
+            tone="success"
+            to="/maintenance/machine-dashboard"
           />
           <StatCard
-            label="Average utilisation"
-            value={formatPct(totals.avgUtilizationPct)}
-            sublabel="Machine-weighted"
-            icon={Gauge}
-            tone={totals.avgUtilizationPct >= 90 ? 'success' : 'warning'}
+            label="Available to schedule"
+            value={formatNumber(plan.fleet.availableNow)}
+            sublabel={
+              plan.fleet.returningInHorizon > 0
+                ? `idle now · ${plan.fleet.returningInHorizon} more back from PM / repair`
+                : 'idle now, no job assigned'
+            }
+            icon={Cog}
+            tone="info"
+          />
+          <StatCard
+            label="New orders we can take"
+            value={formatNumber(plan.intake.acceptableOrders)}
+            sublabel={`${formatKg(plan.intake.quotableKg)} quotable at ${formatKg(plan.intake.avgOrderKg)} average`}
+            icon={PackageCheck}
+            tone={plan.intake.acceptableOrders > 0 ? 'success' : 'danger'}
+          />
+          <StatCard
+            label="Current load finishes in"
+            value={formatDays(plan.plant.clearanceDays)}
+            sublabel={
+              plan.plant.clearanceDate
+                ? `on ${formatDate(plan.plant.clearanceDate)} at today's rate`
+                : 'nothing schedulable'
+            }
+            icon={CalendarClock}
+            tone={plantTone === 'success' ? 'success' : plantTone === 'warning' ? 'warning' : 'danger'}
           />
         </StatGrid>
       )}
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-        <div className="space-y-3 xl:col-span-2">
-          {isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-28 w-full rounded-lg" />)
-          ) : units.length === 0 ? (
-            <Card>
-              <CardContent className="py-14 text-center text-sm text-muted-foreground">
-                No units are registered.
-              </CardContent>
-            </Card>
-          ) : (
-            units.map((u) => {
-              const fmt = u.outputUnit === 'm' ? formatMeters : formatKg
-              return (
-                <Card key={u.id} className="p-4">
-                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-foreground">{u.name}</span>
-                        <Badge variant="secondary">{u.installedCapacity}</Badge>
-                      </div>
-                      <div className="mt-0.5 text-xs text-muted-foreground">{u.countGroup}</div>
-                    </div>
-                    <div className="shrink-0 text-right">
-                      <div className="num text-lg font-semibold text-foreground">
-                        {formatPct(u.achievedPct)}
-                      </div>
-                      <div className="text-[11px] text-muted-foreground">of 30-day target</div>
-                    </div>
-                  </div>
-
-                  <Progress
-                    value={Math.min(u.achievedPct, 100)}
-                    className="mt-3"
-                    indicatorClassName={bandClass(u.achievedPct)}
-                  />
-
-                  <div className="mt-3 grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
-                    <div>
-                      <div className="text-muted-foreground">Actual (30d)</div>
-                      <div className="font-semibold tabular-nums text-foreground">{fmt(u.actual)}</div>
-                    </div>
-                    <div>
-                      <div className="text-muted-foreground">Target (30d)</div>
-                      <div className="font-semibold tabular-nums text-foreground">{fmt(u.target)}</div>
-                    </div>
-                    <div>
-                      <div className="text-muted-foreground">Machines running</div>
-                      <div className="font-semibold tabular-nums text-foreground">
-                        {u.runningCount} / {u.machineCount} · {formatPct(u.avgUtilizationPct)} util
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-muted-foreground">Order load</div>
-                      <div className="font-semibold tabular-nums text-foreground">
-                        {formatNumber(u.activeOrders)} active / {formatNumber(u.orderCount)}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap gap-1.5 border-t border-border pt-3 text-[11px] text-muted-foreground">
-                    {u.spindles > 0 && <Badge variant="outline">{formatNumber(u.spindles)} spindles</Badge>}
-                    {u.rotors > 0 && <Badge variant="outline">{formatNumber(u.rotors)} rotors</Badge>}
-                    {u.looms > 0 && <Badge variant="outline">{formatNumber(u.looms)} looms</Badge>}
-                    <Badge variant="outline">{u.location}</Badge>
-                  </div>
-                </Card>
-              )
-            })
+      {/* ---- How those numbers were reached ------------------------------ */}
+      <Card>
+        <CardHeader className="flex-row items-center justify-between space-y-0">
+          <CardTitle>How the plan is built</CardTitle>
+          {plan && (
+            <span className="text-[11px] text-muted-foreground">
+              {plan.assumptions.shiftsPerDay} shifts · {plan.assumptions.hoursPerDay} h calendar ·{' '}
+              {formatPct(plan.assumptions.availabilityPct, 0)} after planned downtime
+            </span>
           )}
-        </div>
+        </CardHeader>
+        <CardContent>
+          {isLoading || !plan ? (
+            <Skeleton className="h-24 w-full" />
+          ) : (
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch">
+              <FlowStep
+                step={1}
+                label="Availability"
+                value={`${plan.fleet.deployable} machines`}
+                formula={`${plan.fleet.running} running + ${plan.fleet.idle} idle. ${plan.fleet.breakdown} in repair, ${plan.fleet.maintenance} in PM — ${formatNumber(plan.fleet.hoursLostToDowntime)} machine-hours lost.`}
+              />
+              <ArrowRight className="hidden h-4 w-4 shrink-0 self-center text-muted-foreground/40 lg:block" />
+              <FlowStep
+                step={2}
+                label="Capacity"
+                value={`${formatKg(plan.plant.dailyCapacityKg)}/day`}
+                formula={`Slowest stage on each unit's route, summed across units, at ${formatPct(plan.fleet.avgOeePct, 0)} OEE. ${formatKg(plan.plant.capacityKg)} over ${horizon} days.`}
+              />
+              <ArrowRight className="hidden h-4 w-4 shrink-0 self-center text-muted-foreground/40 lg:block" />
+              <FlowStep
+                step={3}
+                label="Committed load"
+                value={formatKg(plan.plant.committedKg)}
+                formula={`Balance on ${plan.plant.scheduledOrders} planned and running orders. ${formatKg(plan.plant.onHoldKg)} more sits on hold across ${plan.plant.onHoldOrders} orders.`}
+              />
+              <ArrowRight className="hidden h-4 w-4 shrink-0 self-center text-muted-foreground/40 lg:block" />
+              <FlowStep
+                step={4}
+                label="Balance"
+                value={formatPct(loadPct, 0)}
+                formula={`Committed ÷ capacity. Clears in ${formatDays(plan.plant.clearanceDays)}${plan.plant.clearanceDaysWithOnHold !== null ? `, or ${formatDays(plan.plant.clearanceDaysWithOnHold)} if the held orders are released` : ''}.`}
+                tone={plantTone}
+              />
+              <ArrowRight className="hidden h-4 w-4 shrink-0 self-center text-muted-foreground/40 lg:block" />
+              <FlowStep
+                step={5}
+                label="Free to sell"
+                value={`${formatNumber(plan.intake.acceptableOrders)} orders`}
+                formula={`${formatKg(plan.intake.freeKg)} free, less a ${plan.assumptions.planningBufferPct}% buffer (${formatKg(plan.intake.bufferKg)}), divided by the ${formatKg(plan.intake.avgOrderKg)} average order.`}
+                tone={plan.intake.acceptableOrders > 0 ? 'success' : 'danger'}
+              />
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
-        <Card className="h-full">
-          <CardHeader className="flex-row items-center gap-2 space-y-0">
-            <Activity className="h-4 w-4 text-muted-foreground" />
-            <CardTitle>Load vs. Plan by Unit</CardTitle>
+      {/* ---- Burn-down + intake decision --------------------------------- */}
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+        <Card className="xl:col-span-2">
+          <CardHeader>
+            <CardTitle>When Does Today&apos;s Work Run Out?</CardTitle>
+            <p className="text-xs text-muted-foreground">
+              Think of the order book as a pile of yarn we have promised to make. Every day the mill runs,
+              the pile gets smaller. This chart shows that pile shrinking — and the day it hits the floor
+              is the day the machines are free for new work.
+            </p>
           </CardHeader>
-          <CardContent>
-            {isLoading ? (
+          <CardContent className="space-y-4">
+            {isLoading || !plan ? (
               <Skeleton className="h-72 w-full" />
-            ) : chartData.length === 0 ? (
+            ) : plan.plant.committedKg === 0 ? (
               <div className="flex h-72 items-center justify-center text-sm text-muted-foreground">
-                No unit output recorded in the last 30 days.
+                Nothing is promised in this scope — the whole horizon is free.
               </div>
             ) : (
-              <div className="h-72 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={chartData} margin={{ top: 4, right: 8, left: -12, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                    <XAxis
-                      dataKey="name"
-                      tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
-                      axisLine={false}
-                      tickLine={false}
-                      width={56}
-                      domain={[0, 110]}
-                      tickFormatter={(v: number) => `${v}%`}
-                    />
-                    <Tooltip
-                      cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}
-                      contentStyle={{
-                        borderRadius: 12,
-                      boxShadow: '0 12px 28px -8px rgb(26 33 29 / 0.18)',
-                        border: '1px solid hsl(var(--border))',
-                        fontSize: 12,
-                        background: 'hsl(var(--popover))',
-                      }}
-                      labelFormatter={(label) =>
-                        chartData.find((d) => d.name === label)?.fullName ?? String(label)
-                      }
-                      formatter={(value, name) => [`${Number(value).toFixed(1)}%`, String(name)]}
-                    />
-                    <Bar dataKey="achievedPct" name="Achieved" radius={[4, 4, 0, 0]} maxBarSize={36}>
-                      {chartData.map((d) => (
-                        <Cell key={d.name} fill={bandColor(d.achievedPct)} />
-                      ))}
-                    </Bar>
-                    <Line type="monotone" dataKey="plan" name="Plan" stroke="#b4632a" strokeWidth={2} dot={false} />
-                  </ComposedChart>
-                </ResponsiveContainer>
+              <>
+                {/* Read the chart in three beats, before even looking at it. */}
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
+                  {[
+                    {
+                      when: 'Today',
+                      value: formatKg(plan.plant.committedKg),
+                      note: `promised across ${plan.plant.scheduledOrders} live orders`,
+                      tone: 'text-foreground',
+                    },
+                    {
+                      when: 'Every day',
+                      value: `− ${formatKg(plan.plant.dailyCapacityKg)}`,
+                      note: 'comes off the pile as the mill runs',
+                      tone: 'text-brand-600',
+                    },
+                    {
+                      when: plan.plant.clearanceDate
+                        ? formatDate(plan.plant.clearanceDate, 'dd MMM')
+                        : 'Never',
+                      value: 'Pile empty',
+                      note: `machines free in ${formatDays(plan.plant.clearanceDays)}`,
+                      tone: 'text-success-700',
+                    },
+                  ].map((beat, i) => (
+                    <div key={beat.when} className="flex flex-1 items-center gap-2">
+                      {i > 0 && (
+                        <ArrowRight className="hidden h-4 w-4 shrink-0 text-muted-foreground/40 sm:block" />
+                      )}
+                      <div className="min-w-0 flex-1 rounded-xl border border-border bg-secondary/30 px-3 py-2">
+                        <div className="section-label text-[10px] uppercase tracking-wider text-copper-600">
+                          {beat.when}
+                        </div>
+                        <div className={cn('num mt-0.5 text-sm font-semibold', beat.tone)}>{beat.value}</div>
+                        <div className="text-[11px] leading-snug text-muted-foreground">{beat.note}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="h-72 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={burndown} margin={{ top: 18, right: 12, left: 4, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="capBacklog" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#0f6e56" stopOpacity={0.28} />
+                          <stop offset="100%" stopColor="#0f6e56" stopOpacity={0.02} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                      <XAxis
+                        dataKey="label"
+                        tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                        axisLine={false}
+                        tickLine={false}
+                        minTickGap={28}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                        axisLine={false}
+                        tickLine={false}
+                        width={80}
+                        tickFormatter={(v: number) => `${(v / 1000).toFixed(0)} t`}
+                        label={{
+                          value: 'Still to make (tonnes)',
+                          angle: -90,
+                          position: 'insideLeft',
+                          style: {
+                            fontSize: 11,
+                            fill: 'hsl(var(--muted-foreground))',
+                            textAnchor: 'middle',
+                          },
+                        }}
+                      />
+                      <Tooltip
+                        content={<BurndownTooltip dailyKg={plan.plant.dailyCapacityKg} />}
+                        cursor={{ stroke: 'hsl(var(--border))', strokeWidth: 1 }}
+                      />
+
+                      {/* Everything past the clearing day is capacity we can still sell. */}
+                      {clearanceDay !== null && clearanceDay < horizon && (
+                        <ReferenceArea
+                          x1={burndown[Math.ceil(clearanceDay)]?.label}
+                          x2={burndown[burndown.length - 1]?.label}
+                          fill="#4a8a3c"
+                          fillOpacity={0.07}
+                          label={{
+                            value: 'Free for new orders',
+                            position: 'insideTop',
+                            style: { fontSize: 11, fill: '#4a8a3c' },
+                          }}
+                        />
+                      )}
+
+                      {clearanceDay !== null && clearanceDay <= horizon && (
+                        <ReferenceLine
+                          x={burndown[Math.round(clearanceDay)]?.label}
+                          stroke="#4a8a3c"
+                          strokeDasharray="4 4"
+                          label={{
+                            value: plan.plant.clearanceDate
+                              ? `Machines free — ${formatDate(plan.plant.clearanceDate, 'dd MMM')}`
+                              : 'Machines free',
+                            position: 'insideTopRight',
+                            style: { fontSize: 11, fill: '#4a8a3c', fontWeight: 600 },
+                          }}
+                        />
+                      )}
+
+                      <Area
+                        type="monotone"
+                        dataKey="backlogWithOnHoldKg"
+                        name="If held orders are released"
+                        stroke="#b4632a"
+                        strokeWidth={1.5}
+                        strokeDasharray="4 3"
+                        fill="none"
+                        dot={false}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="backlogKg"
+                        name="Promised, still to make"
+                        stroke="#0f6e56"
+                        strokeWidth={2.5}
+                        fill="url(#capBacklog)"
+                        dot={false}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* A legend in words, not codes. */}
+                <div className="space-y-1.5 border-t border-border pt-3 text-[11px] leading-relaxed text-muted-foreground">
+                  <div className="flex items-start gap-2">
+                    <span className="mt-1.5 h-0.5 w-5 shrink-0 rounded-full bg-brand-600" />
+                    <span>
+                      <span className="font-semibold text-foreground">The solid green line</span> is yarn we
+                      have promised but not yet made. It drops every day the mill runs.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="mt-1.5 h-0.5 w-5 shrink-0 rounded-full bg-copper-500" />
+                    <span>
+                      <span className="font-semibold text-foreground">The dashed copper line</span> is the
+                      same pile if the{' '}
+                      {plan.plant.onHoldOrders > 0
+                        ? `${plan.plant.onHoldOrders} orders on hold (${formatKg(plan.plant.onHoldKg)})`
+                        : 'orders on hold'}{' '}
+                      come back onto the floor. The gap between the two lines is the delay that would cost
+                      us.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="mt-1.5 h-0.5 w-5 shrink-0 rounded-full bg-success-500" />
+                    <span>
+                      <span className="font-semibold text-foreground">The shaded band on the right</span> is
+                      time nobody has claimed yet — that is what we are free to sell.
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* ---- Can we take this order? ----------------------------------- */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Can We Take This Order?</CardTitle>
+            <p className="text-xs text-muted-foreground">
+              Queues a new order behind the committed backlog, then runs it at plant throughput.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="cap-qty" className="text-xs">
+                  Quantity (kg)
+                </Label>
+                <Input
+                  id="cap-qty"
+                  type="number"
+                  min={0}
+                  step={500}
+                  value={qtyInput}
+                  onChange={(e) => setQtyInput(e.target.value)}
+                  className="tabular-nums"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="cap-days" className="text-xs">
+                  Wanted in (days)
+                </Label>
+                <Input
+                  id="cap-days"
+                  type="number"
+                  min={0}
+                  step={1}
+                  value={daysInput}
+                  onChange={(e) => setDaysInput(e.target.value)}
+                  className="tabular-nums"
+                />
+              </div>
+            </div>
+
+            {isLoading || !plan || !feasibility ? (
+              <Skeleton className="h-40 w-full rounded-lg" />
+            ) : (
+              (() => {
+                const style = verdictStyles[feasibility.verdict]
+                const Icon = style.icon
+                return (
+                  <div className={cn('rounded-xl border p-3.5', style.card)}>
+                    <div className="flex items-start gap-2">
+                      <Icon className={cn('mt-0.5 h-4 w-4 shrink-0', style.text)} />
+                      <div className="min-w-0">
+                        <div className={cn('text-sm font-semibold', style.text)}>{feasibility.headline}</div>
+                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                          {feasibility.recommendation}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-2 gap-2 border-t border-border/60 pt-3 text-[11px]">
+                      <div>
+                        <div className="text-muted-foreground">Waits for backlog</div>
+                        <div className="font-semibold tabular-nums text-foreground">
+                          {formatDays(feasibility.queueDays)}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground">Own run time</div>
+                        <div className="font-semibold tabular-nums text-foreground">
+                          {formatDays(feasibility.runDays)}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground">Promise date</div>
+                        <div className="font-semibold tabular-nums text-foreground">
+                          {feasibility.promiseDate ? formatDate(feasibility.promiseDate) : '—'}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground">Of quotable capacity</div>
+                        <div className="font-semibold tabular-nums text-foreground">
+                          {formatPct(feasibility.capacityUsedPct, 0)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()
+            )}
+
+            {plan?.bottleneck && (
+              <div className="flex items-start gap-2 rounded-lg border border-border bg-secondary/40 p-2.5 text-[11px] text-muted-foreground">
+                <Gauge className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                <span>
+                  <span className="font-semibold text-foreground">{plan.bottleneck.process}</span> is the
+                  stage clearing last — {formatPct(plan.bottleneck.loadPct, 0)} loaded on{' '}
+                  {plan.bottleneck.fleet.running} of {plan.bottleneck.fleet.total} machines, clearing in{' '}
+                  {formatDays(plan.bottleneck.clearanceDays)}.
+                </span>
               </div>
             )}
           </CardContent>
         </Card>
       </div>
 
+      {/* ---- Fleet availability ------------------------------------------ */}
       <Card>
         <CardHeader>
-          <CardTitle>Process-Level Load — Last 30 Days</CardTitle>
+          <CardTitle>Fleet Availability</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            Only running and idle machines can be scheduled. Machines in repair or PM are credited back
+            from the hour they are expected to return, not written off for the whole horizon.
+          </p>
+        </CardHeader>
+        <CardContent>
+          {isLoading || !plan ? (
+            <Skeleton className="h-20 w-full" />
+          ) : (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {[
+                {
+                  label: 'Running',
+                  value: plan.fleet.running,
+                  note: 'carrying work now',
+                  icon: PlayCircle,
+                  bar: 'bg-success-500',
+                },
+                {
+                  label: 'Idle — available',
+                  value: plan.fleet.idle,
+                  note: 'can start this shift',
+                  icon: CirclePause,
+                  bar: 'bg-copper-500',
+                },
+                {
+                  label: 'Preventive maintenance',
+                  value: plan.fleet.maintenance,
+                  note: `back in ~${plan.assumptions.pmWindowHours} h`,
+                  icon: Wrench,
+                  bar: 'bg-brand-500',
+                },
+                {
+                  label: 'Breakdown',
+                  value: plan.fleet.breakdown,
+                  note: `~${plan.assumptions.mttrHours} h to restore`,
+                  icon: TriangleAlert,
+                  bar: 'bg-danger-500',
+                },
+              ].map((s) => {
+                const Icon = s.icon
+                const share = plan.fleet.total > 0 ? (s.value / plan.fleet.total) * 100 : 0
+                return (
+                  <div key={s.label} className="rounded-xl border border-border bg-secondary/30 p-3">
+                    <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                      <Icon className="h-3.5 w-3.5" />
+                      <span className="truncate">{s.label}</span>
+                    </div>
+                    <div className="num mt-1 text-xl font-semibold text-foreground">{s.value}</div>
+                    <Progress value={share} className="mt-2" indicatorClassName={s.bar} />
+                    <div className="mt-1.5 text-[11px] text-muted-foreground">
+                      {formatPct(share, 0)} of fleet · {s.note}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* ---- Stage load --------------------------------------------------- */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Stage Load — Where the Constraint Sits</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            Every kilogram crosses each stage on its unit's route, so a route stage carries that unit's
+            whole backlog. Winding, TFO and gassing sit off the route and carry only what is sent to them.
+          </p>
         </CardHeader>
         <CardContent>
           <DataTable
-            columns={processColumns}
-            data={processRows}
-            isLoading={processQuery.isLoading || machinesQuery.isLoading}
-            emptyMessage="No process output recorded in the last 30 days."
-            pageSize={11}
+            columns={stageColumns}
+            data={plan?.byProcess ?? []}
+            isLoading={isLoading}
+            emptyMessage="No production stages in this scope."
+            pageSize={12}
           />
         </CardContent>
       </Card>
+
+      {/* ---- Per unit ----------------------------------------------------- */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <ClipboardCheck className="h-4 w-4 text-muted-foreground" />
+          <h2 className="font-display text-sm font-semibold text-foreground">Capacity by Unit</h2>
+        </div>
+        {isLoading || !plan ? (
+          <div className="space-y-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-36 w-full rounded-lg" />
+            ))}
+          </div>
+        ) : plan.byUnit.length === 0 ? (
+          <Card>
+            <CardContent className="py-14 text-center text-sm text-muted-foreground">
+              No units in this scope.
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+            {plan.byUnit.map((unit) => (
+              <UnitCard key={unit.factoryId} unit={unit} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ---- Machine run-out ---------------------------------------------- */}
+      {/* <Card>
+        <CardHeader className="flex-row items-start justify-between gap-3 space-y-0">
+          <div>
+            <CardTitle>Machine Run-Out — When Each Machine Comes Free</CardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Balance on the assigned job divided by that machine's own effective rate. Sorted by the next
+              machine to free up, so the schedule can be filled from the top.
+            </p>
+          </div>
+          <Link
+            to="/planning/production-orders"
+            className="shrink-0 text-xs font-medium text-primary hover:underline"
+          >
+            Order book →
+          </Link>
+        </CardHeader>
+        <CardContent>
+          <DataTable
+            columns={runOutColumns}
+            data={runOutQuery.data ?? []}
+            isLoading={runOutQuery.isLoading}
+            emptyMessage="No machines registered in this scope."
+            pageSize={12}
+          />
+        </CardContent>
+      </Card> */}
+
+      {/* ---- Assumptions --------------------------------------------------- */}
+      {plan && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Planning Assumptions</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-x-4 gap-y-3 text-xs sm:grid-cols-3 lg:grid-cols-6">
+            {[
+              {
+                label: 'Shift calendar',
+                value: `${plan.assumptions.shiftsPerDay} × 8 h`,
+                note: 'continuous running',
+              },
+              {
+                label: 'Maintenance allowance',
+                value: formatPct(plan.assumptions.maintenanceAllowancePct, 0),
+                note: 'PM window, doffing, cleaning',
+              },
+              {
+                label: 'Changeover allowance',
+                value: formatPct(plan.assumptions.changeoverAllowancePct, 0),
+                note: 'count and lot changes',
+              },
+              {
+                label: 'Net available time',
+                value: formatPct(plan.assumptions.availabilityPct, 0),
+                note: `${((plan.assumptions.hoursPerDay * plan.assumptions.availabilityPct) / 100).toFixed(1)} h a day`,
+              },
+              {
+                label: 'Planning buffer',
+                value: formatPct(plan.assumptions.planningBufferPct, 0),
+                note: 'held back from quotable capacity',
+              },
+              {
+                label: 'Restore times',
+                value: `${plan.assumptions.mttrHours} h / ${plan.assumptions.pmWindowHours} h`,
+                note: 'breakdown / PM',
+              },
+            ].map((a) => (
+              <div key={a.label}>
+                <div className="text-muted-foreground">{a.label}</div>
+                <div className="num mt-0.5 text-sm font-semibold text-foreground">{a.value}</div>
+                <div className="text-[11px] leading-snug text-muted-foreground">{a.note}</div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }

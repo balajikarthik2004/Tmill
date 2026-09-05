@@ -1,5 +1,7 @@
 export * from './kpiService'
 export * from './productionService'
+export * from './capacityService'
+export * from './energyService'
 export * from './orderService'
 export * from './inventoryService'
 export * from './maintenanceService'
