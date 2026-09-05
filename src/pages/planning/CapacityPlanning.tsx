@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import {
   Area,
   AreaChart,
@@ -29,16 +28,11 @@ import type { ColumnDef } from '@tanstack/react-table'
 
 import { useAsync } from '@/hooks/useAsync'
 import { useAppStore } from '@/store/appStore'
-import { assessOrderFeasibility, getCapacityPlan, getMachineRunOut } from '@/services'
-import type {
-  MachineRunOutRow,
-  ProcessCapacityRow,
-  UnitCapacityRow,
-} from '@/services'
+import { assessOrderFeasibility, getCapacityPlan } from '@/services'
+import type { ProcessCapacityRow, UnitCapacityRow } from '@/services'
 import { PageHeader } from '@/components/common/PageHeader'
 import { StatCard, StatGrid } from '@/components/common/StatCard'
 import { DataTable } from '@/components/tables/DataTable'
-import { StatusBadge } from '@/components/tables/StatusBadge'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -76,13 +70,6 @@ function formatDays(days: number | null | undefined) {
   if (days === null || days === undefined) return '—'
   if (days < 1) return `${Math.round(days * 24)} h`
   return `${days.toFixed(1)} d`
-}
-
-function formatHours(hours: number | null | undefined) {
-  if (hours === null || hours === undefined) return '—'
-  if (hours < 1) return '< 1 h'
-  if (hours < 48) return `${Math.round(hours)} h`
-  return `${(hours / 24).toFixed(1)} d`
 }
 
 const chartTooltipStyle = {
@@ -255,72 +242,6 @@ const stageColumns: ColumnDef<ProcessCapacityRow, any>[] = [
   },
 ]
 
-const runOutColumns: ColumnDef<MachineRunOutRow, any>[] = [
-  { accessorKey: 'code', header: 'Machine' },
-  { accessorKey: 'unitName', header: 'Unit' },
-  {
-    accessorKey: 'process',
-    header: 'Stage',
-    cell: ({ row }) => <Badge variant="outline">{row.original.process}</Badge>,
-  },
-  {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ row }) => <StatusBadge status={row.original.status} />,
-  },
-  {
-    accessorKey: 'currentOrderNo',
-    header: 'Current job',
-    cell: ({ row }) =>
-      row.original.currentOrderNo ? (
-        <div className="min-w-0">
-          <div className="font-medium">{row.original.currentOrderNo}</div>
-          <div className="truncate text-[11px] text-muted-foreground">{row.original.currentProduct}</div>
-        </div>
-      ) : (
-        <span className="text-muted-foreground">No job assigned</span>
-      ),
-  },
-  {
-    accessorKey: 'remainingKg',
-    header: 'Balance',
-    cell: ({ row }) =>
-      row.original.remainingKg > 0 ? formatKg(row.original.remainingKg) : <span className="text-muted-foreground">—</span>,
-  },
-  {
-    accessorKey: 'rateKgPerHr',
-    header: 'Rate',
-    cell: ({ row }) => <span className="tabular-nums">{row.original.rateKgPerHr} kg/h</span>,
-  },
-  {
-    accessorKey: 'hoursToFinish',
-    header: 'Time to finish',
-    cell: ({ row }) => <span className="tabular-nums">{formatHours(row.original.hoursToFinish)}</span>,
-  },
-  {
-    accessorKey: 'freeInHours',
-    header: 'Free from',
-    cell: ({ row }) => {
-      const tone =
-        row.original.state === 'Available now'
-          ? 'success'
-          : row.original.state === 'Under repair'
-            ? 'danger'
-            : row.original.state === 'PM window'
-              ? 'info'
-              : 'secondary'
-      return (
-        <div className="flex items-center gap-2">
-          <Badge variant={tone}>{row.original.state}</Badge>
-          <span className="tabular-nums text-xs text-muted-foreground">
-            {row.original.freeInHours <= 0 ? 'now' : formatDate(row.original.freeAtIso, 'dd MMM, h:mm a')}
-          </span>
-        </div>
-      )
-    },
-  },
-]
-
 function UnitCard({ unit }: { unit: UnitCapacityRow }) {
   const tone = loadTone(unit.loadPct)
   return (
@@ -397,7 +318,6 @@ export default function CapacityPlanning() {
   const [daysInput, setDaysInput] = useState('21')
 
   const planQuery = useAsync(() => getCapacityPlan(horizon, factoryId), [horizon, factoryId])
-  const runOutQuery = useAsync(() => getMachineRunOut(factoryId), [factoryId])
 
   const plan = planQuery.data
   const isLoading = planQuery.isLoading
@@ -970,33 +890,6 @@ export default function CapacityPlanning() {
         )}
       </div>
 
-      {/* ---- Machine run-out ---------------------------------------------- */}
-      {/* <Card>
-        <CardHeader className="flex-row items-start justify-between gap-3 space-y-0">
-          <div>
-            <CardTitle>Machine Run-Out — When Each Machine Comes Free</CardTitle>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Balance on the assigned job divided by that machine's own effective rate. Sorted by the next
-              machine to free up, so the schedule can be filled from the top.
-            </p>
-          </div>
-          <Link
-            to="/planning/production-orders"
-            className="shrink-0 text-xs font-medium text-primary hover:underline"
-          >
-            Order book →
-          </Link>
-        </CardHeader>
-        <CardContent>
-          <DataTable
-            columns={runOutColumns}
-            data={runOutQuery.data ?? []}
-            isLoading={runOutQuery.isLoading}
-            emptyMessage="No machines registered in this scope."
-            pageSize={12}
-          />
-        </CardContent>
-      </Card> */}
 
       {/* ---- Assumptions --------------------------------------------------- */}
       {plan && (
