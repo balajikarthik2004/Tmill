@@ -6,9 +6,9 @@ import { useAsync } from '@/hooks/useAsync'
 import { getAllAiInsights } from '@/services'
 import { PageHeader } from '@/components/common/PageHeader'
 import { StatCard, StatGrid } from '@/components/common/StatCard'
+import { FilterChip, FilterChipGroup } from '@/components/common/FilterChip'
 import { AiInsightCard } from '@/components/ai/AiInsightStrip'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from '@/lib/utils'
 
 const SCOPES: Array<{ value: AiScope | 'all'; label: string }> = [
   { value: 'all', label: 'All areas' },
@@ -90,40 +90,29 @@ export default function AiInsights() {
       )}
 
       <div className="flex flex-col gap-2 rounded-xl border border-border bg-card p-3 shadow-sm sm:flex-row sm:items-center">
-        <div className="flex flex-wrap gap-1.5">
+        <FilterChipGroup>
           {SCOPES.map((option) => (
-            <button
+            <FilterChip
               key={option.value}
-              type="button"
+              active={scope === option.value}
               onClick={() => setScope(option.value)}
-              className={cn(
-                'rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors',
-                scope === option.value
-                  ? 'border-brand-200 bg-brand-50 text-brand-700'
-                  : 'border-border bg-card text-muted-foreground hover:bg-accent',
-              )}
             >
               {option.label}
-            </button>
+            </FilterChip>
           ))}
-        </div>
-        <div className="flex flex-wrap gap-1.5 sm:ml-auto">
+        </FilterChipGroup>
+        <FilterChipGroup className="sm:ml-auto">
           {KINDS.map((option) => (
-            <button
+            <FilterChip
               key={option.value}
-              type="button"
+              tone="copper"
+              active={kind === option.value}
               onClick={() => setKind(option.value)}
-              className={cn(
-                'rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors',
-                kind === option.value
-                  ? 'border-copper-200 bg-copper-50 text-copper-700'
-                  : 'border-border bg-card text-muted-foreground hover:bg-accent',
-              )}
             >
               {option.label}
-            </button>
+            </FilterChip>
           ))}
-        </div>
+        </FilterChipGroup>
       </div>
 
       {isLoading ? (

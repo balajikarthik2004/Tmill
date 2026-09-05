@@ -8,12 +8,12 @@ import { useAppStore } from '@/store/appStore'
 import { getFactories, getProductionOrders } from '@/services'
 import { PageHeader } from '@/components/common/PageHeader'
 import { StatCard, StatGrid } from '@/components/common/StatCard'
+import { FilterChip, FilterChipGroup } from '@/components/common/FilterChip'
 import { DataTable } from '@/components/tables/DataTable'
 import { StatusBadge } from '@/components/tables/StatusBadge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatDate, formatNumber, formatPct } from '@/lib/format'
 import type { ProductionOrder, ProductionStatus } from '@/types'
 
@@ -201,16 +201,16 @@ export default function ProductionOrders() {
               planned quantity produced
             </div>
           </div>
-          <Tabs value={status ?? 'all'} onValueChange={setStatus}>
-            <TabsList className="h-auto flex-wrap justify-start">
-              <TabsTrigger value="all">All ({formatNumber(orders.length)})</TabsTrigger>
-              {statuses.map((s) => (
-                <TabsTrigger key={s} value={s}>
-                  {s} ({formatNumber(counts[s])})
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+          <FilterChipGroup className="gap-2">
+            <FilterChip size="md" active={!status} onClick={() => setStatus('all')}>
+              All <span className="tabular-nums opacity-70">({formatNumber(orders.length)})</span>
+            </FilterChip>
+            {statuses.map((s) => (
+              <FilterChip key={s} size="md" active={status === s} onClick={() => setStatus(s)}>
+                {s} <span className="tabular-nums opacity-70">({formatNumber(counts[s])})</span>
+              </FilterChip>
+            ))}
+          </FilterChipGroup>
         </CardHeader>
         <CardContent>
           <DataTable

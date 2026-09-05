@@ -5,10 +5,10 @@ import { useAsync } from '@/hooks/useAsync'
 import { getCompany, getProducts } from '@/services'
 import { PageHeader } from '@/components/common/PageHeader'
 import { StatCard, StatGrid } from '@/components/common/StatCard'
+import { FilterChip, FilterChipGroup } from '@/components/common/FilterChip'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge, type BadgeProps } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatNumber } from '@/lib/format'
 import type { Product, ProductType, YarnApplication } from '@/types'
 
@@ -105,16 +105,16 @@ export default function Products() {
         title="Products"
         description="The yarn catalogue, grouped by the product ranges published by Thiagarajar Mills."
         actions={
-          <Tabs value={tab} onValueChange={setTab}>
-            <TabsList className="flex-wrap">
-              <TabsTrigger value={ALL}>All</TabsTrigger>
-              {typeOrder.map((t) => (
-                <TabsTrigger key={t} value={t}>
-                  {t}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+          <FilterChipGroup>
+            <FilterChip size="md" active={tab === ALL} onClick={() => setTab(ALL)}>
+              All
+            </FilterChip>
+            {typeOrder.map((t) => (
+              <FilterChip key={t} size="md" active={tab === t} onClick={() => setTab(t)}>
+                {t}
+              </FilterChip>
+            ))}
+          </FilterChipGroup>
         }
       />
 

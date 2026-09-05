@@ -11,6 +11,7 @@ import { DataTable } from '@/components/tables/DataTable'
 import { RiskBadge } from '@/components/tables/RiskBadge'
 import type { RiskLevel, SalesOrder } from '@/types'
 import { PageHeader } from '@/components/common/PageHeader'
+import { FilterChip, FilterChipGroup } from '@/components/common/FilterChip'
 
 function ProgressCell({ value }: { value: number }) {
   return (
@@ -64,33 +65,25 @@ export default function SalesOrders() {
       />
 
 
-      <div className="flex flex-wrap items-center gap-2">
-        <button
-          type="button"
+      <FilterChipGroup className="gap-2">
+        <FilterChip
+          size="md"
+          active={!riskParam}
           onClick={() => setSearchParams(new URLSearchParams())}
-          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-            !riskParam
-              ? 'bg-brand-600 text-white shadow-sm'
-              : 'bg-card text-muted-foreground border border-border hover:border-brand-200 hover:bg-accent hover:text-foreground'
-          }`}
         >
           All Orders
-        </button>
+        </FilterChip>
         {Object.entries(riskFilterLabels).map(([key, label]) => (
-          <button
+          <FilterChip
             key={key}
-            type="button"
+            size="md"
+            active={riskParam === key}
             onClick={() => setSearchParams(new URLSearchParams({ risk: key }))}
-            className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-              riskParam === key
-                ? 'bg-brand-600 text-white shadow-sm'
-                : 'bg-white text-muted-foreground border border-border hover:bg-brand-50 hover:text-brand-900'
-            }`}
           >
             {label}
-          </button>
+          </FilterChip>
         ))}
-      </div>
+      </FilterChipGroup>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Card className="p-3.5">

@@ -19,6 +19,7 @@ import { getPlaybooks } from '@/services'
 import { useAiStore } from '@/store/aiStore'
 import { PageHeader } from '@/components/common/PageHeader'
 import { StatCard, StatGrid } from '@/components/common/StatCard'
+import { FilterChip, FilterChipGroup } from '@/components/common/FilterChip'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -129,23 +130,17 @@ export default function Playbooks() {
             className="pl-9"
           />
         </div>
-        <div className="flex flex-wrap gap-1.5 lg:ml-auto">
+        <FilterChipGroup className="lg:ml-auto">
           {topics.map((option) => (
-            <button
+            <FilterChip
               key={option}
-              type="button"
+              active={topic === option}
               onClick={() => setTopic(option)}
-              className={cn(
-                'rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors',
-                topic === option
-                  ? 'border-brand-200 bg-brand-50 text-brand-700'
-                  : 'border-border bg-card text-muted-foreground hover:bg-accent',
-              )}
             >
               {option === 'all' ? 'All categories' : TOPIC_LABELS[option]}
-            </button>
+            </FilterChip>
           ))}
-        </div>
+        </FilterChipGroup>
       </div>
 
       {isLoading ? (

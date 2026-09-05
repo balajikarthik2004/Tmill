@@ -32,6 +32,7 @@ import { assessOrderFeasibility, getCapacityPlan } from '@/services'
 import type { ProcessCapacityRow, UnitCapacityRow } from '@/services'
 import { PageHeader } from '@/components/common/PageHeader'
 import { StatCard, StatGrid } from '@/components/common/StatCard'
+import { FilterChip, FilterChipGroup } from '@/components/common/FilterChip'
 import { DataTable } from '@/components/tables/DataTable'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -39,7 +40,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatDate, formatKg, formatNumber, formatPct } from '@/lib/format'
 import { cn } from '@/lib/utils'
 
@@ -371,15 +371,13 @@ export default function CapacityPlanning() {
             : 'Machine availability, committed load and free capacity across the plant.'
         }
         actions={
-          <Tabs value={String(horizon)} onValueChange={(v) => setHorizon(Number(v) as Horizon)}>
-            <TabsList>
-              {horizons.map((h) => (
-                <TabsTrigger key={h} value={String(h)}>
-                  {h} days
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+          <FilterChipGroup>
+            {horizons.map((h) => (
+              <FilterChip key={h} size="md" active={horizon === h} onClick={() => setHorizon(h)}>
+                {h} days
+              </FilterChip>
+            ))}
+          </FilterChipGroup>
         }
       />
 
@@ -675,9 +673,15 @@ export default function CapacityPlanning() {
         </Card>
 
         {/* ---- Can we take this order? ----------------------------------- */}
-        <Card>
+        {/* Highlighted: this is the one card on the page a planner acts from. */}
+        <Card className="border-brand-300 bg-linear-to-br from-brand-50/70 via-card to-card shadow-md ring-1 ring-brand-500/10">
           <CardHeader>
-            <CardTitle>Can We Take This Order?</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                <ClipboardCheck className="h-3.5 w-3.5" />
+              </span>
+              Order Feasibility?
+            </CardTitle>
             <p className="text-xs text-muted-foreground">
               Queues a new order behind the committed backlog, then runs it at plant throughput.
             </p>

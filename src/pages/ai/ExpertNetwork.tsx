@@ -8,6 +8,7 @@ import { getEngineers, getFactories, getIncidents } from '@/services'
 import { useAiStore } from '@/store/aiStore'
 import { PageHeader } from '@/components/common/PageHeader'
 import { StatCard, StatGrid } from '@/components/common/StatCard'
+import { FilterChip, FilterChipGroup } from '@/components/common/FilterChip'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
@@ -124,23 +125,17 @@ export default function ExpertNetwork() {
             className="pl-9"
           />
         </div>
-        <div className="flex flex-wrap gap-1.5 lg:ml-auto">
+        <FilterChipGroup className="lg:ml-auto">
           {DEPARTMENTS.map((option) => (
-            <button
+            <FilterChip
               key={option}
-              type="button"
+              active={department === option}
               onClick={() => setDepartment(option)}
-              className={cn(
-                'rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors',
-                department === option
-                  ? 'border-brand-200 bg-brand-50 text-brand-700'
-                  : 'border-border bg-card text-muted-foreground hover:bg-accent',
-              )}
             >
               {option === 'all' ? 'All departments' : option}
-            </button>
+            </FilterChip>
           ))}
-        </div>
+        </FilterChipGroup>
       </div>
 
       {isLoading ? (
