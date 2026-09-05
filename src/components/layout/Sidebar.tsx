@@ -22,9 +22,8 @@ export function Sidebar() {
     return null
   }, [location.pathname])
 
-  // The AI section starts open — it is the entry point we want people to see.
   const [openSections, setOpenSections] = useState<Set<string>>(
-    () => new Set([AI_SECTION_LABEL, ...(activeSectionLabel ? [activeSectionLabel] : [])]),
+    () => new Set(activeSectionLabel ? [activeSectionLabel] : []),
   )
 
   function toggleSection(label: string) {
