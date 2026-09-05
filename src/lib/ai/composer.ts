@@ -26,6 +26,7 @@ import { factoryLabel } from './context'
 import { parseQuestion, withRetrievalHints, type ParsedQuestion } from './nlu'
 import { rankEngineers, retrieveCases } from './retrieval'
 import { buildPlan } from './planner'
+import { classifySmallTalk, composeSmallTalkAnswer, stripGreetingPrefix } from './smalltalk'
 
 export const AI_MODEL_LABEL = 'T-Mills Copilot - TM-Textile-1'
 
@@ -1214,7 +1215,14 @@ function buildReasoningSteps(parsed: ParsedQuestion, ctx: AiDataContext, evidenc
 
 export function composeAnswer(question: string, ctx: AiDataContext): AiAnswer {
   const started = Date.now()
-  const parsed = parseQuestion(question, ctx)
+
+  // "hi" is a conversational turn, not a plant question - answer it as one.
+  const smallTalk = classifySmallTalk(question)
+  if (smallTalk) return composeSmallTalkAnswer(smallTalk, question, ctx)
+
+  // A greeting attached to a real question is just politeness; drop it so
+  // topic scoring sees the substance.
+  const parsed = parseQuestion(stripGreetingPrefix(question), ctx)
   const evidence = gatherEvidence(parsed, ctx)
 
   // Search the knowledge base on the question *plus* what the live record says

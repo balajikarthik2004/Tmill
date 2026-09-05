@@ -6,7 +6,7 @@ import { useAppStore } from '@/store/appStore'
 import { useAsync } from '@/hooks/useAsync'
 import { getAlerts } from '@/services'
 import { flatNavEntries } from '@/lib/navigation'
-import { factories } from '@/mock'
+import { currentUser, factories } from '@/mock'
 import { formatRelative } from '@/lib/format'
 import { dateRangeLabels } from '@/lib/dateRange'
 import { cn } from '@/lib/utils'
@@ -172,17 +172,17 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
               className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2.5 transition-colors hover:bg-accent"
             >
               <Avatar className="h-8 w-8 ring-1 ring-border">
-                <AvatarFallback>HT</AvatarFallback>
+                <AvatarFallback>{currentUser.initials}</AvatarFallback>
               </Avatar>
               <div className="hidden text-left leading-tight md:block">
-                <div className="text-xs font-semibold text-foreground">Hari Thiagarajan</div>
+                <div className="text-xs font-semibold text-foreground">{currentUser.name}</div>
                 <div className="text-[11px] text-muted-foreground">{userRoleTitles[userRole]}</div>
               </div>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
             <DropdownMenuLabel>Signed in as</DropdownMenuLabel>
-            <div className="px-2 pb-2 text-xs text-muted-foreground">hari.thiagarajan@gmail.com</div>
+            <div className="px-2 pb-2 text-xs text-muted-foreground">{currentUser.email}</div>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate('/admin')}>Account settings</DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate('/admin')}>Administration</DropdownMenuItem>

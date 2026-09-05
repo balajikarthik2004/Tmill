@@ -261,6 +261,12 @@ export type AiBlock =
 
 export interface AiAnswer {
   id: ID
+  /**
+   * 'analysis' (the default) is a grounded answer card with confidence and a
+   * retrieval trace. 'chat' is a conversational turn - a greeting, a thank you -
+   * where that telemetry would read as a machine rather than an assistant.
+   */
+  kind?: 'analysis' | 'chat'
   question: string
   intent: AiIntent
   topic: AiTopic

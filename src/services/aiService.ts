@@ -36,12 +36,14 @@ import {
   salesOrders,
   spareParts,
   suppliers,
+  currentUser,
 } from '@/mock'
-import { buildInsights, composeAnswer, insightsForScope, type AiDataContext } from '@/lib/ai'
+import { buildInsights, classifySmallTalk, composeAnswer, insightsForScope, type AiDataContext } from '@/lib/ai'
 import { simulateDelay } from './delay'
 
 /** The snapshot the engine reasons over. Built once - the mock data is static. */
 const context: AiDataContext = {
+  user: currentUser,
   factories,
   machines,
   breakdowns,
@@ -70,6 +72,8 @@ const context: AiDataContext = {
  * but kept short enough that the assistant feels immediate.
  */
 function thinkTime(question: string) {
+  // A greeting needs no retrieval, so it should not sit behind a retrieval wait.
+  if (classifySmallTalk(question)) return 260
   return Math.min(950, 380 + question.trim().length * 5)
 }
 

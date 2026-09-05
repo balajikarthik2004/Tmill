@@ -735,6 +735,8 @@ export function AiAnswerCard({
 
   const confidenceTone: AiTone =
     answer.confidencePct >= 85 ? 'success' : answer.confidencePct >= 70 ? 'info' : 'warning'
+  /** Greetings and thank-yous are conversation, not graded analysis. */
+  const isChat = answer.kind === 'chat'
 
   return (
     <div className={cn('min-w-0 flex-1 space-y-3.5', compact && 'space-y-3')}>
@@ -744,14 +746,16 @@ export function AiAnswerCard({
           <h3 className="font-display text-[14px] font-semibold leading-snug tracking-tight text-foreground">
             {answer.headline}
           </h3>
-          <span
-            className={cn(
-              'ml-auto shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 ring-inset',
-              toneChip[confidenceTone],
-            )}
-          >
-            {answer.confidencePct}% confidence
-          </span>
+          {!isChat && (
+            <span
+              className={cn(
+                'ml-auto shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 ring-inset',
+                toneChip[confidenceTone],
+              )}
+            >
+              {answer.confidencePct}% confidence
+            </span>
+          )}
         </div>
 
         {answer.entities.length > 0 && (
@@ -842,6 +846,7 @@ export function AiAnswerCard({
           )}
 
           {/* Trace footer */}
+          {!isChat && (
           <div className="rounded-lg border border-dashed border-border bg-muted/30 px-3 py-2">
             <button
               type="button"
@@ -882,6 +887,7 @@ export function AiAnswerCard({
               )}
             </AnimatePresence>
           </div>
+          )}
         </>
       )}
     </div>

@@ -29,6 +29,8 @@ import type {
 } from '@/types'
 
 export interface AiDataContext {
+  /** Who the copilot is talking to, so it can greet them by name. */
+  user: { firstName: string; name: string }
   factories: Factory[]
   machines: Machine[]
   breakdowns: BreakdownRecord[]

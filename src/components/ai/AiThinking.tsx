@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check, Database, FileSearch, GitBranch, Loader2, Sparkles, Users } from 'lucide-react'
 
+import { classifySmallTalk } from '@/lib/ai'
 import { cn } from '@/lib/utils'
 
 const STAGES = [
@@ -19,6 +20,7 @@ const STAGES = [
  */
 export function AiThinking({ question }: { question?: string | null }) {
   const [stage, setStage] = useState(0)
+  const isChat = Boolean(question && classifySmallTalk(question))
 
   useEffect(() => {
     setStage(0)
@@ -38,6 +40,19 @@ export function AiThinking({ question }: { question?: string | null }) {
         <Sparkles className="h-4 w-4" />
       </div>
       <div className="min-w-0 flex-1 rounded-xl rounded-tl-none border border-border bg-card p-3.5 shadow-sm">
+        {isChat ? (
+          <div className="flex items-center gap-1.5 py-0.5">
+            {[0, 1, 2].map((dot) => (
+              <motion.span
+                key={dot}
+                className="h-1.5 w-1.5 rounded-full bg-brand-400"
+                animate={{ opacity: [0.25, 1, 0.25], y: [0, -2, 0] }}
+                transition={{ repeat: Infinity, duration: 1, delay: dot * 0.16 }}
+              />
+            ))}
+          </div>
+        ) : (
+        <>
         <div className="flex items-center gap-2 text-[12px] font-semibold text-foreground">
           <Loader2 className="h-3.5 w-3.5 animate-spin text-brand-500" />
           Working through the plant record
@@ -87,6 +102,8 @@ export function AiThinking({ question }: { question?: string | null }) {
             )
           })}
         </div>
+        </>
+        )}
       </div>
     </motion.div>
   )
