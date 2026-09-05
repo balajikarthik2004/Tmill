@@ -121,7 +121,7 @@ function MetricsBlock({ title, items }: { title: string; items: AiMetric[] }) {
   return (
     <div>
       <SectionHeading icon={Gauge} title={title} />
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {items.map((item) => (
           <div
             key={item.label}

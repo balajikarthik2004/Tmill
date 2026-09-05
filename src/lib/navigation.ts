@@ -45,6 +45,7 @@ export const navTree: NavSection[] = [
       { label: 'Insights & Anomalies', path: '/ai/insights' },
       { label: 'Resolution Playbooks', path: '/ai/playbooks' },
       { label: 'Expert Network', path: '/ai/experts' },
+      { label: 'Plant Floor', path: '/ai/plant-floor' },
     ],
   },
   {

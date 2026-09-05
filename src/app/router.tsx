@@ -5,6 +5,7 @@ import ExecutiveDashboard from '@/pages/dashboard/ExecutiveDashboard'
 import Administration from '@/pages/admin/Administration'
 
 import Copilot from '@/pages/ai/Copilot'
+import PlantFloor from '@/pages/ai/PlantFloor'
 import AiInsightsPage from '@/pages/ai/AiInsights'
 import Playbooks from '@/pages/ai/Playbooks'
 import ExpertNetwork from '@/pages/ai/ExpertNetwork'
@@ -68,6 +69,7 @@ import MasterCottonLots from '@/pages/master/CottonLots'
 /** Every leaf in the navigation tree resolves to a real, data-backed page. */
 export const routes = [
   { path: 'ai', element: <Copilot /> },
+  { path: 'ai/plant-floor', element: <PlantFloor /> },
   { path: 'ai/insights', element: <AiInsightsPage /> },
   { path: 'ai/playbooks', element: <Playbooks /> },
   { path: 'ai/experts', element: <ExpertNetwork /> },
