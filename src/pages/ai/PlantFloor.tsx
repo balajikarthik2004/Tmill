@@ -206,20 +206,26 @@ function MachineTile({
 function StageColumn({
   process,
   assignments,
+  installed,
   now,
   isLast,
   onOpen,
 }: {
   process: ProcessName
+  /** Machines this stage is showing under the current filters. */
   assignments: FloorAssignment[]
+  /** Every machine physically at this stage, regardless of filters. */
+  installed: FloorAssignment[]
   now: number
   isLast: boolean
   onOpen: (a: FloorAssignment) => void
 }) {
-  const processing = assignments.filter((a) => a.status === 'Running')
+  // Counts describe the plant, not the filter, so the route always reads true.
+  const processing = installed.filter((a) => a.status === 'Running')
   const throughput = processing
     .filter((a) => a.task === 'Running production')
     .reduce((sum, a) => sum + a.ratePerHourKg, 0)
+  const hidden = installed.filter((a) => !assignments.some((v) => v.id === a.id))
 
   return (
     <>
@@ -229,14 +235,24 @@ function StageColumn({
           <div className="flex items-baseline gap-1.5">
             <span className="truncate text-[11.5px] font-bold tracking-tight text-foreground">{process}</span>
             <span className="num ml-auto shrink-0 text-[10px] font-semibold text-muted-foreground">
-              {assignments.length}
+              {installed.length}
             </span>
           </div>
           <div className="mt-0.5 truncate text-[9.5px] text-muted-foreground">{stageOutput[process]}</div>
           <div className="mt-1 flex items-center gap-1">
-            <span className="h-1 w-1 rounded-full bg-success-500" />
-            <span className="num text-[9.5px] font-medium text-success-700">
-              {processing.length} processing
+            <span
+              className={cn(
+                'h-1 w-1 rounded-full',
+                processing.length ? 'bg-success-500' : 'bg-danger-500',
+              )}
+            />
+            <span
+              className={cn(
+                'num text-[9.5px] font-medium',
+                processing.length ? 'text-success-700' : 'text-danger-700',
+              )}
+            >
+              {processing.length} of {installed.length} processing
             </span>
             {throughput > 0 && (
               <span className="num ml-auto text-[9.5px] font-semibold text-brand-600">
@@ -249,8 +265,33 @@ function StageColumn({
         {/* Machines at this stage */}
         <div className="flex flex-col gap-2">
           {assignments.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-border px-2.5 py-4 text-center text-[10px] text-muted-foreground">
-              No machine here in this view
+            <div className="rounded-lg border border-dashed border-border px-2.5 py-2.5">
+              <p className="text-[10px] font-medium text-foreground">
+                {installed.length === 0
+                  ? 'No machine at this stage'
+                  : `Nothing processing — ${installed.length} machine${installed.length === 1 ? '' : 's'} here`}
+              </p>
+              <div className="mt-1.5 flex flex-col gap-1">
+                {hidden.map((a) => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    onClick={() => onOpen(a)}
+                    className="flex items-center gap-1.5 rounded-md px-1 py-0.5 text-left transition-colors hover:bg-accent"
+                  >
+                    <span className={cn('h-1.5 w-1.5 shrink-0 rounded-full', statusStyles[a.status].dot)} />
+                    <span className="num text-[10px] font-semibold text-foreground">{a.machineCode}</span>
+                    <span className="ml-auto truncate text-[9.5px] text-muted-foreground">
+                      {statusStyles[a.status].label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              {installed.length > 0 && processing.length === 0 && (
+                <p className="mt-1.5 text-[9px] leading-snug text-muted-foreground">
+                  This stage is stopped, so everything downstream is running on buffered material.
+                </p>
+              )}
             </div>
           ) : (
             assignments.map((assignment) => (
@@ -277,14 +318,16 @@ function UnitFlow({
   now,
   onOpen,
 }: {
-  unit: FloorUnitBoard
+  unit: FloorUnitBoard & { allAssignments?: FloorAssignment[] }
   now: number
   onOpen: (a: FloorAssignment) => void
 }) {
+  const installed = unit.allAssignments ?? unit.assignments
   // Machines grouped into the order material actually travels through the unit.
   const stages = unit.route.map((process) => ({
     process,
     assignments: unit.assignments.filter((a) => a.process === process),
+    installed: installed.filter((a) => a.process === process),
   }))
   // Anything whose process is not on the published route still gets shown.
   const offRoute = unit.assignments.filter((a) => !unit.route.includes(a.process))
@@ -336,6 +379,7 @@ function UnitFlow({
               key={stage.process}
               process={stage.process}
               assignments={stage.assignments}
+              installed={stage.installed}
               now={now}
               isLast={i === stages.length - 1 && offRoute.length === 0}
               onOpen={onOpen}
@@ -345,6 +389,7 @@ function UnitFlow({
             <StageColumn
               process={offRoute[0].process}
               assignments={offRoute}
+              installed={offRoute}
               now={now}
               isLast
               onOpen={onOpen}
@@ -386,6 +431,7 @@ export default function PlantFloor() {
     return list
       .map((unit) => ({
         ...unit,
+        // What the current view shows...
         assignments: unit.assignments
           .filter((a) => (processingOnly ? a.status === 'Running' : true))
           .filter((a) => (status === 'all' ? true : a.status === status))
@@ -397,6 +443,8 @@ export default function PlantFloor() {
                   .includes(q)
               : true,
           ),
+        // ...and what is actually installed, so an empty stage can say why.
+        allAssignments: unit.assignments,
       }))
       .filter((unit) => unit.assignments.length > 0)
   }, [board.data, search, status, processingOnly])
