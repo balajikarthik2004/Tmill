@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { AI_SECTION_LABEL, navTree } from '@/lib/navigation'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import logo from "../../assets/image.png"
 
 function isSectionActive(childPaths: string[], pathname: string) {
   return childPaths.some((p) => pathname === p || pathname.startsWith(`${p}/`))
@@ -40,8 +41,8 @@ export function Sidebar() {
       {/* Brand */}
       <div className="relative flex h-16 items-center gap-3 border-b border-white/8 px-5">
         <div className="weave pointer-events-none absolute inset-0 opacity-60" />
-        <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-brand-400 to-brand-600 text-white shadow-md ring-1 ring-white/15">
-          <Leaf className="h-4.5 w-4.5" />
+        <div className="">
+          <img src={logo} alt="Logo" className="h-10 w-11" />
         </div>
         <div className="relative leading-tight">
           <div className="font-display text-[13px] font-semibold tracking-wide text-white">

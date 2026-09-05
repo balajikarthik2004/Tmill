@@ -24,8 +24,8 @@ import PurchaseRequisitions from '@/pages/procurement/PurchaseRequisitions'
 import PurchaseOrders from '@/pages/procurement/PurchaseOrders'
 import Grn from '@/pages/procurement/Grn'
 
-import CottonLots from '@/pages/cotton/CottonLots'
-import CottonTesting from '@/pages/cotton/CottonTesting'
+// import CottonLots from '@/pages/cotton/CottonLots'
+// import CottonTesting from '@/pages/cotton/CottonTesting'
 // import Traceability from '@/pages/cotton/Traceability'
 
 import { InventoryDashboard } from '@/pages/inventory/InventoryDashboard'
@@ -88,8 +88,8 @@ export const routes = [
   { path: 'procurement/po', element: <PurchaseOrders /> },
   { path: 'procurement/grn', element: <Grn /> },
 
-  { path: 'cotton/cotton-lots', element: <CottonLots /> },
-  { path: 'cotton/cotton-testing', element: <CottonTesting /> },
+  // { path: 'cotton/cotton-lots', element: <CottonLots /> },
+  // { path: 'cotton/cotton-testing', element: <CottonTesting /> },
   // { path: 'cotton/traceability', element: <Traceability /> },
 
   { path: 'inventory', element: <InventoryDashboard /> },

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Boxes, Cloud, Layers, Shirt } from 'lucide-react'
+import { Boxes, Cloud, Layers } from 'lucide-react'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
@@ -11,14 +11,12 @@ const iconByCategory: Record<InventoryCategory, typeof Cloud> = {
   'Raw Cotton': Cloud,
   WIP: Layers,
   'Finished Yarn': Boxes,
-  Fabric: Shirt,
 }
 
 const linkByCategory: Record<InventoryCategory, string> = {
   'Raw Cotton': '/inventory/raw-materials',
   WIP: '/inventory/wip',
   'Finished Yarn': '/inventory/finished-goods',
-  Fabric: '/inventory/finished-goods',
 }
 
 export function InventoryOverview({ data }: { data: InventorySummary[] }) {

@@ -83,7 +83,7 @@ function PublishedProfile({ summary }: { summary: ExportSummary }) {
         </div>
         <div>
           <div className="num text-2xl font-semibold">
-            US${(published.annualSalesUsd / 1_000_000).toFixed(0)}M+
+           ${(published.annualSalesUsd / 1_000_000).toFixed(0)}M+
           </div>
           <div className="text-xs text-white/75">annual sales</div>
         </div>

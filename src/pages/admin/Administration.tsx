@@ -198,7 +198,7 @@ export default function Administration() {
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Annual sales</span>
               <span className="font-semibold tabular-nums text-foreground">
-                Over US${(exports.annualSalesUsd / 1_000_000).toFixed(0)}M
+                Over ${(exports.annualSalesUsd / 1_000_000).toFixed(0)}M
               </span>
             </div>
             <div className="border-t border-border pt-2.5">

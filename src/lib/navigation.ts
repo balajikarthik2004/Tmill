@@ -10,7 +10,7 @@ import {
   Settings,
   ShieldCheck,
   ShoppingCart,
-  Sprout,
+  // Sprout,
   Wrench,
   Zap
 } from 'lucide-react'
@@ -82,15 +82,15 @@ export const navTree: NavSection[] = [
     icon: Zap,
     path: '/energy'
   },
-  {
-    label: 'Cotton & Raw Materials',
-    icon: Sprout,
-    children: [
-      { label: 'Cotton Lots', path: '/cotton/cotton-lots' },
-      { label: 'Cotton Testing', path: '/cotton/cotton-testing' },
-      { label: 'Traceability', path: '/cotton/traceability' },
-    ],
-  },
+  // {
+  //   label: 'Cotton & Raw Materials',
+  //   icon: Sprout,
+  //   children: [
+  //     { label: 'Cotton Lots', path: '/cotton/cotton-lots' },
+  //     { label: 'Cotton Testing', path: '/cotton/cotton-testing' },
+  //     { label: 'Traceability', path: '/cotton/traceability' },
+  //   ],
+  // },
   {
     label: 'Inventory',
     icon: Boxes,

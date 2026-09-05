@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
-import { AlertTriangle, Boxes, CalendarClock, PackageCheck, Shirt, Truck } from 'lucide-react'
+import { AlertTriangle, Boxes, CalendarClock, PackageCheck, Truck } from 'lucide-react'
 
 import { useAsync } from '@/hooks/useAsync'
 import { getFactories, getInventorySummary, getStockMovements } from '@/services'
@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils'
 import type { InventoryCategory, InventorySummary, StockMovement } from '@/types'
 import { chartPalette } from '@/lib/chartColors'
 
-const finishedCategories: InventoryCategory[] = ['Finished Yarn', 'Fabric']
+const finishedCategories: InventoryCategory[] = ['Finished Yarn']
 
 const sliceColors = [...chartPalette]
 
@@ -80,7 +80,6 @@ export default function FinishedGoods() {
   const factories = useAsync(getFactories, [])
 
   const yarn = inventory.data?.find((i) => i.category === 'Finished Yarn')
-  const fabric = inventory.data?.find((i) => i.category === 'Fabric')
   const belowReorder = (inventory.data ?? []).filter(
     (i) => finishedCategories.includes(i.category) && i.belowReorder,
   )
@@ -110,7 +109,6 @@ export default function FinishedGoods() {
   }, [finishedMovements])
 
   const yarnFlows = flows.filter((f) => f.category === 'Finished Yarn')
-  const fabricFlows = flows.filter((f) => f.category === 'Fabric')
   const yarnProduced = yarnFlows.reduce((s, f) => s + f.produced, 0)
   const totalDispatched = flows.reduce((s, f) => s + f.dispatched, 0)
 
@@ -122,9 +120,7 @@ export default function FinishedGoods() {
       {
         accessorKey: 'category',
         header: 'Category',
-        cell: ({ row }) => (
-          <Badge variant={row.original.category === 'Fabric' ? 'info' : 'secondary'}>{row.original.category}</Badge>
-        ),
+        cell: ({ row }) => <Badge variant="secondary">{row.original.category}</Badge>,
       },
       { accessorKey: 'itemName', header: 'Item' },
       {
@@ -172,14 +168,14 @@ export default function FinishedGoods() {
         </div>
       )}
 
-      {inventory.isLoading || !yarn || !fabric ? (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {Array.from({ length: 6 }).map((_, i) => (
+      {inventory.isLoading || !yarn ? (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-17.5 w-full rounded-lg" />
           ))}
         </div>
       ) : (
-        <StatGrid cols={6}>
+        <StatGrid cols={4}>
           <StatCard
             label="Finished yarn stock"
             value={`${formatNumber(yarn.currentQty)} ${yarn.unit}`}
@@ -195,23 +191,9 @@ export default function FinishedGoods() {
             tone={yarn.daysOfStock < 10 ? 'warning' : 'default'}
           />
           <StatCard
-            label="Greige fabric stock"
-            value={`${formatNumber(fabric.currentQty)} ${fabric.unit}`}
-            sublabel={fabric.belowReorder ? 'Below reorder level' : 'Above reorder level'}
-            icon={Shirt}
-            tone={fabric.belowReorder ? 'danger' : 'success'}
-          />
-          <StatCard
-            label="Fabric days of cover"
-            value={`${fabric.daysOfStock} days`}
-            sublabel={`Reorder at ${formatNumber(fabric.reorderLevel)} ${fabric.unit}`}
-            icon={CalendarClock}
-            tone={fabric.daysOfStock < 10 ? 'warning' : 'default'}
-          />
-          <StatCard
             label="Finished items tracked"
             value={formatNumber(flows.length)}
-            sublabel={`${yarnFlows.length} yarn · ${fabricFlows.length} fabric`}
+            sublabel={`${yarnFlows.length} yarn lines in movement`}
             icon={PackageCheck}
           />
           <StatCard
@@ -224,16 +206,11 @@ export default function FinishedGoods() {
         </StatGrid>
       )}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4">
         {inventory.isLoading || !yarn ? (
           <Skeleton className="h-52 w-full rounded-lg" />
         ) : (
           <PositionCard summary={yarn} icon={Boxes} />
-        )}
-        {inventory.isLoading || !fabric ? (
-          <Skeleton className="h-52 w-full rounded-lg" />
-        ) : (
-          <PositionCard summary={fabric} icon={Shirt} />
         )}
       </div>
 
@@ -278,7 +255,7 @@ export default function FinishedGoods() {
                             </div>
                             <Progress
                               value={(f.produced / max) * 100}
-                              indicatorClassName={category === 'Fabric' ? 'bg-success-500' : 'bg-info-500'}
+                              indicatorClassName="bg-info-500"
                               className="h-1.5"
                             />
                           </div>

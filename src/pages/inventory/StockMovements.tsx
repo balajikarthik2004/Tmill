@@ -24,7 +24,7 @@ const movementTypes: StockMovementType[] = [
   'Adjustment',
 ]
 
-const categories: InventoryCategory[] = ['Raw Cotton', 'WIP', 'Finished Yarn', 'Fabric']
+const categories: InventoryCategory[] = ['Raw Cotton', 'WIP', 'Finished Yarn']
 
 const typeVariant: Record<StockMovementType, NonNullable<BadgeProps['variant']>> = {
   GRN: 'success',

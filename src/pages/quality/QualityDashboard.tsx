@@ -25,7 +25,6 @@ import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formatDate, formatKg, formatNumber, formatPct } from '@/lib/format'
 import { cn } from '@/lib/utils'
-import { AiInsightStrip } from '@/components/ai/AiInsightStrip'
 
 const resultColors: Record<string, string> = {
   Pass: '#4a8a3c',
@@ -97,8 +96,6 @@ export default function QualityDashboard() {
           </Link>
         }
       />
-
-      <AiInsightStrip scope="quality" limit={3} />
 
       {summary.isLoading || !summary.data ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">

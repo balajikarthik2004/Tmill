@@ -1,0 +1,191 @@
+- generic [ref=f10e3]:
+  - complementary [ref=f10e5]:
+    - generic [ref=f10e6]:
+      - img "Logo" [ref=f10e8]
+      - generic [ref=f10e9]:
+        - generic [ref=f10e10]: THIAGARAJAR MILLS
+        - generic [ref=f10e11]: Setting Standards. Exceeding Excellence.
+    - navigation [ref=f10e15]:
+      - link "Dashboard" [ref=f10e16] [cursor=pointer]:
+        - /url: /
+      - button "T-Mills AI AI" [ref=f10e24]:
+        - generic [ref=f10e28]: T-Mills AI
+        - generic [ref=f10e29]: AI
+      - button "Sales & Orders" [ref=f10e33]
+      - button "Planning" [ref=f10e43]
+      - button "Procurement" [ref=f10e51]
+      - link "Energy" [ref=f10e59] [cursor=pointer]:
+        - /url: /energy
+      - generic [ref=f10e63]:
+        - button "Inventory" [expanded] [ref=f10e64]
+        - generic [ref=f10e79]:
+          - link "Overview" [ref=f10e80] [cursor=pointer]:
+            - /url: /inventory
+          - link "Raw Materials" [ref=f10e82] [cursor=pointer]:
+            - /url: /inventory/raw-materials
+          - link "WIP" [ref=f10e83] [cursor=pointer]:
+            - /url: /inventory/wip
+          - link "Finished Goods" [ref=f10e84] [cursor=pointer]:
+            - /url: /inventory/finished-goods
+          - link "Stock Movements" [ref=f10e85] [cursor=pointer]:
+            - /url: /inventory/stock-movements
+      - button "Production" [ref=f10e87]
+      - button "Quality Management" [ref=f10e94]
+      - button "Maintenance" [ref=f10e102]
+      - button "Master Data" [ref=f10e109]
+      - link "Administration" [ref=f10e116] [cursor=pointer]:
+        - /url: /admin
+    - generic [ref=f10e121]:
+      - generic [ref=f10e127]:
+        - generic [ref=f10e128]: Threading together
+        - generic [ref=f10e129]: Tradition & Technology
+      - generic [ref=f10e130]: © 2026 Thiagarajar Mills (P) Ltd.
+  - generic [ref=f10e131]:
+    - banner [ref=f10e132]:
+      - textbox "Search orders, products, machines, suppliers…" [ref=f10e134]
+      - generic [ref=f10e135]:
+        - combobox [ref=f10e136]:
+          - generic: All Units
+        - combobox [ref=f10e139]:
+          - generic: Last 7 Days
+        - button "Notifications" [ref=f10e142]:
+          - generic [ref=f10e143]: "14"
+        - button "HT Hari Thiagarajan Managing Director" [ref=f10e144]:
+          - generic [ref=f10e145]: HT
+          - generic [ref=f10e147]:
+            - generic [ref=f10e148]: Hari Thiagarajan
+            - generic [ref=f10e149]: Managing Director
+    - main [ref=f10e150]:
+      - generic [ref=f10e151]:
+        - generic [ref=f10e152]:
+          - link "Dashboard" [ref=f10e153] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f10e159]: Inventory
+          - generic [ref=f10e162]: Overview
+        - generic [ref=f10e163]:
+          - generic [ref=f10e165]:
+            - heading "Inventory Overview" [level=1] [ref=f10e166]
+            - paragraph [ref=f10e169]: Stock position and standing value from raw cotton through to finished yarn.
+          - generic [ref=f10e170]:
+            - generic [ref=f10e171]:
+              - heading "AI insights" [level=3] [ref=f10e176]
+              - generic [ref=f10e177]: Live
+              - paragraph [ref=f10e178]: Generated from the current plant record and the resolution knowledge base.
+              - link "All insights" [ref=f10e179] [cursor=pointer]:
+                - /url: /ai/insights
+            - generic [ref=f10e182]:
+              - generic [ref=f10e183]:
+                - generic [ref=f10e185]:
+                  - generic [ref=f10e194]: Anomaly
+                  - generic [ref=f10e195]: 96% confidence
+                - heading "4 machines are down — BR-001, CD-001, CD-002, CB-005" [level=4] [ref=f10e196]
+                - paragraph [ref=f10e197]: BR-001 (Blendomat Bale Opener) in Spinning Mill I — Kappalur is stopped on "Suction pressure drop". The knowledge base holds closed cases with the same signature and the engineers who fixed them.
+                - generic [ref=f10e198]: 4 assets at zero output
+                - generic [ref=f10e199]:
+                  - button "Ask the copilot" [ref=f10e200]
+                  - link "Open breakdown register" [ref=f10e204] [cursor=pointer]:
+                    - /url: /maintenance/breakdown
+              - generic [ref=f10e207]:
+                - generic [ref=f10e209]:
+                  - generic [ref=f10e213]: Risk
+                  - generic [ref=f10e214]: 91% confidence
+                - heading "25 orders need intervention this week" [level=4] [ref=f10e215]
+                - paragraph [ref=f10e216]: 7 are already past their committed date and 18 are at risk. SO-241 for Tecidos Brasil Ltda is the most time-critical — flagged as "Container booking delayed".
+                - generic [ref=f10e217]: ₹5Cr of order value exposed
+                - generic [ref=f10e218]:
+                  - button "Ask the copilot" [ref=f10e219]
+                  - link "Open at-risk orders" [ref=f10e223] [cursor=pointer]:
+                    - /url: /sales/sales-orders?risk=high
+              - generic [ref=f10e226]:
+                - generic [ref=f10e228]:
+                  - generic [ref=f10e232]: Risk
+                  - generic [ref=f10e233]: 92% confidence
+                - heading "Finished Yarn is below reorder level" [level=4] [ref=f10e234]
+                - paragraph [ref=f10e235]: 980 MT against a reorder level of 1,100 MT — 7 days of cover. Comparable cases rebuilt cover in about nine days by re-prioritising the short counts.
+                - generic [ref=f10e236]: 7 days of cover remaining
+                - generic [ref=f10e237]:
+                  - button "Ask the copilot" [ref=f10e238]
+                  - link "Open finished goods" [ref=f10e242] [cursor=pointer]:
+                    - /url: /inventory/finished-goods
+          - generic [ref=f10e245]:
+            - generic [ref=f10e247]:
+              - heading "Raw Cotton" [level=3] [ref=f10e249]
+              - generic [ref=f10e254]:
+                - generic [ref=f10e255]: 3,420 MT
+                - paragraph [ref=f10e256]: 24 days of cover
+            - generic [ref=f10e258]:
+              - heading "Finished Yarn" [level=3] [ref=f10e260]
+              - generic [ref=f10e264]:
+                - generic [ref=f10e265]: 980 MT
+                - paragraph [ref=f10e266]: Below the 1,100 MT reorder level
+            - generic [ref=f10e268]:
+              - heading "Reorder Alerts" [level=3] [ref=f10e270]
+              - generic [ref=f10e273]:
+                - generic [ref=f10e274]: "1"
+                - paragraph [ref=f10e275]: Finished Yarn
+            - generic [ref=f10e277]:
+              - heading "Stock Turnover" [level=3] [ref=f10e279]
+              - generic [ref=f10e285]:
+                - generic [ref=f10e286]: 15.2x
+                - paragraph [ref=f10e287]: Annualised on 24 days of cotton cover
+          - generic [ref=f10e288]:
+            - generic [ref=f10e289]:
+              - generic [ref=f10e291]:
+                - generic [ref=f10e292]:
+                  - heading "Inventory Valuation" [level=3] [ref=f10e293]
+                  - paragraph [ref=f10e294]: Standing stock at standard rates, last 30 days
+                - generic [ref=f10e295]:
+                  - generic [ref=f10e296]: ₹130Cr
+                  - generic [ref=f10e297]: "-3.7% over the period"
+              - generic [ref=f10e301]:
+                - generic [ref=f10e302]:
+                  - generic [ref=f10e304]: Raw Cotton
+                  - generic [ref=f10e305]: 3,420 MT @ ₹175/kg
+                  - generic [ref=f10e306]: ₹60Cr
+                  - generic [ref=f10e307]: 46%
+                - generic [ref=f10e308]:
+                  - generic [ref=f10e310]: WIP
+                  - generic [ref=f10e311]: 1,250 MT @ ₹214/kg
+                  - generic [ref=f10e312]: ₹27Cr
+                  - generic [ref=f10e313]: 21%
+                - generic [ref=f10e314]:
+                  - generic [ref=f10e316]: Finished Yarn
+                  - generic [ref=f10e317]: 980 MT @ ₹302/kg
+                  - generic [ref=f10e318]: below reorder
+                  - generic [ref=f10e319]: ₹30Cr
+                  - generic [ref=f10e320]: 23%
+                - generic [ref=f10e321]:
+                  - generic [ref=f10e323]: Fabric
+                  - generic [ref=f10e324]: 14,80,000 m @ ₹96/m
+                  - generic [ref=f10e325]: ₹14Cr
+                  - generic [ref=f10e326]: 11%
+                - generic [ref=f10e327]:
+                  - generic [ref=f10e331]: Total tied up
+                  - generic [ref=f10e332]: ₹130Cr
+                - paragraph [ref=f10e333]: Roughly ₹9Cr of working capital per day of stock cover held.
+            - generic [ref=f10e334]:
+              - generic [ref=f10e335]:
+                - heading "Stock by Facility" [level=3] [ref=f10e336]
+                - paragraph [ref=f10e337]: Tonnage standing against godown capacity at each unit
+              - generic [ref=f10e339]:
+                - generic [ref=f10e340]:
+                  - generic [ref=f10e341]:
+                    - paragraph [ref=f10e342]: Spinning Mill I — Kappalur
+                    - paragraph [ref=f10e343]: 87%
+                  - paragraph [ref=f10e345]: 1,433 of 1,650 MT capacity
+                - generic [ref=f10e346]:
+                  - generic [ref=f10e347]:
+                    - paragraph [ref=f10e348]: Open End & Post-Spinning Unit
+                    - paragraph [ref=f10e349]: 85%
+                  - paragraph [ref=f10e351]: 1,068 of 1,250 MT capacity
+                - generic [ref=f10e352]:
+                  - generic [ref=f10e353]:
+                    - paragraph [ref=f10e354]: Spinning Mill III — Nilakottai
+                    - paragraph [ref=f10e355]: 78%
+                  - paragraph [ref=f10e357]: 1,450 of 1,850 MT capacity
+                - generic [ref=f10e358]:
+                  - generic [ref=f10e359]:
+                    - paragraph [ref=f10e360]: Spinning Mill II — Nilakottai
+                    - paragraph [ref=f10e361]: 73%
+                  - paragraph [ref=f10e363]: 1,529 of 2,100 MT capacity
+  - button [ref=f10e364]
