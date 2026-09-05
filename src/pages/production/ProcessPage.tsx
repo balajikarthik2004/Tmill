@@ -25,7 +25,7 @@ const processNotes: Record<ProcessName, string> = {
   Drawing: 'Doubling and drafting with auto levelling to correct sliver evenness before roving.',
   Roving: 'Attenuates drawn sliver into roving with the twist needed to survive ring-frame creeling.',
   'Ring Spinning': 'Converts roving into single yarn — compact spinning for the fine and premium counts.',
-  'Open End': 'Rotor spinning of coarse counts (NE 6s–12s) straight from sliver, no roving stage.',
+  'Open End': 'Rotor spinning of coarse counts (NE 6s–10s) straight from sliver, no roving stage.',
   Winding: 'Cone winding with electronic yarn clearing to remove faults and build package-ready cones.',
   TFO: 'Two-for-one twisting of two singles into doubled yarn at controlled twist per inch.',
   Gassing: 'Singeing the yarn surface to burn off protruding fibre and deliver a smooth, lustrous gassed yarn.',

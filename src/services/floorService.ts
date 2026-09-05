@@ -16,8 +16,15 @@ import type {
   FloorUnitBoard,
   MachineStatus,
   Operator,
+  ProcessName,
 } from '@/types'
-import { buildFloorAssignments, factories, operatorsOnShift, shiftForHour } from '@/mock'
+import {
+  buildFloorAssignments,
+  factories,
+  operatorsOnShift,
+  processesByFactory,
+  shiftForHour,
+} from '@/mock'
 import { simulateDelay } from './delay'
 
 /** Tasks that actually put yarn on a package. */
@@ -173,6 +180,9 @@ export async function getFloorBoard(filters: FloorFilters = {}): Promise<FloorBo
         factoryName: factory.name,
         shortName: factory.shortName,
         countGroup: factory.countGroup,
+        location: factory.location,
+        commissionedYear: factory.commissionedYear,
+        route: (processesByFactory[factory.id] ?? []) as ProcessName[],
         assignments: list,
         running: countStatus(list, 'Running'),
         idle: countStatus(list, 'Idle'),

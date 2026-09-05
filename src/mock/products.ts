@@ -1,8 +1,8 @@
 /**
- * Product catalogue. Types, count ranges and cotton types are exactly as
- * published on tmills.com: Single NE 16s–80s, Double NE 2/20s–2/140s,
- * Open End NE 6s–12s, Compact (ComforSpin K44, to 140s), Gassed specialty,
- * plus greige fabric from the weaving unit (300 looms, ~60,000 m/day).
+ * Product catalogue, following the ranges published on tmills.com: ring spun
+ * NE 16s–140s in single and double, and open end NE 6s–10s. Compact yarn is
+ * spun on the Rieter ComforSpin K44 machines the company was among the first in
+ * India to install; gassed yarn is a house specialty.
  */
 import type { Product } from '@/types'
 
@@ -23,7 +23,7 @@ export const products: Product[] = [
   // Open end — NE 6s to 12s on OE-Schlafhorst
   { id: 'p-oe6', code: 'OE-6', name: '6s Open End', category: 'Yarn', type: 'Open End', count: '6s', unit: 'kg', application: 'Weaving', description: 'Coarse OE yarn on Schlafhorst Autocoro' },
   { id: 'p-oe10', code: 'OE-10', name: '10s Open End', category: 'Yarn', type: 'Open End', count: '10s', unit: 'kg', application: 'Weaving', description: 'OE yarn, heavy doubling available' },
-  { id: 'p-oe12', code: 'OE-12', name: '12s Open End', category: 'Yarn', type: 'Open End', count: '12s', unit: 'kg', application: 'Weaving', description: 'OE yarn on Schlafhorst machines' },
+  { id: 'p-oe8', code: 'OE-8', name: '8s Open End', category: 'Yarn', type: 'Open End', count: '8s', unit: 'kg', application: 'Weaving', description: 'OE yarn on Schlafhorst machines' },
 
   // Compact — Rieter ComforSpin K44
   { id: 'p-c40', code: 'C-40', name: '40s Compact', category: 'Yarn', type: 'Compact', count: '40s', unit: 'kg', application: 'Weaving', description: 'Compact spun on Rieter ComforSpin K44, low hairiness' },

@@ -50,7 +50,7 @@ export const company = {
   productRanges: [
     { name: 'Single Yarn', detail: 'NE 16s–80s combed, for knitting & weaving, contamination cleared and wound on Schlafhorst / Savio autoconers' },
     { name: 'Double Yarn', detail: 'NE 2/20s–2/140s combed, twisted on TFO; two-fold and multifold, TFO/DD twist without knots' },
-    { name: 'Open End Yarn', detail: 'NE 6s–12s on OE-Schlafhorst machines, heavy doubling available' },
+    { name: 'Open End Yarn', detail: 'NE 6s–10s on OE-Schlafhorst machines, heavy doubling available' },
     { name: 'Compact Yarn', detail: 'Ring spun on Rieter ComforSpin K44 compact spinning, count range up to 140s' },
     { name: 'Gassed Yarn', detail: 'Singed specialty yarn — a house speciality' },
   ],

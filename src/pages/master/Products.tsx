@@ -26,7 +26,7 @@ const typeColors: Record<ProductType, string> = {
 const publishedRange: Record<ProductType, string> = {
   Single: 'NE 16s–80s',
   Double: 'NE 2/20s–2/140s',
-  'Open End': 'NE 6s–12s',
+  'Open End': 'NE 6s–10s',
   Compact: 'Up to NE 140s',
   Gassed: 'Specialty counts',
 }

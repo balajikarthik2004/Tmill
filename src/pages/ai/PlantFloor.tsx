@@ -7,6 +7,7 @@ import {
   Clock,
   Cog,
   Gauge,
+  ChevronRight,
   Play,
   Search,
   Sparkles,
@@ -16,7 +17,7 @@ import {
   Wrench,
 } from 'lucide-react'
 
-import type { FloorAssignment, MachineStatus } from '@/types'
+import type { FloorAssignment, FloorUnitBoard, MachineStatus, ProcessName } from '@/types'
 import { useAsync } from '@/hooks/useAsync'
 import { computeMissionState, computeProgress, getFloorBoard } from '@/services'
 import { useAiStore } from '@/store/aiStore'
@@ -60,6 +61,21 @@ const statusStyles: Record<MachineStatus, { dot: string; ring: string; chip: str
 }
 
 const STATUS_OPTIONS: Array<MachineStatus | 'all'> = ['all', 'Running', 'Idle', 'Breakdown', 'Maintenance']
+
+/** What leaves each stage, so the flow reads as material moving down the line. */
+const stageOutput: Record<ProcessName, string> = {
+  'Blow Room': 'Opened & cleaned lap',
+  Carding: 'Carded sliver',
+  Combing: 'Combed sliver',
+  Drawing: 'Drawn sliver',
+  Roving: 'Roving bobbins',
+  'Ring Spinning': 'Spun yarn cops',
+  'Open End': 'Rotor-spun cones',
+  Winding: 'Cleared cones',
+  TFO: 'Doubled yarn',
+  Gassing: 'Singed yarn',
+  Weaving: 'Greige fabric',
+}
 
 function barTone(status: MachineStatus) {
   if (status === 'Breakdown') return 'bg-danger-500'
@@ -182,6 +198,161 @@ function MachineTile({
         </div>
       )}
     </button>
+  )
+}
+
+/* --------------------------------------------------------- stage column */
+
+function StageColumn({
+  process,
+  assignments,
+  now,
+  isLast,
+  onOpen,
+}: {
+  process: ProcessName
+  assignments: FloorAssignment[]
+  now: number
+  isLast: boolean
+  onOpen: (a: FloorAssignment) => void
+}) {
+  const processing = assignments.filter((a) => a.status === 'Running')
+  const throughput = processing
+    .filter((a) => a.task === 'Running production')
+    .reduce((sum, a) => sum + a.ratePerHourKg, 0)
+
+  return (
+    <>
+      <div className="flex w-[228px] shrink-0 flex-col">
+        {/* Stage header */}
+        <div className="mb-2 rounded-lg border border-border bg-muted/40 px-2.5 py-2">
+          <div className="flex items-baseline gap-1.5">
+            <span className="truncate text-[11.5px] font-bold tracking-tight text-foreground">{process}</span>
+            <span className="num ml-auto shrink-0 text-[10px] font-semibold text-muted-foreground">
+              {assignments.length}
+            </span>
+          </div>
+          <div className="mt-0.5 truncate text-[9.5px] text-muted-foreground">{stageOutput[process]}</div>
+          <div className="mt-1 flex items-center gap-1">
+            <span className="h-1 w-1 rounded-full bg-success-500" />
+            <span className="num text-[9.5px] font-medium text-success-700">
+              {processing.length} processing
+            </span>
+            {throughput > 0 && (
+              <span className="num ml-auto text-[9.5px] font-semibold text-brand-600">
+                {Math.round(throughput)} kg/h
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Machines at this stage */}
+        <div className="flex flex-col gap-2">
+          {assignments.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-border px-2.5 py-4 text-center text-[10px] text-muted-foreground">
+              No machine here in this view
+            </div>
+          ) : (
+            assignments.map((assignment) => (
+              <MachineTile key={assignment.id} assignment={assignment} now={now} onOpen={onOpen} />
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Flow connector */}
+      {!isLast && (
+        <div className="flex w-7 shrink-0 items-start justify-center pt-6">
+          <ChevronRight className="h-4 w-4 text-muted-foreground/50" />
+        </div>
+      )}
+    </>
+  )
+}
+
+/* ----------------------------------------------------------- unit board */
+
+function UnitFlow({
+  unit,
+  now,
+  onOpen,
+}: {
+  unit: FloorUnitBoard
+  now: number
+  onOpen: (a: FloorAssignment) => void
+}) {
+  // Machines grouped into the order material actually travels through the unit.
+  const stages = unit.route.map((process) => ({
+    process,
+    assignments: unit.assignments.filter((a) => a.process === process),
+  }))
+  // Anything whose process is not on the published route still gets shown.
+  const offRoute = unit.assignments.filter((a) => !unit.route.includes(a.process))
+
+  return (
+    <section className="rounded-xl border border-border bg-card shadow-sm">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border px-4 py-3">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-[10px] font-bold text-brand-700">
+          {unit.shortName}
+        </span>
+        <div className="min-w-0">
+          <h3 className="font-display text-[13.5px] font-semibold tracking-tight text-foreground">
+            {unit.factoryName}
+          </h3>
+          <p className="truncate text-[10.5px] text-muted-foreground">
+            {unit.location}
+            {unit.commissionedYear ? ` · commissioned ${unit.commissionedYear}` : ''} · {unit.countGroup}
+          </p>
+        </div>
+        <div className="ml-auto flex flex-wrap items-center gap-1.5">
+          <Badge variant="success">{unit.running} processing</Badge>
+          {unit.idle > 0 && <Badge variant="copper">{unit.idle} idle</Badge>}
+          {unit.breakdown > 0 && <Badge variant="danger">{unit.breakdown} down</Badge>}
+          {unit.maintenance > 0 && <Badge variant="info">{unit.maintenance} in service</Badge>}
+          <Badge variant="secondary">
+            <Users className="h-3 w-3" />
+            {unit.operatorsOnShift}
+          </Badge>
+        </div>
+      </div>
+
+      {/* The route: cotton enters on the left and leaves as yarn on the right */}
+      <div className="flex items-center gap-2 border-b border-border bg-muted/25 px-4 py-1.5">
+        <span className="section-label text-copper-600">Process flow</span>
+        <div className="flex min-w-0 flex-wrap items-center gap-1 text-[10px] text-muted-foreground">
+          {unit.route.map((process, i) => (
+            <span key={process} className="flex items-center gap-1">
+              {i > 0 && <ChevronRight className="h-2.5 w-2.5 text-muted-foreground/50" />}
+              <span className="font-medium text-foreground">{process}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="scrollbar-thin overflow-x-auto">
+        <div className="flex min-w-max items-start p-3">
+          {stages.map((stage, i) => (
+            <StageColumn
+              key={stage.process}
+              process={stage.process}
+              assignments={stage.assignments}
+              now={now}
+              isLast={i === stages.length - 1 && offRoute.length === 0}
+              onOpen={onOpen}
+            />
+          ))}
+          {offRoute.length > 0 && (
+            <StageColumn
+              process={offRoute[0].process}
+              assignments={offRoute}
+              now={now}
+              isLast
+              onOpen={onOpen}
+            />
+          )}
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -374,35 +545,7 @@ export default function PlantFloor() {
         </div>
       ) : (
         units.map((unit) => (
-          <section key={unit.factoryId} className="rounded-xl border border-border bg-card shadow-sm">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border px-4 py-3">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-[10px] font-bold text-brand-700">
-                {unit.shortName}
-              </span>
-              <div className="min-w-0">
-                <h3 className="font-display text-[13.5px] font-semibold tracking-tight text-foreground">
-                  {unit.factoryName}
-                </h3>
-                <p className="truncate text-[10.5px] text-muted-foreground">{unit.countGroup}</p>
-              </div>
-              <div className="ml-auto flex flex-wrap items-center gap-1.5">
-                <Badge variant="success">{unit.running} processing</Badge>
-                {unit.idle > 0 && <Badge variant="copper">{unit.idle} idle</Badge>}
-                {unit.breakdown > 0 && <Badge variant="danger">{unit.breakdown} down</Badge>}
-                {unit.maintenance > 0 && <Badge variant="info">{unit.maintenance} in service</Badge>}
-                <Badge variant="secondary">
-                  <Users className="h-3 w-3" />
-                  {unit.operatorsOnShift}
-                </Badge>
-              </div>
-            </div>
-
-            <div className="grid gap-2.5 p-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-              {unit.assignments.map((assignment) => (
-                <MachineTile key={assignment.id} assignment={assignment} now={now} onOpen={setSelected} />
-              ))}
-            </div>
-          </section>
+          <UnitFlow key={unit.factoryId} unit={unit} now={now} onOpen={setSelected} />
         ))
       )}
 

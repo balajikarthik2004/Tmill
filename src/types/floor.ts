@@ -112,6 +112,10 @@ export interface FloorUnitBoard {
   factoryName: string
   shortName: string
   countGroup: string
+  location: string
+  commissionedYear?: number
+  /** The process route material takes through this unit, in order. */
+  route: ProcessName[]
   assignments: FloorAssignment[]
   running: number
   idle: number

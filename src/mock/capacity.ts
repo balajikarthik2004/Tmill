@@ -87,7 +87,7 @@ export const standardRateKgPerHour: Record<string, Partial<Record<ProcessName, n
     Roving: 208,
     'Ring Spinning': 77,
   },
-  // OE NE 6s–12s, plus the post-spinning steps that also serve the three mills.
+  // OE NE 6s–10s, plus the post-spinning steps that also serve the three mills.
   'oe-unit': {
     'Open End': 63,
     Winding: 165,

@@ -62,7 +62,6 @@ const machineCounts: Record<string, Partial<Record<ProcessName, number>>> = {
   'mill-2': { 'Blow Room': 1, Carding: 4, Combing: 3, Drawing: 3, Roving: 2, 'Ring Spinning': 6 },
   'mill-3': { 'Blow Room': 1, Carding: 3, Combing: 2, Drawing: 2, Roving: 2, 'Ring Spinning': 5 },
   'oe-unit': { 'Open End': 4, Winding: 5, TFO: 3, Gassing: 2 },
-  'weaving-unit': { Weaving: 8 },
 }
 
 const counters: Partial<Record<ProcessName, number>> = {}

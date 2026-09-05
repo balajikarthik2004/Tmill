@@ -10,6 +10,8 @@ export interface Factory {
   shortName: string
   type: FactoryType
   location: string
+  /** Year the unit was commissioned, where the public record states it. */
+  commissionedYear?: number
   /** Which yarn count group this mill specialises in (tmills.com). */
   countGroup: string
   installedCapacity: string

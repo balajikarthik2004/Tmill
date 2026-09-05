@@ -61,7 +61,7 @@ export const unitEnergyModel: Record<
   'mill-2': { variableSec: 2.23, fixedKwh: 6420, refCount: 45, targetKg: 7400 },
   // Coarse counts, NE 16s–30s. Most efficient per kilogram.
   'mill-3': { variableSec: 1.7, fixedKwh: 4130, refCount: 24, targetKg: 6900 },
-  // OE NE 6s–12s plus the post-spinning services. Rotor speed keeps this high
+  // OE NE 6s–10s plus the post-spinning services. Rotor speed keeps this high
   // for such coarse counts.
   'oe-unit': { variableSec: 1.98, fixedKwh: 2810, refCount: 10, targetKg: 4500 },
 }
